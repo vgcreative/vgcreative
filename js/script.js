@@ -18,7 +18,7 @@ function revealOnScroll() {
   const windowHeight = window.innerHeight;
   reveals.forEach((el) => {
     const elementTop = el.getBoundingClientRect().top;
-    if (elementTop < windowHeight - ) {
+    if (elementTop < windowHeight - 100) {
       el.classList.add("in");
     }
   });
@@ -53,5 +53,3 @@ if (heroTitle) {
     heroTitle.classList.add("glow"); // Add a CSS glow or animation class
   }, 1000);
 }
-
-
