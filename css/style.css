@@ -1,0 +1,117 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg-1: #0f0f0f;
+  --bg-2: #1a1a2e;
+  --accent-1: #ff0066;
+  --accent-2: #ff6b00;
+  --accent-3: #00ff88;
+  --text: #ffffff;
+  --muted: rgba(255,255,255,0.75);
+  --card: rgba(255,255,255,0.05);
+  --border: rgba(255,0,102,0.25);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--text);
+  background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
+  overflow-x: hidden;
+}
+
+/* nav */
+nav {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+  background: rgba(15, 15, 15, 0.158);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+nav.scrolled { box-shadow: 0 2px 20px rgba(255,0,100,0.35); border-bottom-color: rgba(255,0,102,0.2); }
+
+.nav-container { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+.logo { im: 800px; font-size: 1.5rem; background: linear-gradient(45deg, var(--accent-1), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.nav-links { list-style: none; display: flex; gap: 1.25rem; }
+.nav-links a { color: var(--text); text-decoration: none; position: relative; padding: 0.25rem 0; transition: transform 0.2s ease, color 0.2s ease; }
+.nav-links a:hover { color: var(--accent-1); transform: translateY(-2px); }
+.nav-links a::after { content: ""; position: absolute; left: 0; bottom: -6px; width: 0; height: 2px; background: linear-gradient(45deg, var(--accent-1), var(--accent-2)); transition: width 0.25s ease; }
+.nav-links a:hover::after { width: 100%; }
+
+.mobile-menu { display: none; flex-direction: column; gap: 4px; cursor: pointer; }
+.mobile-menu span { width: 26px; height: 3px; background: #fff; transition: 0.3s; }
+
+/* hero */
+.hero { min-height: 90vh; display: grid; place-items: center; text-align: center; padding-top: 80px; position: relative; background: radial-gradient(ellipse at center, rgba(255,0,102,0.12) 0%, transparent 70%); }
+.hero h1 { font-size: clamp(2.25rem, 6vw, 4rem); margin-bottom: 0.75rem; background: linear-gradient(45deg, var(--accent-1), var(--accent-2), var(--accent-3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: glow 2s ease-in-out infinite alternate; }
+.hero p { font-size: clamp(1rem, 2.5vw, 1.25rem); opacity: 0.9; margin-bottom: 1.25rem; }
+
+.cta-button { display: inline-block; padding: 0.85rem 1.5rem; background: linear-gradient(45deg, var(--accent-1), var(--accent-2)); color: #fff; text-decoration: none; border-radius: 999px; letter-spacing: 0.5px; font-weight: 700; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.cta-button:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 30px rgba(255,0,102,0.35); }
+
+/* particle dots */
+.particle { position: absolute; width: 4px; height: 4px; background: var(--accent-1); border-radius: 999px; animation: float 6s ease-in-out infinite; }
+
+/* sections */
+section { padding: 90px 1.25rem; }
+.section-title { text-align: center; font-size: clamp(1.5rem, 4vw, 2.5rem); background: linear-gradient(45deg, var(--accent-1), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 2rem; }
+
+/* portfolio cards */
+.video-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; }
+.video-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+.video-card:hover { transform: translateY(-6px); box-shadow: 0 15px 35px rgba(255,0,102,0.25); border-color: var(--accent-1); }
+iframe { width: 100%; height: 200px; display: block; border: 0; }
+.video-card h3 { padding: 1rem 1rem 1.15rem; }
+
+/* rates */
+#rates { background: rgba(255,255,255,0.03); }
+.rates-wrap { max-width: 1200px; margin: 0 auto; }
+.rate-cards { display: flex; flex-wrap: wrap; gap: 1.25rem; justify-content: center; }
+.rate-card { background: #222428aa; border: 1px solid var(--border); padding: 1.25rem; border-radius: 16px; width: 300px; transition: transform 0.25s ease, border-color 0.25s ease; }
+.rate-card:hover { transform: translateY(-6px); border-color: var(--accent-1); }
+.rate-card h3 { background: linear-gradient(45deg, var(--accent-1), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.25rem; }
+.rate-card p { margin-bottom: 0.5rem; }
+.rate-card ul { margin-left: 1rem; color: var(--muted); }
+
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+thead tr { background: rgba(255,255,255,0.08); }
+th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+
+select, input, textarea, button { width: 100%; padding: 0.75rem 0.9rem; border-radius: 10px; border: 1px solid rgba(255,0,102,0.35); background: rgba(255,255,255,0.08); color: #12d7d4f4; outline: none; transition: box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease; }
+input:focus, textarea:focus, select:focus { border-color: var(--accent-1); box-shadow: 0 0 0 4px hsla(336, 100%, 50%, 0.15); }
+
+.whatsapp { width: auto; background: linear-gradient(45deg, #02a85b, #0382a1); color: #0f0f0f; font-weight: 800; cursor: pointer; border: none; }
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #1a1d31;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.social-links {
+  margin-top: 10px;
+}
+
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 15px;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.social-links a svg {
+  margin-right: 8px; /* spacing between icon and text */
+  transition: fill 0.3s;
+}
+
+.social-links a:hover {
+  color: #ff6600;
+}
+
+.social-links a:hover svg {
+  fill: #ff6600;
+}
