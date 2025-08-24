@@ -37,7 +37,7 @@ function sendWhatsAppOrder() {
   if (selectedService) {
     const phone = "254727519292"; // your WhatsApp number (international format)
     const message = `Hello VG Creative! I'd like to order: ${selectedService}`;
-    const url = `https://wa.me/${727519292}?text=${encodeURIComponent(message)}`;
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   } else {
     alert("Please select a service before ordering.");
@@ -53,4 +53,5 @@ if (heroTitle) {
     heroTitle.classList.add("glow"); // Add a CSS glow or animation class
   }, 1000);
 }
+
 
