@@ -14,27 +14,19 @@
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
     html{scroll-behavior:smooth;}
     body{background:var(--black);color:var(--white);font-family:var(--FN);font-weight:300;overflow-x:hidden;cursor:none;}
-
-    /* GRAIN */
     body::before{content:'';position:fixed;inset:0;z-index:9990;pointer-events:none;opacity:.035;
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       background-size:200px 200px;animation:grain .4s steps(1) infinite;}
     @keyframes grain{0%{background-position:0% 0%}25%{background-position:100% 50%}50%{background-position:50% 100%}75%{background-position:0% 75%}}
-
-    /* CURSOR */
     #cur{width:10px;height:10px;background:var(--gold);border-radius:50%;position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:difference;}
     #cur-ring{width:44px;height:44px;border:1px solid rgba(200,168,75,.5);border-radius:50%;position:fixed;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);transition:width .35s,height .35s,opacity .3s;}
     #cur-label{position:fixed;z-index:9997;pointer-events:none;font-family:var(--FB);font-size:.6rem;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;opacity:0;transition:opacity .3s;transform:translate(-50%,28px);white-space:nowrap;}
     body.cplay #cur{width:70px;height:70px;background:rgba(200,168,75,.12);}
     body.cplay #cur-ring{opacity:0;}
     body.cplay #cur-label{opacity:1;}
-
-    /* SPOTLIGHT */
     #spotlight{position:fixed;inset:0;z-index:1;pointer-events:none;
       background:radial-gradient(circle 380px at var(--mx,50%) var(--my,50%),rgba(200,168,75,.055) 0%,transparent 70%);}
-
-    /* NAV */
-    nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:2rem 5rem;display:flex;align-items:center;justify-content:space-between;transition:all .4s;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1.5rem 5rem;display:flex;align-items:center;justify-content:space-between;transition:all .4s;}
     nav.stuck{padding:1rem 5rem;background:rgba(5,5,5,.96);border-bottom:1px solid rgba(200,168,75,.08);backdrop-filter:blur(12px);}
     .nav-logo{font-family:var(--F);font-size:2rem;letter-spacing:.12em;color:var(--gold);text-decoration:none;}
     .nav-logo sup{font-size:.4em;color:rgba(200,168,75,.4);margin-left:.1rem;}
@@ -46,8 +38,6 @@
     .nav-cta:hover{background:var(--gold);color:var(--black);}
     .hbg{display:none;flex-direction:column;gap:6px;background:none;border:none;cursor:pointer;z-index:600;}
     .hbg span{display:block;width:26px;height:1px;background:var(--white);transition:all .3s;}
-
-    /* HERO */
     #home{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:0 5rem 5rem;overflow:hidden;}
     .h-bgtext{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);font-family:var(--F);font-size:clamp(9rem,20vw,20rem);letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1px rgba(200,168,75,.055);white-space:nowrap;pointer-events:none;user-select:none;animation:bgDrift 18s ease-in-out infinite alternate;}
     @keyframes bgDrift{from{transform:translate(-50%,-52%) skewX(-1deg)}to{transform:translate(-50%,-48%) skewX(1deg)}}
@@ -70,16 +60,12 @@
     .h-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;font-family:var(--FB);font-size:.55rem;letter-spacing:.4em;text-transform:uppercase;color:rgba(242,237,232,.2);opacity:0;animation:fadeUp .8s 1.2s forwards;}
     .h-tick{width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);animation:tick 2s ease-in-out infinite;}
     @keyframes tick{0%,100%{transform:scaleY(1);opacity:.4}50%{transform:scaleY(1.3);opacity:1}}
-
-    /* MARQUEE */
     .mq-wrap{border-top:1px solid rgba(200,168,75,.15);border-bottom:1px solid rgba(200,168,75,.15);overflow:hidden;padding:.7rem 0;background:var(--dim);}
     .mq-track{display:inline-flex;gap:2.5rem;animation:mq 25s linear infinite;white-space:nowrap;}
     .mq-wrap:hover .mq-track{animation-play-state:paused;}
     .mq-track .it{font-family:var(--FB);font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.5);}
     .mq-track .dt{color:var(--gold);}
     @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-    /* STATS */
     .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid rgba(200,168,75,.08);}
     .stat{padding:3.5rem 4rem;border-right:1px solid rgba(200,168,75,.08);position:relative;overflow:hidden;}
     .stat:last-child{border-right:none;}
@@ -87,8 +73,6 @@
     .stat.visible::before{transform:scaleX(1);}
     .stat-num{font-family:var(--F);font-size:4.5rem;letter-spacing:.02em;color:var(--gold);line-height:1;}
     .stat-label{font-family:var(--FB);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:.5rem;}
-
-    /* PORTFOLIO */
     #portfolio{padding:7rem 0 0;}
     .sec-hdr{padding:0 5rem;display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3rem;}
     .sec-lbl{font-family:var(--FB);font-size:.65rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem;display:flex;align-items:center;gap:.75rem;}
@@ -96,12 +80,10 @@
     .sec-ttl{font-family:var(--F);font-size:clamp(3rem,6vw,5.5rem);letter-spacing:.04em;line-height:.9;}
     .view-all{font-family:var(--FB);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:gap .3s;}
     .view-all:hover{gap:1rem;}
-
     .port-wrap{padding-bottom:5rem;}
     .port-track{display:flex;gap:2px;overflow-x:auto;padding:0 5rem 2rem;scrollbar-width:none;cursor:grab;}
     .port-track::-webkit-scrollbar{display:none;}
     .port-track:active{cursor:grabbing;}
-
     .vc{flex:0 0 auto;position:relative;overflow:hidden;}
     .vc.sm{width:280px;height:420px;}
     .vc.lg{width:500px;height:420px;}
@@ -115,14 +97,11 @@
     .vc-t{font-family:var(--FB);font-size:clamp(.8rem,1.2vw,.95rem);font-weight:300;letter-spacing:.04em;color:var(--white);line-height:1.4;}
     .vc-play{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--FB);font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;opacity:0;transform:translateY(6px);transition:all .4s;}
     .vc:hover .vc-play{opacity:1;transform:translateY(0);}
-
     .scrl-ind{padding:0 5rem;display:flex;align-items:center;gap:1.5rem;}
     .scrl-trk{flex:1;height:1px;background:rgba(200,168,75,.1);position:relative;}
     .scrl-prg{height:100%;background:var(--gold);width:0%;transition:width .1s;}
     .scrl-hint{font-family:var(--FB);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.5rem;}
     .scrl-ct{font-family:var(--FB);font-size:.6rem;letter-spacing:.2em;color:var(--muted);}
-
-    /* ABOUT/REEL */
     #reel{padding:10rem 5rem;background:var(--dim);}
     .reel-in{display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center;}
     .reel-body{font-size:1.05rem;color:var(--muted);line-height:1.9;margin:2rem 0 2.5rem;}
@@ -143,13 +122,15 @@
     .rc.br{bottom:-4px;right:-4px;border-width:0 2px 2px 0;}
     .reel-tag{position:absolute;bottom:-1rem;left:-1rem;background:var(--gold);color:var(--black);font-family:var(--FB);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;padding:.5rem 1rem;z-index:4;}
 
-    /* RATES */
-    #rates{padding:10rem 5rem;position:relative;}
+    /* ===== RATES OVERHAUL ===== */
+    #rates{padding:10rem 5rem;position:relative;overflow:hidden;}
     #rates::before{content:'RATES';position:absolute;right:3rem;top:8rem;font-family:var(--F);font-size:12vw;color:rgba(200,168,75,.025);pointer-events:none;}
     .rates-intro{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:end;margin-bottom:5rem;}
     .rates-note{font-size:.9rem;color:var(--muted);line-height:1.8;border-left:2px solid var(--gold);padding-left:1.5rem;}
-    .rates-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
-    .rc-card{background:var(--dim2);padding:3.5rem 3rem;position:relative;overflow:hidden;transition:background .3s,transform .3s;}
+    /* Main packages grid: 4 across first row, 3 across second */
+    .pkg-grid-top{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:2px;}
+    .pkg-grid-bot{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:5rem;}
+    .rc-card{background:var(--dim2);padding:3rem 2.5rem;position:relative;overflow:hidden;transition:background .3s,transform .3s;}
     .rc-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,168,75,.04),transparent);opacity:0;transition:opacity .4s;}
     .rc-card:hover{background:#101010;transform:translateY(-4px);}
     .rc-card:hover::before{opacity:1;}
@@ -157,21 +138,72 @@
     .rc-card.feat *{color:var(--black) !important;}
     .rc-card.feat::before{display:none;}
     .rc-card.feat:hover{background:var(--gold2);}
-    .rc-tag{font-family:var(--FB);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+    .rc-card.elite{background:var(--dim2);border:1px solid rgba(200,168,75,.3);}
+    .rc-tag{font-family:var(--FB);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;}
+    .rc-tag::before{content:'';width:16px;height:1px;background:currentColor;}
     .rc-card.feat .rc-tag{color:rgba(5,5,5,.5) !important;}
-    .rc-name{font-family:var(--F);font-size:2.8rem;letter-spacing:.04em;color:var(--white);margin-bottom:2rem;line-height:1;}
-    .rc-price{font-family:var(--F);font-size:4.5rem;letter-spacing:.02em;color:var(--gold);line-height:1;margin-bottom:.25rem;}
-    .rc-cur{font-family:var(--FN);font-size:.9rem;font-weight:300;vertical-align:super;margin-right:.1em;}
-    .rc-sub{font-family:var(--FB);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:2.5rem;}
+    .rc-card.elite .rc-tag{color:var(--gold2);}
+    .rc-name{font-family:var(--F);font-size:2.2rem;letter-spacing:.04em;color:var(--white);margin-bottom:1.25rem;line-height:1;}
+    .rc-price{font-family:var(--F);font-size:3.8rem;letter-spacing:.02em;color:var(--gold);line-height:1;margin-bottom:.2rem;}
+    .rc-cur{font-family:var(--FN);font-size:.8rem;font-weight:300;vertical-align:super;margin-right:.1em;}
+    .rc-sub{font-family:var(--FB);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:2rem;}
     .rc-card.feat .rc-sub{color:rgba(5,5,5,.4) !important;}
-    .rc-feats{list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-bottom:3rem;}
-    .rc-feats li{font-size:.85rem;color:rgba(242,237,232,.55);display:flex;align-items:center;gap:.75rem;padding-bottom:.7rem;border-bottom:1px solid rgba(200,168,75,.07);}
-    .rc-card.feat .rc-feats li{color:rgba(5,5,5,.65) !important;border-bottom-color:rgba(5,5,5,.08) !important;}
-    .rc-feats li::before{content:'';width:12px;height:12px;border:1px solid currentColor;border-radius:50%;flex-shrink:0;opacity:.6;}
-    .rc-btn{width:100%;padding:1rem;font-family:var(--FB);font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;border:1px solid rgba(200,168,75,.3);background:none;color:var(--gold);cursor:pointer;transition:all .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
+    .rc-pitch{font-family:var(--FB);font-size:.75rem;letter-spacing:.05em;color:var(--gold);font-style:italic;margin-bottom:1.25rem;padding:.5rem .75rem;border-left:2px solid var(--gold);background:rgba(200,168,75,.06);}
+    .rc-card.feat .rc-pitch{color:rgba(5,5,5,.7) !important;background:rgba(5,5,5,.08) !important;border-left-color:rgba(5,5,5,.3) !important;}
+    .rc-feats{list-style:none;display:flex;flex-direction:column;gap:.55rem;margin-bottom:2.5rem;}
+    .rc-feats li{font-size:.82rem;color:rgba(242,237,232,.5);display:flex;align-items:center;gap:.65rem;padding-bottom:.55rem;border-bottom:1px solid rgba(200,168,75,.06);}
+    .rc-card.feat .rc-feats li{color:rgba(5,5,5,.6) !important;border-bottom-color:rgba(5,5,5,.07) !important;}
+    .rc-feats li::before{content:'';width:10px;height:10px;border:1px solid currentColor;border-radius:50%;flex-shrink:0;opacity:.6;}
+    .rc-btn{width:100%;padding:.9rem;font-family:var(--FB);font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;border:1px solid rgba(200,168,75,.3);background:none;color:var(--gold);cursor:pointer;transition:all .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
     .rc-btn:hover{background:var(--gold);color:var(--black);border-color:var(--gold);}
     .rc-card.feat .rc-btn{border-color:rgba(5,5,5,.25);color:var(--black);}
     .rc-card.feat .rc-btn:hover{background:var(--black);color:var(--gold);border-color:var(--black);}
+    .rc-card.elite .rc-btn{border-color:var(--gold);color:var(--gold);}
+
+    /* ADDONS */
+    .addons-section{margin-bottom:5rem;}
+    .addons-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(200,168,75,.08);}
+    .addon-item{background:var(--black);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;transition:background .3s;}
+    .addon-item:hover{background:var(--dim2);}
+    .addon-name{font-family:var(--FB);font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+    .addon-price{font-family:var(--F);font-size:1.5rem;color:var(--gold);}
+
+    /* SPECIAL BUNDLES */
+    .bundles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:5rem;}
+    .bundle-card{background:var(--dim2);padding:3rem 2.5rem;border-top:2px solid var(--gold);position:relative;overflow:hidden;transition:all .3s;}
+    .bundle-card:hover{background:#101010;transform:translateY(-3px);}
+    .bundle-icon{font-size:1.5rem;margin-bottom:1rem;}
+    .bundle-name{font-family:var(--F);font-size:2rem;letter-spacing:.04em;color:var(--white);margin-bottom:.5rem;}
+    .bundle-price{font-family:var(--F);font-size:2.8rem;color:var(--gold);margin-bottom:.25rem;}
+    .bundle-sub{font-family:var(--FB);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;}
+    .bundle-feats{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:2rem;}
+    .bundle-feats li{font-size:.82rem;color:rgba(242,237,232,.5);display:flex;align-items:center;gap:.6rem;}
+    .bundle-feats li::before{content:'→';color:var(--gold);font-size:.7rem;}
+
+    /* HOW IT WORKS */
+    #how{padding:8rem 5rem;background:var(--dim);}
+    .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:4rem;}
+    .how-step{background:var(--black);padding:3rem 2.5rem;position:relative;overflow:hidden;transition:background .3s;}
+    .how-step:hover{background:var(--dim2);}
+    .how-step::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),transparent);transform:scaleX(0);transform-origin:left;transition:transform .5s;}
+    .how-step:hover::after{transform:scaleX(1);}
+    .step-num{font-family:var(--F);font-size:5rem;color:rgba(200,168,75,.1);line-height:1;margin-bottom:1rem;}
+    .step-title{font-family:var(--F);font-size:1.8rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem;}
+    .step-body{font-size:.85rem;color:var(--muted);line-height:1.7;}
+
+    /* WHY VG */
+    #why{padding:8rem 5rem;}
+    .why-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:4rem;}
+    .why-item{background:var(--dim2);padding:2.5rem 2rem;text-align:center;transition:all .3s;}
+    .why-item:hover{background:#101010;transform:translateY(-4px);}
+    .why-icon{font-size:2rem;margin-bottom:1rem;}
+    .why-title{font-family:var(--F);font-size:1.4rem;letter-spacing:.04em;color:var(--white);margin-bottom:.5rem;}
+    .why-body{font-size:.8rem;color:var(--muted);line-height:1.6;}
+
+    /* NOTES */
+    .notes-bar{background:rgba(200,168,75,.04);border:1px solid rgba(200,168,75,.12);padding:2.5rem 5rem;display:flex;align-items:center;gap:4rem;flex-wrap:wrap;}
+    .note-item{display:flex;align-items:center;gap:.75rem;font-family:var(--FB);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+    .note-item::before{content:'⚠';color:var(--gold);}
 
     /* CONTACT */
     #contact{padding:10rem 5rem;background:var(--dim);display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start;}
@@ -196,24 +228,24 @@
     .frm{display:flex;flex-direction:column;gap:1.25rem;}
     .f-row{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
     .f-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.5rem;}
-
-    /* FOOTER */
     footer{padding:4rem 5rem;border-top:1px solid rgba(200,168,75,.08);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2rem;}
     .ft-logo{font-family:var(--F);font-size:2rem;letter-spacing:.12em;color:var(--gold);}
     .ft-copy{font-family:var(--FB);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,237,232,.2);text-align:center;}
     .ft-soc{display:flex;gap:1rem;justify-content:flex-end;}
     .ft-soc a{width:40px;height:40px;border:1px solid rgba(200,168,75,.15);display:flex;align-items:center;justify-content:center;color:var(--muted);text-decoration:none;transition:all .3s;}
     .ft-soc a:hover{border-color:var(--gold);color:var(--gold);}
-
-    /* ANIMS */
     @keyframes slR{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
     @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
     .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1);}
     .reveal.visible{opacity:1;transform:translateY(0);}
     .reveal-l{opacity:0;transform:translateX(-40px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1);}
     .reveal-l.visible{opacity:1;transform:translateX(0);}
-
-    /* MOBILE */
+    @media(max-width:1100px){
+      .pkg-grid-top{grid-template-columns:repeat(2,1fr);}
+      .pkg-grid-bot{grid-template-columns:repeat(2,1fr);}
+      .how-grid{grid-template-columns:repeat(2,1fr);}
+      .why-grid{grid-template-columns:repeat(3,1fr);}
+    }
     @media(max-width:900px){
       nav{padding:1.25rem 1.5rem;}
       nav.stuck{padding:1rem 1.5rem;}
@@ -226,13 +258,17 @@
       .reel-in{grid-template-columns:1fr;gap:4rem;}
       #rates{padding:6rem 1.5rem;}
       .rates-intro{grid-template-columns:1fr;gap:2rem;}
-      .rates-grid{grid-template-columns:1fr;}
+      .pkg-grid-top,.pkg-grid-bot,.bundles-grid,.addons-grid{grid-template-columns:1fr;}
+      .how-grid,.why-grid{grid-template-columns:1fr;}
+      #how,#why{padding:5rem 1.5rem;}
+      .notes-bar{padding:2rem 1.5rem;gap:2rem;}
       #contact{grid-template-columns:1fr;gap:4rem;padding:6rem 1.5rem;}
       .sec-hdr{padding:0 1.5rem;}
       .port-track{padding:0 1.5rem 2rem;}
       .scrl-ind{padding:0 1.5rem;}
       footer{grid-template-columns:1fr;text-align:center;padding:3rem 1.5rem;}
       .ft-soc{justify-content:center;}
+      .ft-logo{display:flex;justify-content:center;}
       .f-row{grid-template-columns:1fr;}
       body{cursor:auto;}
       #cur,#cur-ring,#cur-label,#spotlight{display:none;}
@@ -240,7 +276,6 @@
   </style>
 </head>
 <body>
-
 <div id="cur"></div>
 <div id="cur-ring"></div>
 <div id="cur-label">Play</div>
@@ -248,7 +283,9 @@
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#home" class="nav-logo">VG Creative<sup>®</sup></a>
+  <a href="#home" class="nav-logo">
+    VG Creative<sup>®</sup>
+  </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#home" data-num="01">Home</a></li>
     <li><a href="#portfolio" data-num="02">Work</a></li>
@@ -270,7 +307,7 @@
     <p class="h-eye">Nairobi · Kenya · Cinematic Visuals</p>
     <h1 class="h-title">VG<br><span class="out">CREA</span><span class="sm">×</span>TIVE</h1>
     <div class="h-bot">
-      <p class="h-desc">We transform ideas into cinematic masterpieces. Music videos, commercials, weddings & documentaries — shot in Nairobi, seen everywhere.</p>
+      <p class="h-desc">We transform ideas into cinematic masterpieces. Music videos, commercials, weddings &amp; documentaries — shot in Nairobi, seen everywhere.</p>
       <div class="h-acts">
         <a href="#portfolio" class="btn-p">View Our Work <svg width="14" height="10" viewBox="0 0 14 10"><path d="M8 1l5 4-5 4M1 5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></a>
         <a href="#contact" class="btn-g">Book a Shoot</a>
@@ -307,7 +344,7 @@
   <div class="stat reveal"><div class="stat-num" data-target="19">0</div><div class="stat-label">Videos Produced</div></div>
   <div class="stat reveal" style="transition-delay:.1s"><div class="stat-num" data-target="5">0</div><div class="stat-label">Years Active</div></div>
   <div class="stat reveal" style="transition-delay:.2s"><div class="stat-num" data-target="12">0</div><div class="stat-label">Artists Worked With</div></div>
-  <div class="stat reveal" style="transition-delay:.3s"><div class="stat-num" data-target="3">0</div><div class="stat-label">Service Packages</div></div>
+  <div class="stat reveal" style="transition-delay:.3s"><div class="stat-num" data-target="7">0</div><div class="stat-label">Packages Available</div></div>
 </div>
 
 <!-- PORTFOLIO -->
@@ -355,14 +392,14 @@
     <div class="reveal-l">
       <p class="sec-lbl">Who We Are</p>
       <h2 class="sec-ttl">Vision.<br>Grit.<br>Cinema.</h2>
-      <p class="reel-body">VG Creative is <strong>Nairobi's premier videography studio</strong>. From street-level music videos that capture the rawness of Kenyan hip-hop, to wedding films that freeze time — we bring the same <strong>cinematic obsession</strong> to every frame.<br><br>Founded by directors <strong>Vinty & G_Shots</strong>, we've worked with the biggest names in the scene.</p>
+      <p class="reel-body">VG Creative is <strong>Nairobi's premier videography studio</strong>. From street-level music videos that capture the rawness of Kenyan hip-hop, to wedding films that freeze time — we bring the same <strong>cinematic obsession</strong> to every frame.<br><br>Founded by directors <strong>Vinty &amp; G_Shots</strong>, we've worked with the biggest names in the scene.</p>
       <ul class="svc-list">
         <li>Music Video Production</li>
         <li>Official Audio Visualizers</li>
         <li>Wedding Cinematography</li>
-        <li>Commercial & Brand Films</li>
+        <li>Commercial &amp; Brand Films</li>
         <li>Documentary Filmmaking</li>
-        <li>Post Production & Color Grade</li>
+        <li>Post Production &amp; Color Grade</li>
       </ul>
     </div>
     <div class="reel-vis reveal">
@@ -383,34 +420,278 @@
       <h2 class="sec-ttl">Transparent.<br>Fair.<br>Cinematic.</h2>
     </div>
     <div class="reveal">
-      <p class="rates-note">Every package is crafted to deliver maximum visual impact at its price point. Not sure which to pick? <a href="#contact" style="color:var(--gold);text-decoration:none;">Message us</a> and we'll advise you.</p>
+      <p class="rates-note">Every package delivers maximum visual impact at its price point. Not sure which fits you? <a href="#contact" style="color:var(--gold);text-decoration:none;">Message us</a> and we'll guide you.</p>
       <p style="margin-top:1.5rem;font-family:var(--FB);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);">Contact: 0727 519 292 · 0706 352 214</p>
     </div>
   </div>
-  <div class="rates-grid">
+
+  <!-- TOP ROW: 4 packages -->
+  <div class="pkg-grid-top">
+    <!-- Street Visual -->
     <div class="rc-card reveal">
+      <p class="rc-tag">Entry Level</p>
+      <h3 class="rc-name">Street Visual</h3>
+      <div class="rc-price"><span class="rc-cur">KES</span>10K</div>
+      <p class="rc-sub">Clean visuals to get you started</p>
+      <p class="rc-pitch">Best for quick drops &amp; first-time artists</p>
+      <ul class="rc-feats">
+        <li>Single location</li>
+        <li>Performance-based shoot</li>
+        <li>Natural / basic lighting</li>
+        <li>Clean edit + color</li>
+        <li>1 video (up to 1 min)</li>
+      </ul>
+      <button class="rc-btn" onclick="selectPkg('Street Visual — KES 10,000')">Book This Package</button>
+    </div>
+    <!-- One Take -->
+    <div class="rc-card reveal" style="transition-delay:.05s">
       <p class="rc-tag">Starter</p>
       <h3 class="rc-name">One Take</h3>
-      <div class="rc-price"><span class="rc-cur">KES</span>10K</div>
-      <p class="rc-sub">Perfect for singles & debut drops</p>
-      <ul class="rc-feats"><li>1 Cinema Camera</li><li>1 Reflector</li><li>Standard Edit</li><li>YouTube Ready Export</li></ul>
-      <button class="rc-btn" onclick="selectPkg('One Take — KES 10,000')">Book This Package</button>
+      <div class="rc-price"><span class="rc-cur">KES</span>15K</div>
+      <p class="rc-sub">Simple. Sharp. Effective.</p>
+      <p class="rc-pitch">Clean performance visuals with structure</p>
+      <ul class="rc-feats">
+        <li>1 Cinema Camera</li>
+        <li>1–2 Lights</li>
+        <li>Single location</li>
+        <li>Full song video</li>
+        <li>Smooth edit + color</li>
+      </ul>
+      <button class="rc-btn" onclick="selectPkg('One Take — KES 15,000')">Book This Package</button>
     </div>
+    <!-- Performance Pack — FEATURED -->
     <div class="rc-card feat reveal" style="transition-delay:.1s">
       <p class="rc-tag">Most Popular</p>
-      <h3 class="rc-name">Director's Cut</h3>
+      <h3 class="rc-name">Performance Pack</h3>
       <div class="rc-price"><span class="rc-cur">KES</span>20K</div>
-      <p class="rc-sub">Best value · full production look</p>
-      <ul class="rc-feats"><li>1 Cinema Camera</li><li>3 Professional Lights</li><li>1 Reflector</li><li>Advanced Edit + Color</li><li>HD Export All Platforms</li></ul>
-      <button class="rc-btn" onclick="selectPkg('Directors Cut — KES 20,000')">Book This Package</button>
+      <p class="rc-sub">Best balance between quality &amp; cost</p>
+      <p class="rc-pitch">Most artists choose this package</p>
+      <ul class="rc-feats">
+        <li>1 Cinema Camera</li>
+        <li>2–3 Light Setup</li>
+        <li>1–2 Locations</li>
+        <li>Cinematic edit + color</li>
+        <li>Full music video</li>
+        <li>1 Short clip (TikTok/Reels)</li>
+      </ul>
+      <button class="rc-btn" onclick="selectPkg('Performance Pack — KES 20,000')">Book This Package</button>
     </div>
-    <div class="rc-card reveal" style="transition-delay:.2s">
+    <!-- Director's Cut -->
+    <div class="rc-card reveal" style="transition-delay:.15s">
+      <p class="rc-tag">Story-Driven</p>
+      <h3 class="rc-name">Director's Cut</h3>
+      <div class="rc-price"><span class="rc-cur">KES</span>30K</div>
+      <p class="rc-sub">Turn your song into a story</p>
+      <p class="rc-pitch">For artists who want storytelling, not just performance</p>
+      <ul class="rc-feats">
+        <li>Cinema-style shooting</li>
+        <li>3-Light setup</li>
+        <li>2–3 Locations</li>
+        <li>Creative direction included</li>
+        <li>Advanced edit + color</li>
+        <li>2–3 Social clips</li>
+      </ul>
+      <button class="rc-btn" onclick="selectPkg('Director's Cut — KES 30,000')">Book This Package</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM ROW: 3 packages -->
+  <div class="pkg-grid-bot">
+    <!-- Cinema Experience -->
+    <div class="rc-card reveal">
+      <p class="rc-tag">Industry Level</p>
+      <h3 class="rc-name">Cinema Experience</h3>
+      <div class="rc-price"><span class="rc-cur">KES</span>45K</div>
+      <p class="rc-sub">Designed for serious releases</p>
+      <p class="rc-pitch">For artists who want to dominate their market</p>
+      <ul class="rc-feats">
+        <li>Full lighting setup</li>
+        <li>Multi-scene production</li>
+        <li>Story-driven visuals</li>
+        <li>Pro edit + color grade</li>
+        <li>BTS footage included</li>
+        <li>3–4 Short clips</li>
+      </ul>
+      <button class="rc-btn" onclick="selectPkg('Cinema Experience — KES 45,000')">Book This Package</button>
+    </div>
+    <!-- Visual Masterpiece -->
+    <div class="rc-card reveal" style="transition-delay:.1s">
       <p class="rc-tag">Premium</p>
       <h3 class="rc-name">Visual Masterpiece</h3>
-      <div class="rc-price"><span class="rc-cur">KES</span>50K</div>
+      <div class="rc-price"><span class="rc-cur">KES</span>60K</div>
       <p class="rc-sub">The full cinematic experience</p>
-      <ul class="rc-feats"><li>3 Cinema Cameras</li><li>4 Lights + LED Panels</li><li>3 Reflectors</li><li>Smoke Machine FX</li><li>Multi-Angle Shoot</li><li>Pro Edit + Color Grade</li><li>4K Export All Platforms</li></ul>
-      <button class="rc-btn" onclick="selectPkg('Visual Masterpiece — KES 50,000')">Book This Package</button>
+      <p class="rc-pitch">For serious artists only</p>
+      <ul class="rc-feats">
+        <li>Multi-location shoot</li>
+        <li>Multi-angle coverage</li>
+        <li>Full concept execution</li>
+        <li>4 Lights + LED Panels</li>
+        <li>Smoke Machine FX</li>
+        <li>Pro color grade · 4K export</li>
+        <li>5+ Social clips</li>
+      </ul>
+      <button class="rc-btn" onclick="selectPkg('Visual Masterpiece — KES 60,000')">Book This Package</button>
+    </div>
+    <!-- Elite -->
+    <div class="rc-card elite reveal" style="transition-delay:.2s">
+      <p class="rc-tag">Mainstream</p>
+      <h3 class="rc-name">Elite Artist</h3>
+      <div class="rc-price"><span class="rc-cur">KES</span>90K<span style="font-size:1.5rem;color:rgba(200,168,75,.5)">+</span></div>
+      <p class="rc-sub">Built for mainstream attention</p>
+      <p class="rc-pitch">Premium visuals for premium artists</p>
+      <ul class="rc-feats">
+        <li>Full production planning</li>
+        <li>Creative direction + concept</li>
+        <li>Styling guidance</li>
+        <li>Multi-day shoot</li>
+        <li>BTS + rollout content</li>
+        <li>Priority delivery</li>
+        <li>6–10 Promo clips</li>
+      </ul>
+      <button class="rc-btn" onclick="selectPkg('Elite Artist Package — KES 90,000+')">Book This Package</button>
+    </div>
+  </div>
+
+  <!-- ADD-ONS -->
+  <div class="addons-section reveal">
+    <div style="margin-bottom:2rem;">
+      <p class="sec-lbl">Customize Your Shoot</p>
+      <h3 class="sec-ttl" style="font-size:clamp(2rem,4vw,3.5rem);">Add-Ons</h3>
+    </div>
+    <div class="addons-grid">
+      <div class="addon-item"><span class="addon-name">Extra Location</span><span class="addon-price">+3K</span></div>
+      <div class="addon-item"><span class="addon-name">Extra Shoot Day</span><span class="addon-price">+8K</span></div>
+      <div class="addon-item"><span class="addon-name">Drone Shots</span><span class="addon-price">+5K</span></div>
+      <div class="addon-item"><span class="addon-name">Models / Vixens</span><span class="addon-price">+3K–10K</span></div>
+      <div class="addon-item"><span class="addon-name">BTS Video</span><span class="addon-price">+2K</span></div>
+      <div class="addon-item"><span class="addon-name">Express Delivery (24–48h)</span><span class="addon-price">+3K</span></div>
+      <div class="addon-item"><span class="addon-name">Cover Art Design</span><span class="addon-price">+2K</span></div>
+      <div class="addon-item"><span class="addon-name">Lyric Video</span><span class="addon-price">+4K</span></div>
+      <div class="addon-item"><span class="addon-name">Smoke Machine FX</span><span class="addon-price">+2K</span></div>
+    </div>
+  </div>
+
+  <!-- SPECIAL BUNDLES -->
+  <div style="margin-bottom:2rem;" class="reveal">
+    <p class="sec-lbl">Special Packages</p>
+    <h3 class="sec-ttl" style="font-size:clamp(2rem,4vw,3.5rem);">Bundles &amp; Plans</h3>
+  </div>
+  <div class="bundles-grid">
+    <div class="bundle-card reveal">
+      <div class="bundle-icon">📱</div>
+      <div class="bundle-name">Viral Content Pack</div>
+      <div class="bundle-price"><span style="font-size:1rem;vertical-align:super;">KES</span>12K</div>
+      <div class="bundle-sub">Push your music where it matters</div>
+      <ul class="bundle-feats">
+        <li>3 Short Videos</li>
+        <li>Fast, trend-based edits</li>
+        <li>TikTok + Reels optimized</li>
+        <li>Built for engagement &amp; reach</li>
+      </ul>
+      <button class="rc-btn" onclick="selectPkg('Viral Content Pack — KES 12,000')">Book This Package</button>
+    </div>
+    <div class="bundle-card reveal" style="transition-delay:.1s">
+      <div class="bundle-icon">🔁</div>
+      <div class="bundle-name">Artist Growth Plan</div>
+      <div class="bundle-price"><span style="font-size:1rem;vertical-align:super;">KES</span>40K<span style="font-size:1.2rem;color:rgba(200,168,75,.5)">/mo</span></div>
+      <div class="bundle-sub">Stay consistent &amp; visible</div>
+      <ul class="bundle-feats">
+        <li>2 Shoots monthly</li>
+        <li>6–10 Short videos</li>
+        <li>Priority booking</li>
+        <li>Monthly content calendar</li>
+      </ul>
+      <button class="rc-btn" onclick="selectPkg('Artist Growth Plan — KES 40,000/month')">Book This Package</button>
+    </div>
+    <div class="bundle-card reveal" style="transition-delay:.2s">
+      <div class="bundle-icon">🚀</div>
+      <div class="bundle-name">Full Release Kit</div>
+      <div class="bundle-price"><span style="font-size:1rem;vertical-align:super;">KES</span>50K</div>
+      <div class="bundle-sub">Everything for a proper drop</div>
+      <ul class="bundle-feats">
+        <li>Full music video</li>
+        <li>Cover art design</li>
+        <li>5 Promo clips</li>
+        <li>Social media ready</li>
+      </ul>
+      <button class="rc-btn" onclick="selectPkg('Full Release Kit — KES 50,000')">Book This Package</button>
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="notes-bar reveal">
+    <div class="note-item">50% deposit to secure booking</div>
+    <div class="note-item">Balance before final delivery</div>
+    <div class="note-item">Limited weekly slots</div>
+    <div class="note-item">Revisions included per package</div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="sec-hdr reveal" style="padding:0;">
+    <div>
+      <p class="sec-lbl">The Process</p>
+      <h2 class="sec-ttl">How It Works</h2>
+    </div>
+  </div>
+  <div class="how-grid">
+    <div class="how-step reveal">
+      <div class="step-num">01</div>
+      <div class="step-title">Book Your Shoot</div>
+      <div class="step-body">Choose your package and reach out via WhatsApp or the contact form. 50% deposit locks in your slot.</div>
+    </div>
+    <div class="how-step reveal" style="transition-delay:.1s">
+      <div class="step-num">02</div>
+      <div class="step-title">Plan Your Concept</div>
+      <div class="step-body">We work with you on locations, outfits, shots and the creative direction. Simple or cinematic — your call.</div>
+    </div>
+    <div class="how-step reveal" style="transition-delay:.2s">
+      <div class="step-num">03</div>
+      <div class="step-title">Shoot Day</div>
+      <div class="step-body">We come prepared. Professional setup, efficient execution, creative energy from start to finish.</div>
+    </div>
+    <div class="how-step reveal" style="transition-delay:.3s">
+      <div class="step-num">04</div>
+      <div class="step-title">Edit &amp; Delivery</div>
+      <div class="step-body">Professional edit, color grade, and export. Delivered to all your platforms, ready to drop.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY VG CREATIVE -->
+<section id="why">
+  <div class="sec-hdr reveal" style="padding:0;">
+    <div>
+      <p class="sec-lbl">Our Edge</p>
+      <h2 class="sec-ttl">Why VG Creative</h2>
+    </div>
+  </div>
+  <div class="why-grid">
+    <div class="why-item reveal">
+      <div class="why-icon">🎬</div>
+      <div class="why-title">Cinematic Visuals</div>
+      <div class="why-body">Cinema-grade output at every price point. We don't cut corners.</div>
+    </div>
+    <div class="why-item reveal" style="transition-delay:.07s">
+      <div class="why-icon">⚡</div>
+      <div class="why-title">Fast Turnaround</div>
+      <div class="why-body">Quick delivery without sacrificing quality. Rush options available.</div>
+    </div>
+    <div class="why-item reveal" style="transition-delay:.14s">
+      <div class="why-icon">🎯</div>
+      <div class="why-title">Artist-Focused</div>
+      <div class="why-body">We understand the culture. Street to mainstream — we speak your language.</div>
+    </div>
+    <div class="why-item reveal" style="transition-delay:.21s">
+      <div class="why-icon">📱</div>
+      <div class="why-title">Platform-Ready</div>
+      <div class="why-body">Optimized for YouTube, TikTok, Reels and every platform your fans use.</div>
+    </div>
+    <div class="why-item reveal" style="transition-delay:.28s">
+      <div class="why-icon">🏆</div>
+      <div class="why-title">Proven Track Record</div>
+      <div class="why-body">19+ videos. 12+ artists. 5 years of Nairobi's finest visual storytelling.</div>
     </div>
   </div>
 </section>
@@ -436,9 +717,20 @@
       <div><label class="f-lbl">Select Package</label>
         <select class="f-sel" id="fS">
           <option value="">Choose a package</option>
-          <option>One Take — KES 10,000</option>
-          <option>Directors Cut — KES 20,000</option>
-          <option>Visual Masterpiece — KES 50,000</option>
+          <optgroup label="Main Packages">
+            <option>Street Visual — KES 10,000</option>
+            <option>One Take — KES 15,000</option>
+            <option>Performance Pack — KES 20,000</option>
+            <option>Director's Cut — KES 30,000</option>
+            <option>Cinema Experience — KES 45,000</option>
+            <option>Visual Masterpiece — KES 60,000</option>
+            <option>Elite Artist Package — KES 90,000+</option>
+          </optgroup>
+          <optgroup label="Special Bundles">
+            <option>Viral Content Pack — KES 12,000</option>
+            <option>Artist Growth Plan — KES 40,000/month</option>
+            <option>Full Release Kit — KES 50,000</option>
+          </optgroup>
           <option>Custom / Let's Talk</option>
         </select>
       </div>
@@ -456,7 +748,9 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="ft-logo">VG Creative</div>
+  <div class="ft-logo">
+    VG Creative<sup>®</sup>
+  </div>
   <p class="ft-copy">© 2026 VG Creative · Nairobi, Kenya · All Rights Reserved</p>
   <div class="ft-soc">
     <a href="https://instagram.com/gshots.ke" target="_blank" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
@@ -466,50 +760,21 @@
 </footer>
 
 <script>
-// CURSOR
 const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring'),lbl=document.getElementById('cur-label'),spot=document.getElementById('spotlight');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX;my=e.clientY;
-  cur.style.left=mx+'px';cur.style.top=my+'px';
-  spot.style.setProperty('--mx',mx+'px');spot.style.setProperty('--my',my+'px');
-});
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';spot.style.setProperty('--mx',mx+'px');spot.style.setProperty('--my',my+'px');});
 (function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';lbl.style.left=rx+'px';lbl.style.top=ry+'px';requestAnimationFrame(anim);})();
-document.querySelectorAll('.vc').forEach(c=>{
-  c.addEventListener('mouseenter',()=>document.body.classList.add('cplay'));
-  c.addEventListener('mouseleave',()=>document.body.classList.remove('cplay'));
-});
-
-// NAV
+document.querySelectorAll('.vc').forEach(c=>{c.addEventListener('mouseenter',()=>document.body.classList.add('cplay'));c.addEventListener('mouseleave',()=>document.body.classList.remove('cplay'));});
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>nav.classList.toggle('stuck',scrollY>80));
 const hbg=document.getElementById('hbg'),nl=document.getElementById('navLinks');
 hbg.addEventListener('click',()=>nl.classList.toggle('open'));
 nl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nl.classList.remove('open')));
-
-// REVEAL
-const obs=new IntersectionObserver((entries)=>{
-  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});
-},{threshold:.1});
+const obs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});},{threshold:.1});
 document.querySelectorAll('.reveal,.reveal-l,.stat').forEach(el=>obs.observe(el));
-
-// COUNTERS
-function animCount(el,target){
-  let st=null;
-  function step(ts){
-    if(!st)st=ts;
-    const p=Math.min((ts-st)/1800,1),ease=1-Math.pow(1-p,4);
-    el.textContent=Math.floor(ease*target);
-    if(p<1)requestAnimationFrame(step);else el.textContent=target+'+';
-  }
-  requestAnimationFrame(step);
-}
-const sObs=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{if(e.isIntersecting){animCount(e.target.querySelector('.stat-num'),+e.target.querySelector('.stat-num').dataset.target);sObs.unobserve(e.target);}});
-},{threshold:.5});
+function animCount(el,target){let st=null;function step(ts){if(!st)st=ts;const p=Math.min((ts-st)/1800,1),ease=1-Math.pow(1-p,4);el.textContent=Math.floor(ease*target);if(p<1)requestAnimationFrame(step);else el.textContent=target+'+';}requestAnimationFrame(step);}
+const sObs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){animCount(e.target.querySelector('.stat-num'),+e.target.querySelector('.stat-num').dataset.target);sObs.unobserve(e.target);}});},{threshold:.5});
 document.querySelectorAll('.stat').forEach(s=>sObs.observe(s));
-
-// DRAG SCROLL PORTFOLIO
 const pt=document.getElementById('pTrack'),sp=document.getElementById('sPrg');
 let drag=false,sx,sl;
 pt.addEventListener('mousedown',e=>{drag=true;sx=e.pageX-pt.offsetLeft;sl=pt.scrollLeft;});
@@ -519,28 +784,21 @@ pt.addEventListener('scroll',()=>{const m=pt.scrollWidth-pt.clientWidth;sp.style
 let tsx,tsl;
 pt.addEventListener('touchstart',e=>{tsx=e.touches[0].pageX;tsl=pt.scrollLeft;},{passive:true});
 pt.addEventListener('touchmove',e=>{pt.scrollLeft=tsl-(e.touches[0].pageX-tsx)*1.1;},{passive:true});
-
-// SELECT PKG
 function selectPkg(pkg){document.getElementById('fS').value=pkg;document.getElementById('contact').scrollIntoView({behavior:'smooth'});}
-
-// WHATSAPP
 function sendWA(){
   const n=document.getElementById('fN').value.trim(),p=document.getElementById('fP').value.trim(),s=document.getElementById('fS').value,d=document.getElementById('fD').value.trim();
   if(!s){alert('Please select a package first.');return;}
-  let m=`Hey VG Creative! 🎬\n\n`;
-  if(n)m+=`*Name:* ${n}\n`;
-  if(p)m+=`*Phone:* ${p}\n`;
-  m+=`*Package:* ${s}\n`;
-  if(d)m+=`*Project:* ${d}\n`;
-  m+=`\nLooking forward to creating something cinematic!`;
-  window.open(`https://wa.me/254727519292?text=${encodeURIComponent(m)}`,'_blank');
+  let m='Hey VG Creative! \u{1F3AC}\n\n';
+  if(n)m+='*Name:* '+n+'\n';
+  if(p)m+='*Phone:* '+p+'\n';
+  m+='*Package:* '+s+'\n';
+  if(d)m+='*Project:* '+d+'\n';
+  m+='\nLooking forward to creating something cinematic!';
+  window.open('https://wa.me/254727519292?text='+encodeURIComponent(m),'_blank');
 }
 </script>
 </body>
 </html>
-
-
-
 
 
 
