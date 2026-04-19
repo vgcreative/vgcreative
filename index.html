@@ -73,6 +73,8 @@
     .stat.visible::before{transform:scaleX(1);}
     .stat-num{font-family:var(--F);font-size:4.5rem;letter-spacing:.02em;color:var(--gold);line-height:1;}
     .stat-label{font-family:var(--FB);font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:.5rem;}
+
+    /* ===== PORTFOLIO — CLICK TO PLAY FIX ===== */
     #portfolio{padding:7rem 0 0;}
     .sec-hdr{padding:0 5rem;display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3rem;}
     .sec-lbl{font-family:var(--FB);font-size:.85rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem;display:flex;align-items:center;gap:.75rem;}
@@ -84,24 +86,49 @@
     .port-track{display:flex;gap:2px;overflow-x:auto;padding:0 5rem 2rem;scrollbar-width:none;cursor:grab;}
     .port-track::-webkit-scrollbar{display:none;}
     .port-track:active{cursor:grabbing;}
-    .vc{flex:0 0 auto;position:relative;overflow:hidden;}
+
+    /* Video card — thumbnail + click-to-play */
+    .vc{flex:0 0 auto;position:relative;overflow:hidden;background:#0a0a0a;}
     .vc.sm{width:280px;height:420px;}
     .vc.lg{width:500px;height:420px;}
     .vc.xl{width:680px;height:420px;}
-    .vc iframe{width:100%;height:100%;border:none;transform:scale(1.05);transition:transform .6s;pointer-events:none;}
-    .vc::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,5,.95) 0%,rgba(5,5,5,.2) 40%,transparent 70%);transition:opacity .4s;}
-    .vc-info{position:absolute;bottom:0;left:0;right:0;padding:1.75rem;z-index:2;transform:translateY(8px);transition:transform .4s;}
+
+    /* Thumbnail layer */
+    .vc-thumb{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s;z-index:1;}
+    .vc:hover .vc-thumb{transform:scale(1.06);}
+
+    /* Overlay gradient */
+    .vc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,5,.96) 0%,rgba(5,5,5,.25) 45%,rgba(5,5,5,.1) 70%);z-index:2;}
+
+    /* Big play button in center */
+    .vc-playbtn{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);z-index:3;width:60px;height:60px;border:2px solid rgba(200,168,75,.7);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .35s;opacity:.75;}
+    .vc:hover .vc-playbtn{opacity:1;background:rgba(200,168,75,.15);border-color:var(--gold);transform:translate(-50%,-60%) scale(1.1);}
+    .vc-playbtn svg{margin-left:4px;}
+
+    /* Info at bottom */
+    .vc-info{position:absolute;bottom:0;left:0;right:0;padding:1.75rem;z-index:4;transform:translateY(8px);transition:transform .4s;}
     .vc:hover .vc-info{transform:translateY(0);}
-    .vc:hover iframe{transform:scale(1.1);pointer-events:auto;}
     .vc-n{font-family:var(--F);font-size:3.5rem;letter-spacing:.02em;color:rgba(200,168,75,.15);line-height:1;margin-bottom:.25rem;}
     .vc-t{font-family:var(--FB);font-size:clamp(.8rem,1.2vw,.95rem);font-weight:300;letter-spacing:.04em;color:var(--white);line-height:1.4;}
-    .vc-play{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--FB);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;opacity:0;transform:translateY(6px);transition:all .4s;}
-    .vc:hover .vc-play{opacity:1;transform:translateY(0);}
+    .vc-play-lbl{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--FB);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;opacity:0;transform:translateY(6px);transition:all .4s;}
+    .vc:hover .vc-play-lbl{opacity:1;transform:translateY(0);}
+
+    /* Active iframe state — replaces thumbnail */
+    .vc.playing .vc-thumb,
+    .vc.playing .vc-overlay,
+    .vc.playing .vc-playbtn,
+    .vc.playing .vc-play-lbl,
+    .vc.playing .vc-n{display:none;}
+    .vc.playing .vc-info{transform:none;background:linear-gradient(to top,rgba(5,5,5,.9),transparent);padding:.75rem 1rem;}
+    .vc iframe{position:absolute;inset:0;width:100%;height:100%;border:none;z-index:5;display:none;}
+    .vc.playing iframe{display:block;}
+
     .scrl-ind{padding:0 5rem;display:flex;align-items:center;gap:1.5rem;}
     .scrl-trk{flex:1;height:1px;background:rgba(200,168,75,.1);position:relative;}
     .scrl-prg{height:100%;background:var(--gold);width:0%;transition:width .1s;}
     .scrl-hint{font-family:var(--FB);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.5rem;}
     .scrl-ct{font-family:var(--FB);font-size:.8rem;letter-spacing:.15em;color:var(--muted);}
+
     #reel{padding:10rem 5rem;background:var(--dim);}
     .reel-in{display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center;}
     .reel-body{font-size:1.15rem;color:var(--muted);line-height:1.9;margin:2rem 0 2.5rem;}
@@ -122,12 +149,10 @@
     .rc.br{bottom:-4px;right:-4px;border-width:0 2px 2px 0;}
     .reel-tag{position:absolute;bottom:-1rem;left:-1rem;background:var(--gold);color:var(--black);font-family:var(--FB);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;padding:.5rem 1rem;z-index:4;}
 
-    /* ===== RATES OVERHAUL ===== */
     #rates{padding:10rem 5rem;position:relative;overflow:hidden;}
     #rates::before{content:'RATES';position:absolute;right:3rem;top:8rem;font-family:var(--F);font-size:12vw;color:rgba(200,168,75,.025);pointer-events:none;}
     .rates-intro{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:end;margin-bottom:5rem;}
     .rates-note{font-size:1.05rem;color:var(--muted);line-height:1.8;border-left:2px solid var(--gold);padding-left:1.5rem;}
-    /* Main packages grid: 4 across first row, 3 across second */
     .pkg-grid-top{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:2px;}
     .pkg-grid-bot{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:5rem;}
     .rc-card{background:var(--dim2);padding:3rem 2.5rem;position:relative;overflow:hidden;transition:background .3s,transform .3s;}
@@ -159,16 +184,12 @@
     .rc-card.feat .rc-btn{border-color:rgba(5,5,5,.25);color:var(--black);}
     .rc-card.feat .rc-btn:hover{background:var(--black);color:var(--gold);border-color:var(--black);}
     .rc-card.elite .rc-btn{border-color:var(--gold);color:var(--gold);}
-
-    /* ADDONS */
     .addons-section{margin-bottom:5rem;}
     .addons-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(200,168,75,.08);}
     .addon-item{background:var(--black);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;transition:background .3s;}
     .addon-item:hover{background:var(--dim2);}
     .addon-name{font-family:var(--FB);font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
     .addon-price{font-family:var(--F);font-size:1.8rem;color:var(--gold);}
-
-    /* SPECIAL BUNDLES */
     .bundles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:5rem;}
     .bundle-card{background:var(--dim2);padding:3rem 2.5rem;border-top:2px solid var(--gold);position:relative;overflow:hidden;transition:all .3s;}
     .bundle-card:hover{background:#101010;transform:translateY(-3px);}
@@ -179,8 +200,6 @@
     .bundle-feats{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:2rem;}
     .bundle-feats li{font-size:1rem;color:rgba(242,237,232,.5);display:flex;align-items:center;gap:.6rem;}
     .bundle-feats li::before{content:'→';color:var(--gold);font-size:.7rem;}
-
-    /* HOW IT WORKS */
     #how{padding:8rem 5rem;background:var(--dim);}
     .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:4rem;}
     .how-step{background:var(--black);padding:3rem 2.5rem;position:relative;overflow:hidden;transition:background .3s;}
@@ -190,22 +209,16 @@
     .step-num{font-family:var(--F);font-size:5rem;color:rgba(200,168,75,.1);line-height:1;margin-bottom:1rem;}
     .step-title{font-family:var(--F);font-size:1.8rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem;}
     .step-body{font-size:1rem;color:var(--muted);line-height:1.7;}
-
-    /* WHY VG */
     #why{padding:8rem 5rem;}
     .why-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:4rem;}
     .why-item{background:var(--dim2);padding:2.5rem 2rem;text-align:center;transition:all .3s;}
     .why-item:hover{background:#101010;transform:translateY(-4px);}
-    .why-icon{font-size:2rem;margin-bottom:1rem;}
+    .why-icon{font-size:1.5rem;margin-bottom:1rem;}
     .why-title{font-family:var(--F);font-size:1.4rem;letter-spacing:.04em;color:var(--white);margin-bottom:.5rem;}
     .why-body{font-size:.95rem;color:var(--muted);line-height:1.6;}
-
-    /* NOTES */
     .notes-bar{background:rgba(200,168,75,.04);border:1px solid rgba(200,168,75,.12);padding:2.5rem 5rem;display:flex;align-items:center;gap:4rem;flex-wrap:wrap;}
     .note-item{display:flex;align-items:center;gap:.75rem;font-family:var(--FB);font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
     .note-item::before{content:'⚠';color:var(--gold);}
-
-    /* CONTACT */
     #contact{padding:10rem 5rem;background:var(--dim);display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start;}
     .ct-tag{font-family:var(--F);font-size:clamp(3rem,5.5vw,5rem);letter-spacing:.04em;line-height:.92;margin-bottom:2.5rem;}
     .ct-tag .it{font-family:var(--FB);font-style:italic;font-size:.4em;letter-spacing:.15em;color:var(--gold);display:block;margin-bottom:.5rem;}
@@ -278,14 +291,12 @@
 <body>
 <div id="cur"></div>
 <div id="cur-ring"></div>
-<div id="cur-label">Play</div>
+<div id="cur-label"></div>
 <div id="spotlight"></div>
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#home" class="nav-logo">
-    VG Creative<sup>®</sup>
-  </a>
+  <a href="#home" class="nav-logo">VG Creative<sup>®</sup></a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#home" data-num="01">Home</a></li>
     <li><a href="#portfolio" data-num="02">Work</a></li>
@@ -358,33 +369,279 @@
   </div>
   <div class="port-wrap">
     <div class="port-track" id="pTrack">
-      <div class="vc xl"><iframe src="https://www.youtube.com/embed/f2qbH7FtZp8" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">01</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">RAYO KE - FOR YOU (OFFICIAL VIDEO)</div></div></div>
-      <div class="vc sm"><iframe src="https://www.youtube.com/embed/NKfbyPKZgVI" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">01</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Amateur Moves — Metro Stunna ft Virusi Mbaya</div></div></div>
-      <div class="vc xl"><iframe src="https://www.youtube.com/embed/R4lqAjjTC40" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">02</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">RAYO KE MISTAKE (OFFICIAL MUSIC VIDEO)</div></div></div>
-      <div class="vc sm"><iframe src="https://www.youtube.com/embed/Va1t6fob00Q" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">02</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Metro Stunna — Shhh ft Kaiza6</div></div></div>
-      <div class="vc sm"><iframe src="https://www.youtube.com/embed/EOpASUt26iQ" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">02</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Metro Stunna — Shhh ft Kaiza6</div></div></div>
-      <div class="vc xl"><iframe src="https://www.youtube.com/embed/u4IZ0foQ52A" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">03</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Rayo KE — Tamasha (Official Video)</div></div></div>
-      <div class="vc sm"><iframe src="https://www.youtube.com/embed/36h91UqRZeA" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">04</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Rayo KE — Cheap</div></div></div>
-      <div class="vc xl"><iframe src="https://www.youtube.com/embed/afe55nNr4OM" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">05</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Metro Stunna × Mastar VK — Badman Crazy II</div></div></div>
-      <div class="vc lg"><iframe src="https://www.youtube.com/embed/vL1WWAcw6SM" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">06</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Mastar VK — Shagla Proper ft Metro Stunna</div></div></div>
-      <div class="vc sm"><iframe src="https://www.youtube.com/embed/1HQg5AHC5tk" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">07</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Amaru — Back Biters</div></div></div>
-      <div class="vc lg"><iframe src="https://www.youtube.com/embed/pcWzT3ZW3s4" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">08</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Metro Stunna — Benelli</div></div></div>
-      <div class="vc sm"><iframe src="https://www.youtube.com/embed/vHbjIJHruxs" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">09</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Ebola Mkuu — Babaa ft Raps254</div></div></div>
-      <div class="vc xl"><iframe src="https://www.youtube.com/embed/HhrwBmER4Ek" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">10</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Kaiza6 — Doom ft Mad Bullet (Dir. Vinty)</div></div></div>
-      <div class="vc lg"><iframe src="https://www.youtube.com/embed/XSxpeSG0XCA" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">11</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Metro Stunna — Money on My Head ft Kaiza6</div></div></div>
-      <div class="vc sm"><iframe src="https://www.youtube.com/embed/Wcx6DTnctQc" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">12</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Metro Stunna — Gonga (Visualizer)</div></div></div>
-      <div class="vc lg"><iframe src="https://www.youtube.com/embed/WPHpy1cd0JA" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">13</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Metro Stunna — Chopsticks</div></div></div>
-      <div class="vc sm"><iframe src="https://www.youtube.com/embed/Y16KDSWQt9c" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">14</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Wayahudi — Atis Alert</div></div></div>
-      <div class="vc xl"><iframe src="https://www.youtube.com/embed/zp9VH6kBjts" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">15</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Get Io Doh (Music Video)</div></div></div>
-      <div class="vc lg"><iframe src="https://www.youtube.com/embed/sIKG-cT0tBY" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">16</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Wizzoh33 — Sijai Tense (Visualizer)</div></div></div>
-      <div class="vc sm"><iframe src="https://www.youtube.com/embed/eo1xX_-asCk" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">17</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Wizzoh33 — Madem wa Nairobi</div></div></div>
-      <div class="vc lg"><iframe src="https://www.youtube.com/embed/_YZ9xJqEW1s" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">18</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Edu Young × K Druu — Sirudi Home</div></div></div>
-      <div class="vc sm"><iframe src="https://www.youtube.com/embed/YvK7ntdXgzo" allowfullscreen loading="lazy"></iframe><div class="vc-info"><div class="vc-n">19</div><div class="vc-play"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div><div class="vc-t">Hopestar — Amezaliwa Mwana</div></div></div>
+
+      <!-- Each .vc card: thumbnail + click = plays iframe -->
+      <!-- Format: data-vid="YOUTUBE_ID" -->
+
+      <div class="vc xl" data-vid="f2qbH7FtZp8">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/f2qbH7FtZp8/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">01</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">RAYO KE - FOR YOU (OFFICIAL VIDEO)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/f2qbH7FtZp8?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="NKfbyPKZgVI">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/NKfbyPKZgVI/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">02</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Amateur Moves — Metro Stunna ft Virusi Mbaya</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/NKfbyPKZgVI?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc xl" data-vid="R4lqAjjTC40">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/R4lqAjjTC40/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">03</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">RAYO KE MISTAKE (OFFICIAL MUSIC VIDEO)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/R4lqAjjTC40?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="Va1t6fob00Q">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/Va1t6fob00Q/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">04</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna — Shhh ft Kaiza6</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/Va1t6fob00Q?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="EOpASUt26iQ">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/EOpASUt26iQ/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">05</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna — Shhh ft Kaiza6 (Alt)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/EOpASUt26iQ?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc xl" data-vid="u4IZ0foQ52A">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/u4IZ0foQ52A/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">06</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Rayo KE — Tamasha (Official Video)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/u4IZ0foQ52A?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="36h91UqRZeA">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/36h91UqRZeA/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">07</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Rayo KE — Cheap</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/36h91UqRZeA?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc xl" data-vid="afe55nNr4OM">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/afe55nNr4OM/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">08</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna × Mastar VK — Badman Crazy II</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/afe55nNr4OM?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc lg" data-vid="vL1WWAcw6SM">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/vL1WWAcw6SM/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">09</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Mastar VK — Shagla Proper ft Metro Stunna</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/vL1WWAcw6SM?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="1HQg5AHC5tk">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/1HQg5AHC5tk/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">10</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Amaru — Back Biters</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/1HQg5AHC5tk?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc lg" data-vid="pcWzT3ZW3s4">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/pcWzT3ZW3s4/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">11</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna — Benelli</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/pcWzT3ZW3s4?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="vHbjIJHruxs">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/vHbjIJHruxs/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">12</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Ebola Mkuu — Babaa ft Raps254</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/vHbjIJHruxs?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc xl" data-vid="HhrwBmER4Ek">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/HhrwBmER4Ek/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">13</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Kaiza6 — Doom ft Mad Bullet (Dir. Vinty)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/HhrwBmER4Ek?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc lg" data-vid="XSxpeSG0XCA">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/XSxpeSG0XCA/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">14</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna — Money on My Head ft Kaiza6</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/XSxpeSG0XCA?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="Wcx6DTnctQc">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/Wcx6DTnctQc/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">15</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna — Gonga (Visualizer)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/Wcx6DTnctQc?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc lg" data-vid="WPHpy1cd0JA">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/WPHpy1cd0JA/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">16</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna — Chopsticks</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/WPHpy1cd0JA?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="Y16KDSWQt9c">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/Y16KDSWQt9c/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">17</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Wayahudi — Atis Alert</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/Y16KDSWQt9c?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc xl" data-vid="zp9VH6kBjts">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/zp9VH6kBjts/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">18</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Get Io Doh (Music Video)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/zp9VH6kBjts?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc lg" data-vid="sIKG-cT0tBY">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/sIKG-cT0tBY/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">19</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Wizzoh33 — Sijai Tense (Visualizer)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/sIKG-cT0tBY?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="eo1xX_-asCk">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/eo1xX_-asCk/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">20</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Wizzoh33 — Madem wa Nairobi</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/eo1xX_-asCk?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc lg" data-vid="_YZ9xJqEW1s">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/_YZ9xJqEW1s/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">21</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Edu Young × K Druu — Sirudi Home</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/_YZ9xJqEW1s?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="YvK7ntdXgzo">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/YvK7ntdXgzo/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">22</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Hopestar — Amezaliwa Mwana</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/YvK7ntdXgzo?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
     </div>
     <div class="scrl-ind">
       <div class="scrl-hint"><svg width="14" height="10" viewBox="0 0 14 10"><path d="M8 1l5 4-5 4M1 5h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg> Drag to explore</div>
       <div class="scrl-trk"><div class="scrl-prg" id="sPrg"></div></div>
-      <span class="scrl-ct">19 films</span>
+      <span class="scrl-ct">22 videos</span>
     </div>
   </div>
 </section>
@@ -428,9 +685,7 @@
     </div>
   </div>
 
-  <!-- TOP ROW: 4 packages -->
   <div class="pkg-grid-top">
-    <!-- Street Visual -->
     <div class="rc-card reveal">
       <p class="rc-tag">Entry Level</p>
       <h3 class="rc-name">Street Visual</h3>
@@ -446,7 +701,6 @@
       </ul>
       <button class="rc-btn" onclick="selectPkg('Street Visual — KES 10,000')">Book This Package</button>
     </div>
-    <!-- One Take -->
     <div class="rc-card reveal" style="transition-delay:.05s">
       <p class="rc-tag">Starter</p>
       <h3 class="rc-name">One Take</h3>
@@ -462,7 +716,6 @@
       </ul>
       <button class="rc-btn" onclick="selectPkg('One Take — KES 15,000')">Book This Package</button>
     </div>
-    <!-- Performance Pack — FEATURED -->
     <div class="rc-card feat reveal" style="transition-delay:.1s">
       <p class="rc-tag">Most Popular</p>
       <h3 class="rc-name">Performance Pack</h3>
@@ -479,7 +732,6 @@
       </ul>
       <button class="rc-btn" onclick="selectPkg('Performance Pack — KES 20,000')">Book This Package</button>
     </div>
-    <!-- Director's Cut -->
     <div class="rc-card reveal" style="transition-delay:.15s">
       <p class="rc-tag">Story-Driven</p>
       <h3 class="rc-name">Director's Cut</h3>
@@ -494,13 +746,11 @@
         <li>Advanced edit + color</li>
         <li>2–3 Social clips</li>
       </ul>
-      <button class="rc-btn" onclick="selectPkg('Director's Cut — KES 30,000')">Book This Package</button>
+      <button class="rc-btn" onclick="selectPkg('Director\'s Cut — KES 30,000')">Book This Package</button>
     </div>
   </div>
 
-  <!-- BOTTOM ROW: 3 packages -->
   <div class="pkg-grid-bot">
-    <!-- Cinema Experience -->
     <div class="rc-card reveal">
       <p class="rc-tag">Industry Level</p>
       <h3 class="rc-name">Cinema Experience</h3>
@@ -517,7 +767,6 @@
       </ul>
       <button class="rc-btn" onclick="selectPkg('Cinema Experience — KES 45,000')">Book This Package</button>
     </div>
-    <!-- Visual Masterpiece -->
     <div class="rc-card reveal" style="transition-delay:.1s">
       <p class="rc-tag">Premium</p>
       <h3 class="rc-name">Visual Masterpiece</h3>
@@ -535,7 +784,6 @@
       </ul>
       <button class="rc-btn" onclick="selectPkg('Visual Masterpiece — KES 60,000')">Book This Package</button>
     </div>
-    <!-- Elite -->
     <div class="rc-card elite reveal" style="transition-delay:.2s">
       <p class="rc-tag">Mainstream</p>
       <h3 class="rc-name">Elite Artist</h3>
@@ -555,7 +803,6 @@
     </div>
   </div>
 
-  <!-- ADD-ONS -->
   <div class="addons-section reveal">
     <div style="margin-bottom:2rem;">
       <p class="sec-lbl">Customize Your Shoot</p>
@@ -574,7 +821,6 @@
     </div>
   </div>
 
-  <!-- SPECIAL BUNDLES -->
   <div style="margin-bottom:2rem;" class="reveal">
     <p class="sec-lbl">Special Packages</p>
     <h3 class="sec-ttl" style="font-size:clamp(2rem,4vw,3.5rem);">Bundles &amp; Plans</h3>
@@ -621,7 +867,6 @@
     </div>
   </div>
 
-  <!-- NOTES -->
   <div class="notes-bar reveal">
     <div class="note-item">50% deposit to secure booking</div>
     <div class="note-item">Balance before final delivery</div>
@@ -751,9 +996,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="ft-logo">
-    VG Creative<sup>®</sup>
-  </div>
+  <div class="ft-logo">VG Creative<sup>®</sup></div>
   <p class="ft-copy">© 2026 VG Creative · Nairobi, Kenya · All Rights Reserved</p>
   <div class="ft-soc">
     <a href="https://instagram.com/gshots.ke" target="_blank" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
@@ -763,29 +1006,58 @@
 </footer>
 
 <script>
+/* ── Custom cursor ── */
 const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring'),lbl=document.getElementById('cur-label'),spot=document.getElementById('spotlight');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';spot.style.setProperty('--mx',mx+'px');spot.style.setProperty('--my',my+'px');});
 (function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';lbl.style.left=rx+'px';lbl.style.top=ry+'px';requestAnimationFrame(anim);})();
 document.querySelectorAll('.vc').forEach(c=>{c.addEventListener('mouseenter',()=>document.body.classList.add('cplay'));c.addEventListener('mouseleave',()=>document.body.classList.remove('cplay'));});
+
+/* ── Nav scroll ── */
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>nav.classList.toggle('stuck',scrollY>80));
 const hbg=document.getElementById('hbg'),nl=document.getElementById('navLinks');
 hbg.addEventListener('click',()=>nl.classList.toggle('open'));
 nl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nl.classList.remove('open')));
-const obs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});},{threshold:.1});
+
+/* ── Reveal on scroll ── */
+const obs=new IntersectionObserver((entries)=>{entries.forEach((e)=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.1});
 document.querySelectorAll('.reveal,.reveal-l,.stat').forEach(el=>obs.observe(el));
+
+/* ── Stat counters ── */
 function animCount(el,target){let st=null;function step(ts){if(!st)st=ts;const p=Math.min((ts-st)/1800,1),ease=1-Math.pow(1-p,4);el.textContent=Math.floor(ease*target);if(p<1)requestAnimationFrame(step);else el.textContent=target+'+';}requestAnimationFrame(step);}
 const sObs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){animCount(e.target.querySelector('.stat-num'),+e.target.querySelector('.stat-num').dataset.target);sObs.unobserve(e.target);}});},{threshold:.5});
 document.querySelectorAll('.stat').forEach(s=>sObs.observe(s));
+
+/* ── Portfolio drag scroll ── */
 const pt=document.getElementById('pTrack'),sp=document.getElementById('sPrg');
-let drag=false,sx,sl;
-pt.addEventListener('mousedown',e=>{drag=true;sx=e.pageX-pt.offsetLeft;sl=pt.scrollLeft;});
+let drag=false,sx,sl,didDrag=false;
+pt.addEventListener('mousedown',e=>{drag=true;didDrag=false;sx=e.pageX-pt.offsetLeft;sl=pt.scrollLeft;});
 document.addEventListener('mouseup',()=>drag=false);
-pt.addEventListener('mousemove',e=>{if(!drag)return;e.preventDefault();pt.scrollLeft=sl-(e.pageX-pt.offsetLeft-sx)*1.2;});
+pt.addEventListener('mousemove',e=>{if(!drag)return;e.preventDefault();const dx=e.pageX-pt.offsetLeft-sx;if(Math.abs(dx)>4)didDrag=true;pt.scrollLeft=sl-dx*1.2;});
 pt.addEventListener('scroll',()=>{const m=pt.scrollWidth-pt.clientWidth;sp.style.width=(pt.scrollLeft/m*100)+'%';});
-let tsx,tsl;
-pt.addEventListener('touchmove',e=>{pt.scrollLeft=tsl-(e.touches[0].pageX-tsx)*1.1;},{passive:true});
+
+/* ── CLICK-TO-PLAY fix ──
+   On click: stop any other playing card, inject src into iframe, add .playing class */
+document.querySelectorAll('.vc').forEach(card=>{
+  card.addEventListener('click',function(e){
+    if(didDrag){didDrag=false;return;}
+    const wasPlaying=this.classList.contains('playing');
+    /* Stop all other cards */
+    document.querySelectorAll('.vc.playing').forEach(c=>{
+      c.classList.remove('playing');
+      const f=c.querySelector('iframe');
+      f.src='';
+    });
+    if(!wasPlaying){
+      this.classList.add('playing');
+      const f=this.querySelector('iframe');
+      f.src=f.dataset.src;
+    }
+  });
+});
+
+/* ── Contact helpers ── */
 function selectPkg(pkg){document.getElementById('fS').value=pkg;document.getElementById('contact').scrollIntoView({behavior:'smooth'});}
 function sendWA(){
   const n=document.getElementById('fN').value.trim(),p=document.getElementById('fP').value.trim(),s=document.getElementById('fS').value,d=document.getElementById('fD').value.trim();
@@ -800,4 +1072,4 @@ function sendWA(){
 }
 </script>
 </body>
-</html>z
+</html>
