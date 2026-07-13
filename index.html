@@ -1,381 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>VG Creative — Nairobi Videography Studio</title>
-<meta name="description" content="VG Creative — Nairobi videography studio directed by Vinty and G_Shots. Music videos, visualizers, commercials and wedding films."/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,500;0,600;1,300&family=Barlow:wght@300;400;500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --void:#080807;
-  --panel:#0d0d0c;
-  --panel2:#131311;
-  --paper:#ece6d9;
-  --amber:#cc9a45;
-  --amber-lt:#eec06a;
-  --rec:#ff4433;
-  --line:rgba(236,230,217,.1);
-  --line-amber:rgba(204,154,69,.3);
-  --muted:rgba(236,230,217,.42);
-  --FD:'Bebas Neue',sans-serif;
-  --FL:'Barlow Condensed',sans-serif;
-  --FB:'Barlow',sans-serif;
-  --FM:'JetBrains Mono',monospace;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{background:var(--void);color:var(--paper);font-family:var(--FB);font-weight:300;overflow-x:hidden;cursor:none;}
-body::before{content:'';position:fixed;inset:0;z-index:40;pointer-events:none;opacity:.03;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size:200px 200px;animation:grain .5s steps(1) infinite;}
-@keyframes grain{0%{background-position:0% 0%}25%{background-position:100% 50%}50%{background-position:50% 100%}75%{background-position:0% 75%}}
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VG Creative — Nairobi's Premier Videographers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,600;1,300&family=Barlow:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:#050505; --white:#f2ede8; --gold:#c8a84b; --gold2:#e5c96a;
+      --dim:#0e0e0e; --dim2:#141414; --muted:rgba(242,237,232,.35);
+      --F:'Bebas Neue',sans-serif; --FB:'Barlow Condensed',sans-serif; --FN:'Barlow',sans-serif;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--black);color:var(--white);font-family:var(--FN);font-weight:300;overflow-x:hidden;cursor:none;}
+    body::before{content:'';position:fixed;inset:0;z-index:9990;pointer-events:none;opacity:.035;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:200px 200px;animation:grain .4s steps(1) infinite;}
+    @keyframes grain{0%{background-position:0% 0%}25%{background-position:100% 50%}50%{background-position:50% 100%}75%{background-position:0% 75%}}
+    #cur{width:10px;height:10px;background:var(--gold);border-radius:50%;position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:difference;}
+    #cur-ring{width:44px;height:44px;border:1px solid rgba(200,168,75,.5);border-radius:50%;position:fixed;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);transition:width .35s,height .35s,opacity .3s;}
+    #cur-label{position:fixed;z-index:9997;pointer-events:none;font-family:var(--FB);font-size:.8rem;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;opacity:0;transition:opacity .3s;transform:translate(-50%,28px);white-space:nowrap;}
+    body.cplay #cur{width:70px;height:70px;background:rgba(200,168,75,.12);}
+    body.cplay #cur-ring{opacity:0;}
+    body.cplay #cur-label{opacity:1;}
+    #spotlight{position:fixed;inset:0;z-index:1;pointer-events:none;
+      background:radial-gradient(circle 380px at var(--mx,50%) var(--my,50%),rgba(200,168,75,.055) 0%,transparent 70%);}
+    nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1.5rem 5rem;display:flex;align-items:center;justify-content:space-between;transition:all .4s;}
+    nav.stuck{padding:1rem 5rem;background:rgba(5,5,5,.96);border-bottom:1px solid rgba(200,168,75,.08);backdrop-filter:blur(12px);}
+    .nav-logo{font-family:var(--F);font-size:2rem;letter-spacing:.12em;color:var(--gold);text-decoration:none;}
+    .nav-logo sup{font-size:.4em;color:rgba(200,168,75,.4);margin-left:.1rem;}
+    .nav-links{display:flex;gap:3rem;list-style:none;}
+    .nav-links a{font-family:var(--FB);font-size:.9rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;position:relative;}
+    .nav-links a[data-num]::before{content:attr(data-num);position:absolute;top:-14px;left:0;font-size:.5rem;letter-spacing:.15em;color:var(--gold);opacity:.5;}
+    .nav-links a:hover{color:var(--gold);}
+    .nav-cta{font-family:var(--FB);font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;padding:.65rem 1.5rem;border:1px solid var(--gold);color:var(--gold);text-decoration:none;transition:all .3s;}
+    .nav-cta:hover{background:var(--gold);color:var(--black);}
+    .hbg{display:none;flex-direction:column;gap:6px;background:none;border:none;cursor:pointer;z-index:600;}
+    .hbg span{display:block;width:26px;height:1px;background:var(--white);transition:all .3s;}
+    #home{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:0 5rem 5rem;overflow:hidden;}
+    .h-bgtext{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);font-family:var(--F);font-size:clamp(9rem,20vw,20rem);letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1px rgba(200,168,75,.055);white-space:nowrap;pointer-events:none;user-select:none;animation:bgDrift 18s ease-in-out infinite alternate;}
+    @keyframes bgDrift{from{transform:translate(-50%,-52%) skewX(-1deg)}to{transform:translate(-50%,-48%) skewX(1deg)}}
+    .h-line{position:absolute;background:var(--gold);opacity:.15;}
+    .h-line-a{width:1px;height:55%;top:0;left:31%;}
+    .h-line-b{width:1px;height:38%;bottom:0;right:19%;}
+    .h-line-c{width:32%;height:1px;top:42%;right:0;}
+    .h-eye{font-family:var(--FB);font-size:.9rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;opacity:0;animation:slR .8s .2s forwards;}
+    .h-eye::before{content:'';width:40px;height:1px;background:var(--gold);}
+    .h-title{font-family:var(--F);font-size:clamp(5rem,13vw,13rem);line-height:.88;letter-spacing:.02em;color:var(--white);opacity:0;animation:slR .9s .4s forwards;}
+    .h-title .out{-webkit-text-stroke:2px var(--gold);color:transparent;}
+    .h-title .sm{font-family:var(--FB);font-size:.12em;letter-spacing:.3em;color:var(--gold);vertical-align:middle;font-style:italic;}
+    .h-bot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:2rem;opacity:0;animation:fadeUp .8s .8s forwards;}
+    .h-desc{font-size:clamp(1rem,1.3vw,1.1rem);color:var(--muted);line-height:1.8;max-width:320px;}
+    .h-acts{display:flex;flex-direction:column;align-items:flex-end;gap:1rem;}
+    .btn-p{display:inline-flex;align-items:center;gap:.75rem;padding:1rem 2.5rem;background:var(--gold);color:var(--black);font-family:var(--FB);font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;text-decoration:none;transition:all .3s;border:none;cursor:pointer;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));}
+    .btn-p:hover{background:var(--gold2);transform:translateY(-2px);}
+    .btn-g{display:inline-flex;align-items:center;gap:.75rem;padding:1rem 2.5rem;background:none;color:var(--white);font-family:var(--FB);font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(242,237,232,.15);transition:all .3s;cursor:pointer;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));}
+    .btn-g:hover{border-color:var(--gold);color:var(--gold);}
+    .h-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;font-family:var(--FB);font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(242,237,232,.2);opacity:0;animation:fadeUp .8s 1.2s forwards;}
+    .h-tick{width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);animation:tick 2s ease-in-out infinite;}
+    @keyframes tick{0%,100%{transform:scaleY(1);opacity:.4}50%{transform:scaleY(1.3);opacity:1}}
+    .mq-wrap{border-top:1px solid rgba(200,168,75,.15);border-bottom:1px solid rgba(200,168,75,.15);overflow:hidden;padding:.7rem 0;background:var(--dim);}
+    .mq-track{display:inline-flex;gap:2.5rem;animation:mq 25s linear infinite;white-space:nowrap;}
+    .mq-wrap:hover .mq-track{animation-play-state:paused;}
+    .mq-track .it{font-family:var(--FB);font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.5);}
+    .mq-track .dt{color:var(--gold);}
+    @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid rgba(200,168,75,.08);}
+    .stat{padding:3.5rem 4rem;border-right:1px solid rgba(200,168,75,.08);position:relative;overflow:hidden;}
+    .stat:last-child{border-right:none;}
+    .stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),transparent);transform:scaleX(0);transform-origin:left;transition:transform .7s;}
+    .stat.visible::before{transform:scaleX(1);}
+    .stat-num{font-family:var(--F);font-size:4.5rem;letter-spacing:.02em;color:var(--gold);line-height:1;}
+    .stat-label{font-family:var(--FB);font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:.5rem;}
 
-/* ===== cursor — viewfinder reticle ===== */
-#cur-dot{width:5px;height:5px;background:var(--amber-lt);border-radius:50%;position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);}
-#cur-frame{width:40px;height:40px;position:fixed;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);transition:width .3s,height .3s;}
-.cf{position:absolute;width:10px;height:10px;border-color:var(--amber);border-style:solid;opacity:.5;transition:opacity .3s;}
-.cf-tl{top:0;left:0;border-width:1.5px 0 0 1.5px;}
-.cf-tr{top:0;right:0;border-width:1.5px 1.5px 0 0;}
-.cf-bl{bottom:0;left:0;border-width:0 0 1.5px 1.5px;}
-.cf-br{bottom:0;right:0;border-width:0 1.5px 1.5px 0;}
-#cur-lbl{position:fixed;z-index:9997;pointer-events:none;font-family:var(--FM);font-size:.62rem;letter-spacing:.18em;color:var(--amber-lt);text-transform:uppercase;opacity:0;transition:opacity .25s;transform:translate(-50%,28px);white-space:nowrap;}
-body.cur-active #cur-frame{width:66px;height:66px;}
-body.cur-active #cur-frame .cf{opacity:1;}
-body.cur-active #cur-lbl{opacity:1;}
-body.cur-active #cur-dot{opacity:0;}
-#spot{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle 400px at var(--mx,50%) var(--my,50%),rgba(204,154,69,.05) 0%,transparent 70%);}
+    /* ===== PORTFOLIO — CLICK TO PLAY FIX ===== */
+    #portfolio{padding:7rem 0 0;}
+    .sec-hdr{padding:0 5rem;display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3rem;}
+    .sec-lbl{font-family:var(--FB);font-size:.85rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem;display:flex;align-items:center;gap:.75rem;}
+    .sec-lbl::before{content:'';width:30px;height:1px;background:var(--gold);}
+    .sec-ttl{font-family:var(--F);font-size:clamp(3rem,6vw,5.5rem);letter-spacing:.04em;line-height:.9;}
+    .view-all{font-family:var(--FB);font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:gap .3s;}
+    .view-all:hover{gap:1rem;}
+    .port-wrap{padding-bottom:5rem;}
+    .port-track{display:flex;gap:2px;overflow-x:auto;padding:0 5rem 2rem;scrollbar-width:none;cursor:grab;}
+    .port-track::-webkit-scrollbar{display:none;}
+    .port-track:active{cursor:grabbing;}
 
-/* ===== nav ===== */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1.4rem 5rem;display:flex;align-items:center;justify-content:space-between;transition:all .35s;}
-nav.stuck{padding:.9rem 5rem;background:rgba(8,8,7,.95);border-bottom:1px solid var(--line);backdrop-filter:blur(10px);}
-.nav-logo{font-family:var(--FD);font-size:1.85rem;letter-spacing:.06em;color:var(--paper);text-decoration:none;display:inline-flex;align-items:baseline;}
-.nav-logo em{font-style:normal;color:var(--amber);}
-.nav-logo sup{font-size:.32em;color:rgba(204,154,69,.4);margin-left:.15em;}
-.nav-links{display:flex;gap:2.5rem;list-style:none;}
-.nav-links a{font-family:var(--FL);font-size:.87rem;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);text-decoration:none;position:relative;transition:color .2s;}
-.nav-links a::before{content:attr(data-num);position:absolute;top:-13px;left:0;font-family:var(--FM);font-size:.55rem;letter-spacing:.08em;color:var(--amber);opacity:.6;}
-.nav-links a:hover{color:var(--paper);}
-.nav-cta{font-family:var(--FL);font-size:.8rem;letter-spacing:.17em;text-transform:uppercase;padding:.6rem 1.4rem;border:1px solid var(--amber);color:var(--amber);text-decoration:none;transition:all .25s;}
-.nav-cta:hover{background:var(--amber);color:var(--void);}
-.hbg{display:none;flex-direction:column;gap:6px;background:none;border:none;cursor:pointer;z-index:600;}
-.hbg span{display:block;width:24px;height:1px;background:var(--paper);}
+    /* Video card — thumbnail + click-to-play */
+    .vc{flex:0 0 auto;position:relative;overflow:hidden;background:#0a0a0a;}
+    .vc.sm{width:280px;height:420px;}
+    .vc.lg{width:500px;height:420px;}
+    .vc.xl{width:680px;height:420px;}
 
-/* ===== hero ===== */
-#home{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:0 5rem 4.5rem;overflow:hidden;}
-.h-bgtext{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);font-family:var(--FD);font-size:clamp(8rem,19vw,19rem);color:transparent;-webkit-text-stroke:1px rgba(204,154,69,.05);white-space:nowrap;pointer-events:none;user-select:none;animation:bgDrift 20s ease-in-out infinite alternate;}
-@keyframes bgDrift{from{transform:translate(-50%,-52%) skewX(-1deg)}to{transform:translate(-50%,-48%) skewX(1deg)}}
-.vf-frame span{position:absolute;width:22px;height:22px;border-color:rgba(204,154,69,.4);border-style:solid;z-index:2;}
-.vf-tl{top:2.1rem;left:2.1rem;border-width:1px 0 0 1px;}
-.vf-tr{top:2.1rem;right:2.1rem;border-width:1px 1px 0 0;}
-.vf-bl{bottom:2.1rem;left:2.1rem;border-width:0 0 1px 1px;}
-.vf-br{bottom:2.1rem;right:2.1rem;border-width:0 1px 1px 0;}
-.hud{position:absolute;z-index:2;font-family:var(--FM);font-size:.72rem;letter-spacing:.06em;color:rgba(236,230,217,.55);line-height:1.6;}
-.hud b{color:var(--amber-lt);font-weight:500;}
-.hud-tl{top:2.6rem;left:2.9rem;display:flex;align-items:center;gap:.55rem;}
-.rec-dot{width:7px;height:7px;border-radius:50%;background:var(--rec);animation:blink 1.1s steps(1) infinite;flex-shrink:0;}
-@keyframes blink{50%{opacity:.15}}
-.hud-tr{top:2.6rem;right:2.9rem;text-align:right;}
-.hud-bl{bottom:11.5rem;left:2.9rem;}
-.hud-br{bottom:11.5rem;right:2.9rem;text-align:right;}
-.h-eye{font-family:var(--FL);font-size:.85rem;letter-spacing:.3em;text-transform:uppercase;color:var(--amber);margin-bottom:1.3rem;display:flex;align-items:center;gap:1rem;opacity:0;animation:slR .8s .2s forwards;}
-.h-eye::before{content:'';width:36px;height:1px;background:var(--amber);}
-.h-title{font-family:var(--FD);font-size:clamp(4.5rem,12vw,12rem);line-height:.86;letter-spacing:.02em;color:var(--paper);opacity:0;animation:slR .9s .4s forwards;position:relative;z-index:2;}
-.h-title .out{-webkit-text-stroke:2px var(--amber);color:transparent;}
-.h-title .sm{font-family:var(--FL);font-size:.12em;letter-spacing:.3em;color:var(--amber);vertical-align:middle;font-style:italic;}
-.h-bot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:2rem;opacity:0;animation:fadeUp .8s .8s forwards;position:relative;z-index:2;gap:2rem;}
-.h-desc{font-size:clamp(1rem,1.3vw,1.1rem);color:var(--muted);line-height:1.8;max-width:320px;}
-.h-acts{display:flex;flex-direction:column;align-items:flex-end;gap:1rem;flex-shrink:0;}
-.btn-p{display:inline-flex;align-items:center;gap:.7rem;padding:1rem 2.4rem;background:var(--amber);color:var(--void);font-family:var(--FL);font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;transition:all .3s;border:none;cursor:none;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));}
-.btn-p:hover{background:var(--amber-lt);transform:translateY(-2px);}
-.btn-g{display:inline-flex;align-items:center;gap:.7rem;padding:1rem 2.4rem;background:none;color:var(--paper);font-family:var(--FL);font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(236,230,217,.15);transition:all .3s;cursor:none;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));}
-.btn-g:hover{border-color:var(--amber);color:var(--amber);}
-.h-scroll{position:absolute;bottom:2.3rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;font-family:var(--FM);font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(236,230,217,.2);opacity:0;animation:fadeUp .8s 1.2s forwards;z-index:2;}
-.h-tick{width:1px;height:56px;background:linear-gradient(to bottom,var(--amber),transparent);animation:tick 2s ease-in-out infinite;}
-@keyframes tick{0%,100%{transform:scaleY(1);opacity:.4}50%{transform:scaleY(1.3);opacity:1}}
+    /* Thumbnail layer */
+    .vc-thumb{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s;z-index:1;}
+    .vc:hover .vc-thumb{transform:scale(1.06);}
 
-/* ===== marquee ===== */
-.mq-wrap{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;padding:.65rem 0;background:var(--panel);}
-.mq-track{display:inline-flex;gap:2.2rem;animation:mq 26s linear infinite;white-space:nowrap;}
-.mq-wrap:hover .mq-track{animation-play-state:paused;}
-.mq-track .it{font-family:var(--FM);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(204,154,69,.55);}
-.mq-track .dt{color:var(--rec);}
-@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    /* Overlay gradient */
+    .vc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,5,.96) 0%,rgba(5,5,5,.25) 45%,rgba(5,5,5,.1) 70%);z-index:2;}
 
-/* ===== stats ===== */
-.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line);}
-.stat{padding:3.2rem 3.5rem;border-right:1px solid var(--line);position:relative;overflow:hidden;}
-.stat:last-child{border-right:none;}
-.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--amber),transparent);transform:scaleX(0);transform-origin:left;transition:transform .7s;}
-.stat.visible::before{transform:scaleX(1);}
-.stat-num{font-family:var(--FD);font-size:4.2rem;letter-spacing:.02em;color:var(--amber);line-height:1;font-variant-numeric:tabular-nums;}
-.stat-label{font-family:var(--FM);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.55rem;}
-.stat-label::before{content:'// ';color:var(--amber);}
+    /* Big play button in center */
+    .vc-playbtn{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);z-index:3;width:60px;height:60px;border:2px solid rgba(200,168,75,.7);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .35s;opacity:.75;}
+    .vc:hover .vc-playbtn{opacity:1;background:rgba(200,168,75,.15);border-color:var(--gold);transform:translate(-50%,-60%) scale(1.1);}
+    .vc-playbtn svg{margin-left:4px;}
 
-/* ===== portfolio ===== */
-#portfolio{padding:7rem 0 0;}
-.sec-hdr{padding:0 5rem;display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3rem;}
-.sec-lbl{font-family:var(--FM);font-size:.75rem;letter-spacing:.28em;text-transform:uppercase;color:var(--amber);margin-bottom:.75rem;display:flex;align-items:center;gap:.75rem;}
-.sec-lbl::before{content:'';width:28px;height:1px;background:var(--amber);}
-.sec-ttl{font-family:var(--FD);font-size:clamp(3rem,6vw,5.5rem);letter-spacing:.03em;line-height:.9;}
-.view-all{font-family:var(--FL);font-size:.85rem;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:gap .3s;}
-.view-all:hover{gap:1rem;}
-.port-wrap{padding-bottom:5rem;}
-.port-track{display:flex;gap:2px;overflow-x:auto;padding:0 5rem 2rem;scrollbar-width:none;cursor:grab;}
-.port-track::-webkit-scrollbar{display:none;}
-.port-track:active{cursor:grabbing;}
+    /* Info at bottom */
+    .vc-info{position:absolute;bottom:0;left:0;right:0;padding:1.75rem;z-index:4;transform:translateY(8px);transition:transform .4s;}
+    .vc:hover .vc-info{transform:translateY(0);}
+    .vc-n{font-family:var(--F);font-size:3.5rem;letter-spacing:.02em;color:rgba(200,168,75,.15);line-height:1;margin-bottom:.25rem;}
+    .vc-t{font-family:var(--FB);font-size:clamp(.8rem,1.2vw,.95rem);font-weight:300;letter-spacing:.04em;color:var(--white);line-height:1.4;}
+    .vc-play-lbl{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--FB);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;opacity:0;transform:translateY(6px);transition:all .4s;}
+    .vc:hover .vc-play-lbl{opacity:1;transform:translateY(0);}
 
-.vc{flex:0 0 auto;position:relative;overflow:hidden;background:#0a0a09;}
-.vc.sm{width:270px;height:410px;}
-.vc.lg{width:480px;height:410px;}
-.vc.xl{width:660px;height:410px;}
-.vc-thumb{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s;z-index:1;filter:saturate(.85) contrast(1.05);}
-.vc:hover .vc-thumb{transform:scale(1.06);}
-.vc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,7,.96) 0%,rgba(8,8,7,.2) 48%,rgba(8,8,7,.08) 70%);z-index:2;}
-.vc .cf{width:14px;height:14px;opacity:.45;z-index:3;}
-.vc:hover .cf,.vc.playing .cf{opacity:1;border-color:var(--amber-lt);}
-.vc-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);z-index:4;width:52px;height:52px;border:1.5px solid rgba(204,154,69,.7);display:flex;align-items:center;justify-content:center;transition:all .3s;opacity:.8;}
-.vc:hover .vc-play{opacity:1;background:rgba(204,154,69,.12);border-color:var(--amber-lt);transform:translate(-50%,-58%) scale(1.08);}
-.vc-play svg{margin-left:3px;}
-.vc-rec{position:absolute;top:1.1rem;left:1.1rem;z-index:4;display:none;align-items:center;gap:.4rem;font-family:var(--FM);font-size:.68rem;letter-spacing:.15em;color:var(--rec);background:rgba(8,8,7,.6);padding:.3rem .55rem;}
-.vc-rec .rec-dot{width:6px;height:6px;}
-.vc.playing .vc-rec{display:flex;}
-.vc-info{position:absolute;bottom:0;left:0;right:0;padding:1.6rem;z-index:4;transform:translateY(6px);transition:transform .4s;}
-.vc:hover .vc-info{transform:translateY(0);}
-.vc-n{font-family:var(--FM);font-size:.72rem;letter-spacing:.15em;color:var(--amber);opacity:.7;margin-bottom:.45rem;}
-.vc-t{font-family:var(--FL);font-size:clamp(.85rem,1.2vw,1rem);font-weight:300;letter-spacing:.02em;color:var(--paper);line-height:1.35;}
-.vc-play-lbl{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--FM);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amber-lt);margin-bottom:.5rem;opacity:0;transform:translateY(6px);transition:all .4s;}
-.vc:hover .vc-play-lbl{opacity:1;transform:translateY(0);}
-.vc.playing .vc-thumb,.vc.playing .vc-overlay,.vc.playing .vc-play,.vc.playing .vc-play-lbl,.vc.playing .vc-n{display:none;}
-.vc.playing .vc-info{transform:none;background:linear-gradient(to top,rgba(8,8,7,.9),transparent);padding:.7rem .9rem .9rem;}
-.vc iframe{position:absolute;inset:0;width:100%;height:100%;border:none;z-index:3;display:none;}
-.vc.playing iframe{display:block;}
+    /* Active iframe state — replaces thumbnail */
+    .vc.playing .vc-thumb,
+    .vc.playing .vc-overlay,
+    .vc.playing .vc-playbtn,
+    .vc.playing .vc-play-lbl,
+    .vc.playing .vc-n{display:none;}
+    .vc.playing .vc-info{transform:none;background:linear-gradient(to top,rgba(5,5,5,.9),transparent);padding:.75rem 1rem;}
+    .vc iframe{position:absolute;inset:0;width:100%;height:100%;border:none;z-index:5;display:none;}
+    .vc.playing iframe{display:block;}
 
-.scrl-ind{padding:0 5rem;display:flex;align-items:center;gap:1.5rem;}
-.scrl-trk{flex:1;height:1px;background:var(--line);position:relative;}
-.scrl-prg{height:100%;background:var(--amber);width:0%;transition:width .1s;}
-.scrl-hint{font-family:var(--FM);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.5rem;}
-.scrl-ct{font-family:var(--FM);font-size:.72rem;letter-spacing:.1em;color:var(--muted);}
+    .scrl-ind{padding:0 5rem;display:flex;align-items:center;gap:1.5rem;}
+    .scrl-trk{flex:1;height:1px;background:rgba(200,168,75,.1);position:relative;}
+    .scrl-prg{height:100%;background:var(--gold);width:0%;transition:width .1s;}
+    .scrl-hint{font-family:var(--FB);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.5rem;}
+    .scrl-ct{font-family:var(--FB);font-size:.8rem;letter-spacing:.15em;color:var(--muted);}
 
-/* ===== about / reel ===== */
-#reel{padding:9rem 5rem;background:var(--panel);}
-.reel-in{display:grid;grid-template-columns:1fr 1fr;gap:7rem;align-items:center;}
-.reel-body{font-size:1.1rem;color:var(--muted);line-height:1.85;margin:1.8rem 0 2.4rem;}
-.reel-body strong{color:var(--paper);font-weight:400;}
-.svc-list{list-style:none;display:flex;flex-direction:column;gap:0;}
-.svc-list li{font-family:var(--FL);font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:.85rem 0;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:1rem;transition:color .3s,padding-left .3s;}
-.svc-list li b{font-family:var(--FM);font-weight:400;font-size:.75rem;color:var(--amber);opacity:.7;}
-.svc-list li:hover{color:var(--paper);padding-left:.5rem;}
-.svc-list li:hover b{opacity:1;}
-.reel-vis{position:relative;}
-.reel-frm{width:100%;aspect-ratio:9/16;max-height:580px;position:relative;}
-.reel-frm iframe{width:100%;height:100%;border:none;}
-.reel-frm::before{content:'';position:absolute;inset:-1px;border:1px solid var(--line-amber);pointer-events:none;z-index:2;}
-.reel-frm .cf{width:20px;height:20px;opacity:.9;z-index:3;}
-.reel-tag{position:absolute;bottom:-1rem;left:-1rem;background:var(--amber);color:var(--void);font-family:var(--FM);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;padding:.5rem 1rem;z-index:4;display:flex;align-items:center;gap:.4rem;}
-.reel-tag .rec-dot{width:6px;height:6px;background:var(--void);animation:none;}
+    #reel{padding:10rem 5rem;background:var(--dim);}
+    .reel-in{display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center;}
+    .reel-body{font-size:1.15rem;color:var(--muted);line-height:1.9;margin:2rem 0 2.5rem;}
+    .reel-body strong{color:var(--white);font-weight:400;}
+    .svc-list{list-style:none;display:flex;flex-direction:column;gap:.75rem;}
+    .svc-list li{font-family:var(--FB);font-size:1rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);padding:.75rem 0;border-bottom:1px solid rgba(200,168,75,.08);display:flex;align-items:center;gap:1rem;transition:color .3s,padding-left .3s;}
+    .svc-list li::before{content:'';width:20px;height:1px;background:var(--gold);transition:width .3s;}
+    .svc-list li:hover{color:var(--gold);padding-left:.5rem;}
+    .svc-list li:hover::before{width:32px;}
+    .reel-vis{position:relative;}
+    .reel-frm{width:100%;aspect-ratio:9/16;max-height:600px;position:relative;}
+    .reel-frm iframe{width:100%;height:100%;border:none;}
+    .reel-frm::before{content:'';position:absolute;inset:-1px;border:1px solid rgba(200,168,75,.2);pointer-events:none;z-index:2;}
+    .rc{position:absolute;width:20px;height:20px;border-color:var(--gold);border-style:solid;z-index:3;}
+    .rc.tl{top:-4px;left:-4px;border-width:2px 0 0 2px;}
+    .rc.tr{top:-4px;right:-4px;border-width:2px 2px 0 0;}
+    .rc.bl{bottom:-4px;left:-4px;border-width:0 0 2px 2px;}
+    .rc.br{bottom:-4px;right:-4px;border-width:0 2px 2px 0;}
+    .reel-tag{position:absolute;bottom:-1rem;left:-1rem;background:var(--gold);color:var(--black);font-family:var(--FB);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;padding:.5rem 1rem;z-index:4;}
 
-/* ===== rates ===== */
-#rates{padding:9rem 5rem;position:relative;overflow:hidden;}
-#rates::before{content:'RATES';position:absolute;right:3rem;top:8rem;font-family:var(--FD);font-size:12vw;color:rgba(204,154,69,.02);pointer-events:none;}
-.rates-intro{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:end;margin-bottom:5rem;}
-.rates-note{font-size:1.02rem;color:var(--muted);line-height:1.8;border-left:2px solid var(--amber);padding-left:1.5rem;}
-.rates-note a{color:var(--amber);text-decoration:none;}
-.rates-phone{margin-top:1.4rem;font-family:var(--FM);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
-.pkg-grid-top{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:2px;}
-.pkg-grid-bot{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:5rem;}
-.pk-card{background:var(--panel2);padding:2.8rem 2.3rem;position:relative;overflow:hidden;transition:background .3s,transform .3s;}
-.pk-card:hover{background:#151512;transform:translateY(-4px);}
-.pk-idx{position:absolute;top:1.4rem;right:1.5rem;font-family:var(--FM);font-size:.65rem;letter-spacing:.1em;color:rgba(204,154,69,.4);}
-.pk-card.feat{background:var(--amber);transform:none !important;}
-.pk-card.feat *{color:var(--void) !important;}
-.pk-card.feat:hover{background:var(--amber-lt);}
-.pk-card.elite{background:var(--panel2);border:1px solid var(--line-amber);}
-.pk-tag{font-family:var(--FM);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;}
-.pk-tag::before{content:'';width:14px;height:1px;background:currentColor;}
-.pk-card.elite .pk-tag{color:var(--amber-lt);}
-.pk-name{font-family:var(--FD);font-size:2.1rem;letter-spacing:.03em;color:var(--paper);margin-bottom:1.2rem;line-height:1;}
-.pk-price{font-family:var(--FM);font-weight:700;font-size:2.9rem;letter-spacing:0;color:var(--amber);line-height:1;margin-bottom:.25rem;font-variant-numeric:tabular-nums;}
-.pk-cur{font-family:var(--FL);font-size:.75rem;font-weight:400;vertical-align:super;margin-right:.15em;}
-.pk-sub{font-family:var(--FL);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1.8rem;}
-.pk-pitch{font-family:var(--FL);font-size:.88rem;letter-spacing:.03em;color:var(--amber);font-style:italic;margin-bottom:1.2rem;padding:.5rem .75rem;border-left:2px solid var(--amber);background:rgba(204,154,69,.06);}
-.pk-card.feat .pk-pitch{background:rgba(8,8,7,.08) !important;border-left-color:rgba(8,8,7,.3) !important;}
-.pk-feats{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:2.2rem;}
-.pk-feats li{font-size:.96rem;color:rgba(236,230,217,.5);display:flex;align-items:center;gap:.6rem;padding-bottom:.5rem;border-bottom:1px solid var(--line);}
-.pk-card.feat .pk-feats li{border-bottom-color:rgba(8,8,7,.07) !important;}
-.pk-feats li::before{content:'';width:5px;height:5px;background:currentColor;flex-shrink:0;opacity:.6;}
-.pk-btn{width:100%;padding:.95rem;font-family:var(--FL);font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;border:1px solid var(--line-amber);background:none;color:var(--amber);cursor:none;transition:all .3s;}
-.pk-btn:hover{background:var(--amber);color:var(--void);border-color:var(--amber);}
-.pk-card.feat .pk-btn{border-color:rgba(8,8,7,.25);color:var(--void);}
-.pk-card.feat .pk-btn:hover{background:var(--void);color:var(--amber);border-color:var(--void);}
-.pk-card.elite .pk-btn{border-color:var(--amber);color:var(--amber);}
-
-.addons-section{margin-bottom:5rem;}
-.addons-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}
-.addon-item{background:var(--void);padding:1.4rem 1.9rem;display:flex;align-items:center;justify-content:space-between;transition:background .3s;}
-.addon-item:hover{background:var(--panel2);}
-.addon-name{font-family:var(--FL);font-size:.98rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
-.addon-price{font-family:var(--FM);font-weight:700;font-size:1.4rem;color:var(--amber);}
-.bundles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:5rem;}
-.bundle-card{background:var(--panel2);padding:2.8rem 2.3rem;border-top:2px solid var(--amber);position:relative;overflow:hidden;transition:all .3s;}
-.bundle-card:hover{background:#151512;transform:translateY(-3px);}
-.bundle-idx{position:absolute;top:1.4rem;right:1.5rem;font-family:var(--FM);font-size:.65rem;letter-spacing:.1em;color:rgba(204,154,69,.4);}
-.bundle-name{font-family:var(--FD);font-size:1.9rem;letter-spacing:.03em;color:var(--paper);margin-bottom:.5rem;}
-.bundle-price{font-family:var(--FM);font-weight:700;font-size:2.4rem;color:var(--amber);margin-bottom:.25rem;}
-.bundle-sub{font-family:var(--FL);font-size:.83rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1.4rem;}
-.bundle-feats{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:2rem;}
-.bundle-feats li{font-size:.96rem;color:rgba(236,230,217,.5);display:flex;align-items:center;gap:.6rem;}
-.bundle-feats li::before{content:'→';color:var(--amber);font-size:.7rem;}
-.notes-bar{background:rgba(204,154,69,.04);border:1px solid var(--line-amber);padding:2.2rem 3rem;display:flex;align-items:center;gap:3rem;flex-wrap:wrap;}
-.note-item{display:flex;align-items:center;gap:.65rem;font-family:var(--FM);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
-.note-item::before{content:'▲';color:var(--amber);font-size:.6rem;}
-
-/* ===== how it works ===== */
-#how{padding:7.5rem 5rem;background:var(--panel);}
-.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:4rem;}
-.how-step{background:var(--void);padding:2.8rem 2.3rem;position:relative;overflow:hidden;transition:background .3s;}
-.how-step:hover{background:var(--panel2);}
-.how-step::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--amber),transparent);transform:scaleX(0);transform-origin:left;transition:transform .5s;}
-.how-step:hover::after{transform:scaleX(1);}
-.step-num{font-family:var(--FM);font-size:.85rem;letter-spacing:.14em;color:var(--amber);opacity:.65;margin-bottom:1.6rem;}
-.step-title{font-family:var(--FD);font-size:1.7rem;letter-spacing:.03em;color:var(--paper);margin-bottom:.7rem;}
-.step-body{font-size:.98rem;color:var(--muted);line-height:1.7;}
-
-/* ===== why ===== */
-#why{padding:7.5rem 5rem;}
-.why-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:4rem;}
-.why-item{background:var(--panel2);padding:2.4rem 1.8rem;text-align:center;transition:all .3s;}
-.why-item:hover{background:#151512;transform:translateY(-4px);}
-.why-icon{width:34px;height:34px;margin:0 auto 1.1rem;color:var(--amber);}
-.why-icon svg{width:100%;height:100%;}
-.why-title{font-family:var(--FD);font-size:1.3rem;letter-spacing:.03em;color:var(--paper);margin-bottom:.5rem;}
-.why-body{font-size:.92rem;color:var(--muted);line-height:1.6;}
-
-/* ===== contact ===== */
-#contact{padding:9rem 5rem;background:var(--panel);display:grid;grid-template-columns:1fr 1fr;gap:7rem;align-items:start;}
-.ct-tag{font-family:var(--FD);font-size:clamp(3rem,5.5vw,5rem);letter-spacing:.03em;line-height:.92;margin-bottom:2.4rem;}
-.ct-tag .it{font-family:var(--FL);font-style:italic;font-size:.4em;letter-spacing:.14em;color:var(--amber);display:block;margin-bottom:.5rem;}
-.ct-links{display:flex;flex-direction:column;gap:1.3rem;margin-top:2.8rem;}
-.cl{display:flex;align-items:center;gap:1.2rem;text-decoration:none;color:var(--muted);transition:color .25s;}
-.cl:hover{color:var(--paper);}
-.cl-ic{width:42px;height:42px;flex-shrink:0;border:1px solid var(--line-amber);display:flex;align-items:center;justify-content:center;color:var(--amber);transition:all .3s;}
-.cl:hover .cl-ic{background:var(--amber);color:var(--void);border-color:var(--amber);}
-.cl-txt{display:flex;flex-direction:column;gap:.15rem;}
-.cl-main{font-size:.94rem;}
-.cl-sub{font-family:var(--FM);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(236,230,217,.3);}
-.f-lbl{font-family:var(--FM);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(204,154,69,.6);margin-bottom:.4rem;display:block;}
-.f-inp{width:100%;background:rgba(255,255,255,.02);border:none;border-bottom:1px solid var(--line-amber);color:var(--paper);padding:.85rem 0;font-family:var(--FB);font-size:.95rem;font-weight:300;outline:none;transition:border-color .3s;}
-.f-inp:focus{border-bottom-color:var(--amber);}
-.f-inp::placeholder{color:rgba(236,230,217,.2);}
-.f-sel{width:100%;background:rgba(255,255,255,.02);border:none;border-bottom:1px solid var(--line-amber);color:var(--paper);padding:.85rem 0;font-family:var(--FB);font-size:.95rem;font-weight:300;outline:none;transition:border-color .3s;-webkit-appearance:none;cursor:none;}
-.f-sel:focus{border-bottom-color:var(--amber);}
-.f-sel option{background:#151512;}
-.f-ta{width:100%;background:rgba(255,255,255,.02);border:none;border-bottom:1px solid var(--line-amber);color:var(--paper);padding:.85rem 0;font-family:var(--FB);font-size:.95rem;font-weight:300;outline:none;resize:none;min-height:76px;transition:border-color .3s;}
-.f-ta:focus{border-bottom-color:var(--amber);}
-.f-ta::placeholder{color:rgba(236,230,217,.2);}
-.frm{display:flex;flex-direction:column;gap:1.2rem;}
-.f-row{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;}
-.f-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.5rem;}
-
-footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2rem;}
-.ft-logo{font-family:var(--FD);font-size:1.85rem;letter-spacing:.06em;color:var(--paper);}
-.ft-logo em{font-style:normal;color:var(--amber);}
-.ft-copy{font-family:var(--FM);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(236,230,217,.22);text-align:center;}
-.ft-soc{display:flex;gap:1rem;justify-content:flex-end;}
-.ft-soc a{width:38px;height:38px;border:1px solid var(--line-amber);display:flex;align-items:center;justify-content:center;color:var(--muted);text-decoration:none;transition:all .3s;}
-.ft-soc a:hover{border-color:var(--amber);color:var(--amber);}
-
-@keyframes slR{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.reveal{opacity:0;transform:translateY(40px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1);}
-.reveal.visible{opacity:1;transform:translateY(0);}
-.reveal-l{opacity:0;transform:translateX(-40px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1);}
-.reveal-l.visible{opacity:1;transform:translateX(0);}
-
-@media(prefers-reduced-motion: reduce){
-  .h-bgtext,.mq-track,.rec-dot,body::before,.h-tick{animation:none !important;}
-}
-
-@media(max-width:1100px){
-  .pkg-grid-top{grid-template-columns:repeat(2,1fr);}
-  .pkg-grid-bot{grid-template-columns:repeat(2,1fr);}
-  .how-grid{grid-template-columns:repeat(2,1fr);}
-  .why-grid{grid-template-columns:repeat(3,1fr);}
-  .hud-bl,.hud-br{display:none;}
-}
-@media(max-width:900px){
-  nav{padding:1.2rem 1.5rem;}
-  nav.stuck{padding:.9rem 1.5rem;}
-  .nav-links,.nav-cta{display:none;}
-  .nav-links.open{display:flex;flex-direction:column;position:fixed;inset:0;background:rgba(8,8,7,.98);align-items:center;justify-content:center;gap:2.4rem;z-index:599;}
-  .nav-links.open a{font-size:1.1rem;}
-  .nav-links.open a::before{position:static;display:block;margin-bottom:.4rem;}
-  .hbg{display:flex;}
-  #home{padding:0 1.4rem 4rem;}
-  .hud-tr{right:1.6rem;top:2.2rem;}
-  .hud-tl{left:1.6rem;top:2.2rem;}
-  .vf-frame span{display:none;}
-  .stats-bar{grid-template-columns:repeat(2,1fr);}
-  .reel-in{grid-template-columns:1fr;gap:3.5rem;}
-  #reel{padding:5.5rem 1.4rem;}
-  #rates{padding:5.5rem 1.4rem;}
-  .rates-intro{grid-template-columns:1fr;gap:2rem;}
-  .pkg-grid-top,.pkg-grid-bot,.bundles-grid,.addons-grid{grid-template-columns:1fr;}
-  .how-grid,.why-grid{grid-template-columns:1fr;}
-  #how,#why{padding:4.5rem 1.4rem;}
-  .notes-bar{padding:1.8rem 1.4rem;gap:1.6rem;}
-  #contact{grid-template-columns:1fr;gap:3.5rem;padding:5.5rem 1.4rem;}
-  .sec-hdr{padding:0 1.4rem;flex-direction:column;align-items:flex-start;gap:1rem;}
-  .port-track{padding:0 1.4rem 2rem;}
-  .scrl-ind{padding:0 1.4rem;}
-  footer{grid-template-columns:1fr;text-align:center;padding:2.8rem 1.4rem;}
-  .ft-soc{justify-content:center;}
-  .ft-logo{display:flex;justify-content:center;}
-  .f-row{grid-template-columns:1fr;}
-  body{cursor:auto;}
-  #cur-dot,#cur-frame,#cur-lbl,#spot{display:none;}
-  .btn-p,.btn-g,.pk-btn,.f-sel{cursor:pointer;}
-}
-</style>
+    #rates{padding:10rem 5rem;position:relative;overflow:hidden;}
+    #rates::before{content:'RATES';position:absolute;right:3rem;top:8rem;font-family:var(--F);font-size:12vw;color:rgba(200,168,75,.025);pointer-events:none;}
+    .rates-intro{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:end;margin-bottom:5rem;}
+    .rates-note{font-size:1.05rem;color:var(--muted);line-height:1.8;border-left:2px solid var(--gold);padding-left:1.5rem;}
+    .pkg-grid-top{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:2px;}
+    .pkg-grid-bot{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:5rem;}
+    .rc-card{background:var(--dim2);padding:3rem 2.5rem;position:relative;overflow:hidden;transition:background .3s,transform .3s;}
+    .rc-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,168,75,.04),transparent);opacity:0;transition:opacity .4s;}
+    .rc-card:hover{background:#101010;transform:translateY(-4px);}
+    .rc-card:hover::before{opacity:1;}
+    .rc-card.feat{background:var(--gold);transform:none !important;}
+    .rc-card.feat *{color:var(--black) !important;}
+    .rc-card.feat::before{display:none;}
+    .rc-card.feat:hover{background:var(--gold2);}
+    .rc-card.elite{background:var(--dim2);border:1px solid rgba(200,168,75,.3);}
+    .rc-tag{font-family:var(--FB);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;}
+    .rc-tag::before{content:'';width:16px;height:1px;background:currentColor;}
+    .rc-card.feat .rc-tag{color:rgba(5,5,5,.5) !important;}
+    .rc-card.elite .rc-tag{color:var(--gold2);}
+    .rc-name{font-family:var(--F);font-size:2.2rem;letter-spacing:.04em;color:var(--white);margin-bottom:1.25rem;line-height:1;}
+    .rc-price{font-family:var(--F);font-size:3.8rem;letter-spacing:.02em;color:var(--gold);line-height:1;margin-bottom:.2rem;}
+    .rc-cur{font-family:var(--FN);font-size:.8rem;font-weight:300;vertical-align:super;margin-right:.1em;}
+    .rc-sub{font-family:var(--FB);font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:2rem;}
+    .rc-card.feat .rc-sub{color:rgba(5,5,5,.4) !important;}
+    .rc-pitch{font-family:var(--FB);font-size:.9rem;letter-spacing:.05em;color:var(--gold);font-style:italic;margin-bottom:1.25rem;padding:.5rem .75rem;border-left:2px solid var(--gold);background:rgba(200,168,75,.06);}
+    .rc-card.feat .rc-pitch{color:rgba(5,5,5,.7) !important;background:rgba(5,5,5,.08) !important;border-left-color:rgba(5,5,5,.3) !important;}
+    .rc-feats{list-style:none;display:flex;flex-direction:column;gap:.55rem;margin-bottom:2.5rem;}
+    .rc-feats li{font-size:1rem;color:rgba(242,237,232,.5);display:flex;align-items:center;gap:.65rem;padding-bottom:.55rem;border-bottom:1px solid rgba(200,168,75,.06);}
+    .rc-card.feat .rc-feats li{color:rgba(5,5,5,.6) !important;border-bottom-color:rgba(5,5,5,.07) !important;}
+    .rc-feats li::before{content:'';width:10px;height:10px;border:1px solid currentColor;border-radius:50%;flex-shrink:0;opacity:.6;}
+    .rc-btn{width:100%;padding:1rem;font-family:var(--FB);font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(200,168,75,.3);background:none;color:var(--gold);cursor:pointer;transition:all .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
+    .rc-btn:hover{background:var(--gold);color:var(--black);border-color:var(--gold);}
+    .rc-card.feat .rc-btn{border-color:rgba(5,5,5,.25);color:var(--black);}
+    .rc-card.feat .rc-btn:hover{background:var(--black);color:var(--gold);border-color:var(--black);}
+    .rc-card.elite .rc-btn{border-color:var(--gold);color:var(--gold);}
+    .addons-section{margin-bottom:5rem;}
+    .addons-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(200,168,75,.08);}
+    .addon-item{background:var(--black);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;transition:background .3s;}
+    .addon-item:hover{background:var(--dim2);}
+    .addon-name{font-family:var(--FB);font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+    .addon-price{font-family:var(--F);font-size:1.8rem;color:var(--gold);}
+    .bundles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:5rem;}
+    .bundle-card{background:var(--dim2);padding:3rem 2.5rem;border-top:2px solid var(--gold);position:relative;overflow:hidden;transition:all .3s;}
+    .bundle-card:hover{background:#101010;transform:translateY(-3px);}
+    .bundle-icon{font-size:1.5rem;margin-bottom:1rem;}
+    .bundle-name{font-family:var(--F);font-size:2rem;letter-spacing:.04em;color:var(--white);margin-bottom:.5rem;}
+    .bundle-price{font-family:var(--F);font-size:2.8rem;color:var(--gold);margin-bottom:.25rem;}
+    .bundle-sub{font-family:var(--FB);font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;}
+    .bundle-feats{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:2rem;}
+    .bundle-feats li{font-size:1rem;color:rgba(242,237,232,.5);display:flex;align-items:center;gap:.6rem;}
+    .bundle-feats li::before{content:'→';color:var(--gold);font-size:.7rem;}
+    #how{padding:8rem 5rem;background:var(--dim);}
+    .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:4rem;}
+    .how-step{background:var(--black);padding:3rem 2.5rem;position:relative;overflow:hidden;transition:background .3s;}
+    .how-step:hover{background:var(--dim2);}
+    .how-step::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),transparent);transform:scaleX(0);transform-origin:left;transition:transform .5s;}
+    .how-step:hover::after{transform:scaleX(1);}
+    .step-num{font-family:var(--F);font-size:5rem;color:rgba(200,168,75,.1);line-height:1;margin-bottom:1rem;}
+    .step-title{font-family:var(--F);font-size:1.8rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem;}
+    .step-body{font-size:1rem;color:var(--muted);line-height:1.7;}
+    #why{padding:8rem 5rem;}
+    .why-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:4rem;}
+    .why-item{background:var(--dim2);padding:2.5rem 2rem;text-align:center;transition:all .3s;}
+    .why-item:hover{background:#101010;transform:translateY(-4px);}
+    .why-icon{font-size:1.5rem;margin-bottom:1rem;}
+    .why-title{font-family:var(--F);font-size:1.4rem;letter-spacing:.04em;color:var(--white);margin-bottom:.5rem;}
+    .why-body{font-size:.95rem;color:var(--muted);line-height:1.6;}
+    .notes-bar{background:rgba(200,168,75,.04);border:1px solid rgba(200,168,75,.12);padding:2.5rem 5rem;display:flex;align-items:center;gap:4rem;flex-wrap:wrap;}
+    .note-item{display:flex;align-items:center;gap:.75rem;font-family:var(--FB);font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+    .note-item::before{content:'⚠';color:var(--gold);}
+    #contact{padding:10rem 5rem;background:var(--dim);display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start;}
+    .ct-tag{font-family:var(--F);font-size:clamp(3rem,5.5vw,5rem);letter-spacing:.04em;line-height:.92;margin-bottom:2.5rem;}
+    .ct-tag .it{font-family:var(--FB);font-style:italic;font-size:.4em;letter-spacing:.15em;color:var(--gold);display:block;margin-bottom:.5rem;}
+    .ct-links{display:flex;flex-direction:column;gap:1.25rem;margin-top:3rem;}
+    .cl{display:flex;align-items:center;gap:1.25rem;text-decoration:none;color:var(--muted);transition:color .25s;}
+    .cl:hover{color:var(--white);}
+    .cl-ic{width:42px;height:42px;flex-shrink:0;border:1px solid rgba(200,168,75,.2);display:flex;align-items:center;justify-content:center;color:var(--gold);transition:all .3s;}
+    .cl:hover .cl-ic{background:var(--gold);color:var(--black);border-color:var(--gold);}
+    .cl-txt{font-size:.9rem;}
+    .f-lbl{font-family:var(--FB);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(200,168,75,.5);margin-bottom:.4rem;display:block;}
+    .f-inp{width:100%;background:rgba(255,255,255,.02);border:none;border-bottom:1px solid rgba(200,168,75,.15);color:var(--white);padding:.9rem 0;font-family:var(--FN);font-size:.95rem;font-weight:300;outline:none;transition:border-color .3s;}
+    .f-inp:focus{border-bottom-color:var(--gold);}
+    .f-inp::placeholder{color:rgba(242,237,232,.2);}
+    .f-sel{width:100%;background:rgba(255,255,255,.02);border:none;border-bottom:1px solid rgba(200,168,75,.15);color:var(--white);padding:.9rem 0;font-family:var(--FN);font-size:.95rem;font-weight:300;outline:none;transition:border-color .3s;-webkit-appearance:none;cursor:pointer;}
+    .f-sel:focus{border-bottom-color:var(--gold);}
+    .f-sel option{background:#141414;}
+    .f-ta{width:100%;background:rgba(255,255,255,.02);border:none;border-bottom:1px solid rgba(200,168,75,.15);color:var(--white);padding:.9rem 0;font-family:var(--FN);font-size:.95rem;font-weight:300;outline:none;resize:none;min-height:80px;transition:border-color .3s;}
+    .f-ta:focus{border-bottom-color:var(--gold);}
+    .f-ta::placeholder{color:rgba(242,237,232,.2);}
+    .frm{display:flex;flex-direction:column;gap:1.25rem;}
+    .f-row{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+    .f-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.5rem;}
+    footer{padding:4rem 5rem;border-top:1px solid rgba(200,168,75,.08);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2rem;}
+    .ft-logo{font-family:var(--F);font-size:2rem;letter-spacing:.12em;color:var(--gold);}
+    .ft-copy{font-family:var(--FB);font-size:.85rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(242,237,232,.2);text-align:center;}
+    .ft-soc{display:flex;gap:1rem;justify-content:flex-end;}
+    .ft-soc a{width:40px;height:40px;border:1px solid rgba(200,168,75,.15);display:flex;align-items:center;justify-content:center;color:var(--muted);text-decoration:none;transition:all .3s;}
+    .ft-soc a:hover{border-color:var(--gold);color:var(--gold);}
+    @keyframes slR{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1);}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+    .reveal-l{opacity:0;transform:translateX(-40px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1);}
+    .reveal-l.visible{opacity:1;transform:translateX(0);}
+    @media(max-width:1100px){
+      .pkg-grid-top{grid-template-columns:repeat(2,1fr);}
+      .pkg-grid-bot{grid-template-columns:repeat(2,1fr);}
+      .how-grid{grid-template-columns:repeat(2,1fr);}
+      .why-grid{grid-template-columns:repeat(3,1fr);}
+    }
+    @media(max-width:900px){
+      nav{padding:1.25rem 1.5rem;}
+      nav.stuck{padding:1rem 1.5rem;}
+      .nav-links,.nav-cta{display:none;}
+      .nav-links.open{display:flex;flex-direction:column;position:fixed;inset:0;background:rgba(5,5,5,.98);align-items:center;justify-content:center;gap:2.5rem;z-index:599;}
+      .nav-links.open a{font-size:1.1rem;}
+      .hbg{display:flex;}
+      #home{padding:0 1.5rem 4rem;}
+      .stats-bar{grid-template-columns:repeat(2,1fr);}
+      .reel-in{grid-template-columns:1fr;gap:4rem;}
+      #rates{padding:6rem 1.5rem;}
+      .rates-intro{grid-template-columns:1fr;gap:2rem;}
+      .pkg-grid-top,.pkg-grid-bot,.bundles-grid,.addons-grid{grid-template-columns:1fr;}
+      .how-grid,.why-grid{grid-template-columns:1fr;}
+      #how,#why{padding:5rem 1.5rem;}
+      .notes-bar{padding:2rem 1.5rem;gap:2rem;}
+      #contact{grid-template-columns:1fr;gap:4rem;padding:6rem 1.5rem;}
+      .sec-hdr{padding:0 1.5rem;}
+      .port-track{padding:0 1.5rem 2rem;}
+      .scrl-ind{padding:0 1.5rem;}
+      footer{grid-template-columns:1fr;text-align:center;padding:3rem 1.5rem;}
+      .ft-soc{justify-content:center;}
+      .ft-logo{display:flex;justify-content:center;}
+      .f-row{grid-template-columns:1fr;}
+      body{cursor:auto;}
+      #cur,#cur-ring,#cur-label,#spotlight{display:none;}
+    }
+  </style>
 </head>
 <body>
-<div id="cur-dot"></div>
-<div id="cur-frame"><span class="cf cf-tl"></span><span class="cf cf-tr"></span><span class="cf cf-bl"></span><span class="cf cf-br"></span></div>
-<div id="cur-lbl"></div>
-<div id="spot"></div>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<div id="cur-label"></div>
+<div id="spotlight"></div>
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#home" class="nav-logo">VG&nbsp;<em>Creative</em><sup>®</sup></a>
+  <a href="#home" class="nav-logo">VG Creative<sup>®</sup></a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#home" data-num="SC.01" data-cursor="GO">Home</a></li>
-    <li><a href="#portfolio" data-num="SC.02" data-cursor="GO">Work</a></li>
-    <li><a href="#reel" data-num="SC.03" data-cursor="GO">About</a></li>
-    <li><a href="#rates" data-num="SC.04" data-cursor="GO">Rates</a></li>
-    <li><a href="#contact" data-num="SC.05" data-cursor="GO">Contact</a></li>
+    <li><a href="#home" data-num="01">Home</a></li>
+    <li><a href="#portfolio" data-num="02">Work</a></li>
+    <li><a href="#reel" data-num="03">About</a></li>
+    <li><a href="#rates" data-num="04">Rates</a></li>
+    <li><a href="#contact" data-num="05">Contact</a></li>
   </ul>
-  <a href="#contact" class="nav-cta" data-cursor="BOOK">Book a Shoot</a>
+  <a href="#contact" class="nav-cta">Book a Shoot</a>
   <button class="hbg" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- HERO -->
 <section id="home">
   <div class="h-bgtext">VG CREATIVE</div>
-  <div class="vf-frame"><span class="vf-tl"></span><span class="vf-tr"></span><span class="vf-bl"></span><span class="vf-br"></span></div>
-  <div class="hud hud-tl"><span class="rec-dot"></span> REC <b id="tc">00:00:00:00</b></div>
-  <div class="hud hud-tr">NAIROBI, KE<br><b>1°17'S 36°49'E</b></div>
-  <div class="hud hud-bl">24.00 FPS · f/2.8<br><b>ISO 800</b></div>
-  <div class="hud hud-br">SLATE VG-01<br><b>TAKE 01</b></div>
-
+  <div class="h-line h-line-a"></div>
+  <div class="h-line h-line-b"></div>
+  <div class="h-line h-line-c"></div>
   <div style="position:relative;z-index:2;">
     <p class="h-eye">Nairobi · Kenya · Cinematic Visuals</p>
     <h1 class="h-title">VG<br><span class="out">CREA</span><span class="sm">×</span>TIVE</h1>
     <div class="h-bot">
-      <p class="h-desc">We shoot Nairobi's street-level rap and R&B scene the way it deserves — plus commercials, weddings and documentaries. Directed by Vinty &amp; G_Shots.</p>
+      <p class="h-desc">We transform ideas into cinematic masterpieces. Music videos, commercials, weddings &amp; documentaries — shot in Nairobi, seen everywhere.</p>
       <div class="h-acts">
-        <a href="#portfolio" class="btn-p" data-cursor="VIEW">View Our Work <svg width="14" height="10" viewBox="0 0 14 10"><path d="M8 1l5 4-5 4M1 5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></a>
-        <a href="#contact" class="btn-g" data-cursor="BOOK">Book a Shoot</a>
+        <a href="#portfolio" class="btn-p">View Our Work <svg width="14" height="10" viewBox="0 0 14 10"><path d="M8 1l5 4-5 4M1 5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg></a>
+        <a href="#contact" class="btn-g">Book a Shoot</a>
       </div>
     </div>
   </div>
@@ -385,50 +331,374 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
 <!-- MARQUEE -->
 <div class="mq-wrap">
   <div class="mq-track">
-    <span class="it">Music Videos</span><span class="dt">//</span>
-    <span class="it">Official Videos</span><span class="dt">//</span>
-    <span class="it">Visualizers</span><span class="dt">//</span>
-    <span class="it">Commercials</span><span class="dt">//</span>
-    <span class="it">Weddings</span><span class="dt">//</span>
-    <span class="it">Documentaries</span><span class="dt">//</span>
-    <span class="it">Color Grading</span><span class="dt">//</span>
-    <span class="it">Nairobi Based</span><span class="dt">//</span>
-    <span class="it">Music Videos</span><span class="dt">//</span>
-    <span class="it">Official Videos</span><span class="dt">//</span>
-    <span class="it">Visualizers</span><span class="dt">//</span>
-    <span class="it">Commercials</span><span class="dt">//</span>
-    <span class="it">Weddings</span><span class="dt">//</span>
-    <span class="it">Documentaries</span><span class="dt">//</span>
-    <span class="it">Color Grading</span><span class="dt">//</span>
-    <span class="it">Nairobi Based</span><span class="dt">//</span>
+    <span class="it">Music Videos</span><span class="dt">✦</span>
+    <span class="it">Official Videos</span><span class="dt">✦</span>
+    <span class="it">Visualizers</span><span class="dt">✦</span>
+    <span class="it">Commercials</span><span class="dt">✦</span>
+    <span class="it">Weddings</span><span class="dt">✦</span>
+    <span class="it">Documentaries</span><span class="dt">✦</span>
+    <span class="it">Color Grading</span><span class="dt">✦</span>
+    <span class="it">Nairobi Based</span><span class="dt">✦</span>
+    <span class="it">Music Videos</span><span class="dt">✦</span>
+    <span class="it">Official Videos</span><span class="dt">✦</span>
+    <span class="it">Visualizers</span><span class="dt">✦</span>
+    <span class="it">Commercials</span><span class="dt">✦</span>
+    <span class="it">Weddings</span><span class="dt">✦</span>
+    <span class="it">Documentaries</span><span class="dt">✦</span>
+    <span class="it">Color Grading</span><span class="dt">✦</span>
+    <span class="it">Nairobi Based</span><span class="dt">✦</span>
   </div>
 </div>
 
 <!-- STATS -->
 <div class="stats-bar">
-  <div class="stat reveal"><div class="stat-num" data-target="40">000</div><div class="stat-label">Videos Produced</div></div>
-  <div class="stat reveal" style="transition-delay:.1s"><div class="stat-num" data-target="5">000</div><div class="stat-label">Years Active</div></div>
-  <div class="stat reveal" style="transition-delay:.2s"><div class="stat-num" data-target="32">000</div><div class="stat-label">Artists Worked With</div></div>
-  <div class="stat reveal" style="transition-delay:.3s"><div class="stat-num" data-target="7">000</div><div class="stat-label">Packages Available</div></div>
+  <div class="stat reveal"><div class="stat-num" data-target="40">0</div><div class="stat-label">Videos Produced</div></div>
+  <div class="stat reveal" style="transition-delay:.1s"><div class="stat-num" data-target="5">0</div><div class="stat-label">Years Active</div></div>
+  <div class="stat reveal" style="transition-delay:.2s"><div class="stat-num" data-target="32">0</div><div class="stat-label">Artists Worked With</div></div>
+  <div class="stat reveal" style="transition-delay:.3s"><div class="stat-num" data-target="7">0</div><div class="stat-label">Packages Available</div></div>
 </div>
 
 <!-- PORTFOLIO -->
 <section id="portfolio">
   <div class="sec-hdr reveal">
     <div>
-      <p class="sec-lbl">Now Rolling</p>
+      <p class="sec-lbl">Selected Work</p>
       <h2 class="sec-ttl">Our Portfolio</h2>
     </div>
-    <a href="https://youtube.com/@VGCREATIVE_254" target="_blank" class="view-all" data-cursor="OPEN">Full Channel <svg width="16" height="10" viewBox="0 0 16 10"><path d="M10 1l5 4-5 4M1 5h14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></a>
-    </div>
+    <a href="https://youtube.com/@VGCREATIVE_254" target="_blank" class="view-all">Full Channel <svg width="16" height="10" viewBox="0 0 16 10"><path d="M10 1l5 4-5 4M1 5h14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></a>
+  </div>
   <div class="port-wrap">
     <div class="port-track" id="pTrack">
-      <!-- video cards injected by ID below; each: thumbnail, click = plays iframe -->
+
+      <!-- Each .vc card: thumbnail + click = plays iframe -->
+      <!-- Format: data-vid="YOUTUBE_ID" -->
+
+      <div class="vc sm" data-vid="F35yQKWsU3o">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/F35yQKWsU3o/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">07</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">YANG TEECHA-NO LOCATION FT EASTLANDO BENZ NA PRADO [OFFICIAL VIDEO] Dir.by G_SHOTS</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/F35yQKWsU3o?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+      <div class="vc xl" data-vid="f2qbH7FtZp8">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/f2qbH7FtZp8/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">01</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">RAYO KE - FOR YOU (OFFICIAL VIDEO)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/f2qbH7FtZp8?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+      <div class="vc sm" data-vid="zJ3Ru3ywkhI">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/zJ3Ru3ywkhI/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">07</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Taliwan ft Capo To Di Top - DIRTY MONEY (Official Music Video)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/zJ3Ru3ywkhI?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+      <div class="vc xl" data-vid="W299vfE_cxc">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/W299vfE_cxc/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">06</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">YANG TEECHA -BADNESS FT KAIZA.6(Official Video) Dir.by Gshots</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/W299vfE_cxc?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="Qf06Pbwy-3g">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/Qf06Pbwy-3g/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">07</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">UncoJingJong - SIDUNG (ROYALTY BADNESS)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/Qf06Pbwy-3g?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc xl" data-vid="afe55nNr4OM">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/afe55nNr4OM/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">08</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna × Mastar VK — Badman Crazy II</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/afe55nNr4OM?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="NKfbyPKZgVI">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/NKfbyPKZgVI/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">02</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Amateur Moves — Metro Stunna ft Virusi Mbaya</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/NKfbyPKZgVI?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc xl" data-vid="R4lqAjjTC40">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/R4lqAjjTC40/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">03</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">RAYO KE MISTAKE (OFFICIAL MUSIC VIDEO)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/R4lqAjjTC40?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="Va1t6fob00Q">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/Va1t6fob00Q/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">04</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Dak-Drilla ft Khan (official Video)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/Va1t6fob00Q?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="EOpASUt26iQ">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/EOpASUt26iQ/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">05</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna — Shhh ft Kaiza6 (Alt)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/EOpASUt26iQ?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc xl" data-vid="u4IZ0foQ52A">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/u4IZ0foQ52A/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">06</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Rayo KE — Tamasha (Official Video)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/u4IZ0foQ52A?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="36h91UqRZeA">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/36h91UqRZeA/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">07</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Rayo KE — Cheap</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/36h91UqRZeA?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc xl" data-vid="afe55nNr4OM">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/afe55nNr4OM/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">08</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna × Mastar VK — Badman Crazy II</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/afe55nNr4OM?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc lg" data-vid="vL1WWAcw6SM">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/vL1WWAcw6SM/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">09</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Mastar VK — Shagla Proper ft Metro Stunna</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/vL1WWAcw6SM?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="gXWRo1kTnTA">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/gXWRo1kTnTA/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">10</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">KAIZA 6 No Sense (official visualizer)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/gXWRo1kTnTA?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc lg" data-vid="pcWzT3ZW3s4">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/pcWzT3ZW3s4/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">11</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna — Benelli</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/pcWzT3ZW3s4?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="vHbjIJHruxs">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/vHbjIJHruxs/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">12</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Ebola Mkuu — Babaa ft Raps254</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/vHbjIJHruxs?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc xl" data-vid="HhrwBmER4Ek">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/HhrwBmER4Ek/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">13</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Kaiza6 — Doom ft Mad Bullet (Dir. Vinty)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/HhrwBmER4Ek?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc lg" data-vid="XSxpeSG0XCA">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/XSxpeSG0XCA/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">14</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna — Money on My Head ft Kaiza6</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/XSxpeSG0XCA?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="Wcx6DTnctQc">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/Wcx6DTnctQc/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">15</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna — Gonga (Visualizer)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/Wcx6DTnctQc?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc lg" data-vid="WPHpy1cd0JA">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/WPHpy1cd0JA/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">16</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Metro Stunna — Chopsticks</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/WPHpy1cd0JA?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="Y16KDSWQt9c">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/Y16KDSWQt9c/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">17</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Wayahudi — Atis Alert</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/Y16KDSWQt9c?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc xl" data-vid="zp9VH6kBjts">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/zp9VH6kBjts/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">18</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Get Io Doh (Music Video)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/zp9VH6kBjts?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc lg" data-vid="sIKG-cT0tBY">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/sIKG-cT0tBY/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">19</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Wizzoh33 — Sijai Tense (Visualizer)</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/sIKG-cT0tBY?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="eo1xX_-asCk">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/eo1xX_-asCk/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">20</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Wizzoh33 — Madem wa Nairobi</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/eo1xX_-asCk?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc lg" data-vid="_YZ9xJqEW1s">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/_YZ9xJqEW1s/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">21</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Edu Young × K Druu — Sirudi Home</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/_YZ9xJqEW1s?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
+      <div class="vc sm" data-vid="YvK7ntdXgzo">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/YvK7ntdXgzo/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">22</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">Hopestar — Amezaliwa Mwana</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/YvK7ntdXgzo?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>
+
     </div>
     <div class="scrl-ind">
       <div class="scrl-hint"><svg width="14" height="10" viewBox="0 0 14 10"><path d="M8 1l5 4-5 4M1 5h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg> Drag to explore</div>
       <div class="scrl-trk"><div class="scrl-prg" id="sPrg"></div></div>
-      <span class="scrl-ct" id="vCount">26 videos</span>
+      <span class="scrl-ct">22 videos</span>
     </div>
   </div>
 </section>
@@ -437,23 +707,23 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
 <section id="reel">
   <div class="reel-in">
     <div class="reveal-l">
-      <p class="sec-lbl">Behind The Lens</p>
+      <p class="sec-lbl">Who We Are</p>
       <h2 class="sec-ttl">Vision.<br>Grit.<br>Cinema.</h2>
-      <p class="reel-body">VG Creative is <strong>Nairobi's videography studio for the street-level scene</strong> — the music videos that capture the rawness of Kenyan hip-hop and drill, alongside wedding films that freeze time. Same cinematic obsession, every frame.<br><br>Founded by directors <strong>Vinty &amp; G_Shots</strong>, we've worked with 32+ artists across the scene.</p>
+      <p class="reel-body">VG Creative is <strong>Nairobi's premier videography studio</strong>. From street-level music videos that capture the rawness of Kenyan hip-hop, to wedding films that freeze time — we bring the same <strong>cinematic obsession</strong> to every frame.<br><br>Founded by directors <strong>Vinty &amp; G_Shots</strong>, we've worked with the biggest names in the scene.</p>
       <ul class="svc-list">
-        <li><b>01</b> Music Video Production</li>
-        <li><b>02</b> Official Audio Visualizers</li>
-        <li><b>03</b> Wedding Cinematography</li>
-        <li><b>04</b> Commercial &amp; Brand Films</li>
-        <li><b>05</b> Documentary Filmmaking</li>
-        <li><b>06</b> Post Production &amp; Color Grade</li>
+        <li>Music Video Production</li>
+        <li>Official Audio Visualizers</li>
+        <li>Wedding Cinematography</li>
+        <li>Commercial &amp; Brand Films</li>
+        <li>Documentary Filmmaking</li>
+        <li>Post Production &amp; Color Grade</li>
       </ul>
     </div>
     <div class="reel-vis reveal">
       <div class="reel-frm">
-        <iframe src="https://www.youtube.com/embed/nF_yWkewrpQ" allowfullscreen loading="lazy"></iframe>
-        <span class="cf cf-tl"></span><span class="cf cf-tr"></span><span class="cf cf-bl"></span><span class="cf cf-br"></span>
-        <div class="reel-tag"><span class="rec-dot"></span> Featured Work</div>
+        <iframe src="https://www.youtube.com/embed/nF_yWkewrpQ" allowfullscreen></iframe>
+        <div class="rc tl"></div><div class="rc tr"></div><div class="rc bl"></div><div class="rc br"></div>
+        <div class="reel-tag">Featured Work</div>
       </div>
     </div>
   </div>
@@ -467,52 +737,49 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
       <h2 class="sec-ttl">Transparent.<br>Fair.<br>Cinematic.</h2>
     </div>
     <div class="reveal">
-      <p class="rates-note">Every package delivers maximum visual impact at its price point. Not sure which fits you? <a href="#contact" data-cursor="GO">Message us</a> and we'll guide you.</p>
-      <p class="rates-phone">Contact: 0727 519 292 · 0706 352 214</p>
+      <p class="rates-note">Every package delivers maximum visual impact at its price point. Not sure which fits you? <a href="#contact" style="color:var(--gold);text-decoration:none;">Message us</a> and we'll guide you.</p>
+      <p style="margin-top:1.5rem;font-family:var(--FB);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);">Contact: 0727 519 292 · 0706 352 214</p>
     </div>
   </div>
 
   <div class="pkg-grid-top">
-    <div class="pk-card reveal">
-      <span class="pkg-idx">P01</span>
-      <p class="pk-tag">Entry Level</p>
-      <h3 class="pk-name">Street Visual</h3>
-      <div class="pk-price"><span class="pk-cur">KES</span>10K</div>
-      <p class="pk-sub">Clean visuals to get you started</p>
-      <p class="pk-pitch">Best for quick drops &amp; first-time artists</p>
-      <ul class="pk-feats">
+    <div class="rc-card reveal">
+      <p class="rc-tag">Entry Level</p>
+      <h3 class="rc-name">Street Visual</h3>
+      <div class="rc-price"><span class="rc-cur">KES</span>10K</div>
+      <p class="rc-sub">Clean visuals to get you started</p>
+      <p class="rc-pitch">Best for quick drops &amp; first-time artists</p>
+      <ul class="rc-feats">
         <li>Single location</li>
         <li>Performance-based shoot</li>
         <li>Natural / basic lighting</li>
         <li>Clean edit + color</li>
         <li>1 music video</li>
       </ul>
-      <button class="pk-btn" data-cursor="BOOK" onclick="selectPkg('Street Visual — KES 10,000')">Book This Package</button>
+      <button class="rc-btn" onclick="selectPkg('Street Visual — KES 10,000')">Book This Package</button>
     </div>
-    <div class="pk-card reveal" style="transition-delay:.05s">
-      <span class="pkg-idx">P02</span>
-      <p class="pk-tag">Starter</p>
-      <h3 class="pk-name">One Take</h3>
-      <div class="pk-price"><span class="pk-cur">KES</span>15K</div>
-      <p class="pk-sub">Simple. Sharp. Effective.</p>
-      <p class="pk-pitch">Clean performance visuals with structure</p>
-      <ul class="pk-feats">
+    <div class="rc-card reveal" style="transition-delay:.05s">
+      <p class="rc-tag">Starter</p>
+      <h3 class="rc-name">One Take</h3>
+      <div class="rc-price"><span class="rc-cur">KES</span>15K</div>
+      <p class="rc-sub">Simple. Sharp. Effective.</p>
+      <p class="rc-pitch">Clean performance visuals with structure</p>
+      <ul class="rc-feats">
         <li>1 Cinema Camera</li>
         <li>1–2 Lights</li>
         <li>Single location</li>
         <li>Full song video</li>
         <li>Smooth edit + color</li>
       </ul>
-      <button class="pk-btn" data-cursor="BOOK" onclick="selectPkg('One Take — KES 15,000')">Book This Package</button>
+      <button class="rc-btn" onclick="selectPkg('One Take — KES 15,000')">Book This Package</button>
     </div>
-    <div class="pk-card feat reveal" style="transition-delay:.1s">
-      <span class="pkg-idx">P03</span>
-      <p class="pk-tag">Most Popular</p>
-      <h3 class="pk-name">Performance Pack</h3>
-      <div class="pk-price"><span class="pk-cur">KES</span>20K</div>
-      <p class="pk-sub">Best balance between quality &amp; cost</p>
-      <p class="pk-pitch">Most artists choose this package</p>
-      <ul class="pk-feats">
+    <div class="rc-card feat reveal" style="transition-delay:.1s">
+      <p class="rc-tag">Most Popular</p>
+      <h3 class="rc-name">Performance Pack</h3>
+      <div class="rc-price"><span class="rc-cur">KES</span>20K</div>
+      <p class="rc-sub">Best balance between quality &amp; cost</p>
+      <p class="rc-pitch">Most artists choose this package</p>
+      <ul class="rc-feats">
         <li>1 Cinema Camera</li>
         <li>2–3 Light Setup</li>
         <li>1–2 Locations</li>
@@ -520,16 +787,15 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
         <li>Full music video</li>
         <li>1 Short clip (TikTok/Reels)</li>
       </ul>
-      <button class="pk-btn" data-cursor="BOOK" onclick="selectPkg('Performance Pack — KES 20,000')">Book This Package</button>
+      <button class="rc-btn" onclick="selectPkg('Performance Pack — KES 20,000')">Book This Package</button>
     </div>
-    <div class="pk-card reveal" style="transition-delay:.15s">
-      <span class="pkg-idx">P04</span>
-      <p class="pk-tag">Story-Driven</p>
-      <h3 class="pk-name">Director's Cut</h3>
-      <div class="pk-price"><span class="pk-cur">KES</span>30K</div>
-      <p class="pk-sub">Turn your song into a story</p>
-      <p class="pk-pitch">For artists who want storytelling, not just performance</p>
-      <ul class="pk-feats">
+    <div class="rc-card reveal" style="transition-delay:.15s">
+      <p class="rc-tag">Story-Driven</p>
+      <h3 class="rc-name">Director's Cut</h3>
+      <div class="rc-price"><span class="rc-cur">KES</span>30K</div>
+      <p class="rc-sub">Turn your song into a story</p>
+      <p class="rc-pitch">For artists who want storytelling, not just performance</p>
+      <ul class="rc-feats">
         <li>Cinema-style shooting</li>
         <li>3-Light setup</li>
         <li>2–3 Locations</li>
@@ -537,19 +803,18 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
         <li>Advanced edit + color</li>
         <li>2–3 Social clips</li>
       </ul>
-      <button class="pk-btn" data-cursor="BOOK" onclick="selectPkg('Director\'s Cut — KES 30,000')">Book This Package</button>
+      <button class="rc-btn" onclick="selectPkg('Director\'s Cut — KES 30,000')">Book This Package</button>
     </div>
   </div>
 
   <div class="pkg-grid-bot">
-    <div class="pk-card reveal">
-      <span class="pkg-idx">P05</span>
-      <p class="pk-tag">Industry Level</p>
-      <h3 class="pk-name">Cinema Experience</h3>
-      <div class="pk-price"><span class="pk-cur">KES</span>45K</div>
-      <p class="pk-sub">Designed for serious releases</p>
-      <p class="pk-pitch">For artists who want to dominate their market</p>
-      <ul class="pk-feats">
+    <div class="rc-card reveal">
+      <p class="rc-tag">Industry Level</p>
+      <h3 class="rc-name">Cinema Experience</h3>
+      <div class="rc-price"><span class="rc-cur">KES</span>45K</div>
+      <p class="rc-sub">Designed for serious releases</p>
+      <p class="rc-pitch">For artists who want to dominate their market</p>
+      <ul class="rc-feats">
         <li>Full lighting setup</li>
         <li>Multi-scene production</li>
         <li>Story-driven visuals</li>
@@ -557,16 +822,15 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
         <li>BTS footage included</li>
         <li>3–4 Short clips</li>
       </ul>
-      <button class="pk-btn" data-cursor="BOOK" onclick="selectPkg('Cinema Experience — KES 45,000')">Book This Package</button>
+      <button class="rc-btn" onclick="selectPkg('Cinema Experience — KES 45,000')">Book This Package</button>
     </div>
-    <div class="pk-card reveal" style="transition-delay:.1s">
-      <span class="pkg-idx">P06</span>
-      <p class="pk-tag">Premium</p>
-      <h3 class="pk-name">Visual Masterpiece</h3>
-      <div class="pk-price"><span class="pk-cur">KES</span>60K</div>
-      <p class="pk-sub">The full cinematic experience</p>
-      <p class="pk-pitch">For serious artists only</p>
-      <ul class="pk-feats">
+    <div class="rc-card reveal" style="transition-delay:.1s">
+      <p class="rc-tag">Premium</p>
+      <h3 class="rc-name">Visual Masterpiece</h3>
+      <div class="rc-price"><span class="rc-cur">KES</span>60K</div>
+      <p class="rc-sub">The full cinematic experience</p>
+      <p class="rc-pitch">For serious artists only</p>
+      <ul class="rc-feats">
         <li>Multi-location shoot</li>
         <li>Multi-angle coverage</li>
         <li>Full concept execution</li>
@@ -575,16 +839,15 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
         <li>Pro color grade · 4K export</li>
         <li>5+ Social clips</li>
       </ul>
-      <button class="pk-btn" data-cursor="BOOK" onclick="selectPkg('Visual Masterpiece — KES 60,000')">Book This Package</button>
+      <button class="rc-btn" onclick="selectPkg('Visual Masterpiece — KES 60,000')">Book This Package</button>
     </div>
-    <div class="pk-card elite reveal" style="transition-delay:.2s">
-      <span class="pkg-idx">P07</span>
-      <p class="pk-tag">Mainstream</p>
-      <h3 class="pk-name">Elite Artist</h3>
-      <div class="pk-price"><span class="pk-cur">KES</span>90K<span style="font-size:1.3rem;color:rgba(204,154,69,.5)">+</span></div>
-      <p class="pk-sub">Built for mainstream attention</p>
-      <p class="pk-pitch">Premium visuals for premium artists</p>
-      <ul class="pk-feats">
+    <div class="rc-card elite reveal" style="transition-delay:.2s">
+      <p class="rc-tag">Mainstream</p>
+      <h3 class="rc-name">Elite Artist</h3>
+      <div class="rc-price"><span class="rc-cur">KES</span>90K<span style="font-size:1.5rem;color:rgba(200,168,75,.5)">+</span></div>
+      <p class="rc-sub">Built for mainstream attention</p>
+      <p class="rc-pitch">Premium visuals for premium artists</p>
+      <ul class="rc-feats">
         <li>Full production planning</li>
         <li>Creative direction + concept</li>
         <li>Styling guidance</li>
@@ -593,7 +856,7 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
         <li>Priority delivery</li>
         <li>6–10 Promo clips</li>
       </ul>
-      <button class="pk-btn" data-cursor="BOOK" onclick="selectPkg('Elite Artist Package — KES 90,000+')">Book This Package</button>
+      <button class="rc-btn" onclick="selectPkg('Elite Artist Package — KES 90,000+')">Book This Package</button>
     </div>
   </div>
 
@@ -621,9 +884,9 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
   </div>
   <div class="bundles-grid">
     <div class="bundle-card reveal">
-      <span class="bundle-idx">B01</span>
+      <div class="bundle-icon">📱</div>
       <div class="bundle-name">Viral Content Pack</div>
-      <div class="bundle-price"><span style="font-size:.95rem;vertical-align:super;">KES</span>12K</div>
+      <div class="bundle-price"><span style="font-size:1rem;vertical-align:super;">KES</span>12K</div>
       <div class="bundle-sub">Push your music where it matters</div>
       <ul class="bundle-feats">
         <li>3 Short Videos</li>
@@ -631,12 +894,12 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
         <li>TikTok + Reels optimized</li>
         <li>Built for engagement &amp; reach</li>
       </ul>
-      <button class="pk-btn" data-cursor="BOOK" onclick="selectPkg('Viral Content Pack — KES 12,000')">Book This Package</button>
+      <button class="rc-btn" onclick="selectPkg('Viral Content Pack — KES 12,000')">Book This Package</button>
     </div>
     <div class="bundle-card reveal" style="transition-delay:.1s">
-      <span class="bundle-idx">B02</span>
+      <div class="bundle-icon">🔁</div>
       <div class="bundle-name">Artist Growth Plan</div>
-      <div class="bundle-price"><span style="font-size:.95rem;vertical-align:super;">KES</span>40K<span style="font-size:1.1rem;color:rgba(204,154,69,.5)">/mo</span></div>
+      <div class="bundle-price"><span style="font-size:1rem;vertical-align:super;">KES</span>40K<span style="font-size:1.2rem;color:rgba(200,168,75,.5)">/mo</span></div>
       <div class="bundle-sub">Stay consistent &amp; visible</div>
       <ul class="bundle-feats">
         <li>2 Shoots monthly</li>
@@ -644,12 +907,12 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
         <li>Priority booking</li>
         <li>Monthly content calendar</li>
       </ul>
-      <button class="pk-btn" data-cursor="BOOK" onclick="selectPkg('Artist Growth Plan — KES 40,000/month')">Book This Package</button>
+      <button class="rc-btn" onclick="selectPkg('Artist Growth Plan — KES 40,000/month')">Book This Package</button>
     </div>
     <div class="bundle-card reveal" style="transition-delay:.2s">
-      <span class="bundle-idx">B03</span>
+      <div class="bundle-icon">🚀</div>
       <div class="bundle-name">Full Release Kit</div>
-      <div class="bundle-price"><span style="font-size:.95rem;vertical-align:super;">KES</span>50K</div>
+      <div class="bundle-price"><span style="font-size:1rem;vertical-align:super;">KES</span>50K</div>
       <div class="bundle-sub">Everything for a proper drop</div>
       <ul class="bundle-feats">
         <li>Full music video</li>
@@ -657,7 +920,7 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
         <li>5 Promo clips</li>
         <li>Social media ready</li>
       </ul>
-      <button class="pk-btn" data-cursor="BOOK" onclick="selectPkg('Full Release Kit — KES 50,000')">Book This Package</button>
+      <button class="rc-btn" onclick="selectPkg('Full Release Kit — KES 50,000')">Book This Package</button>
     </div>
   </div>
 
@@ -673,28 +936,28 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
 <section id="how">
   <div class="sec-hdr reveal" style="padding:0;">
     <div>
-      <p class="sec-lbl">Shot List</p>
+      <p class="sec-lbl">The Process</p>
       <h2 class="sec-ttl">How It Works</h2>
     </div>
   </div>
   <div class="how-grid">
     <div class="how-step reveal">
-      <div class="step-num">STEP 01</div>
+      <div class="step-num">01</div>
       <div class="step-title">Book Your Shoot</div>
       <div class="step-body">Choose your package and reach out via WhatsApp or the contact form. 50% deposit locks in your slot.</div>
     </div>
     <div class="how-step reveal" style="transition-delay:.1s">
-      <div class="step-num">STEP 02</div>
+      <div class="step-num">02</div>
       <div class="step-title">Plan Your Concept</div>
       <div class="step-body">We work with you on locations, outfits, shots and the creative direction. Simple or cinematic — your call.</div>
     </div>
     <div class="how-step reveal" style="transition-delay:.2s">
-      <div class="step-num">STEP 03</div>
+      <div class="step-num">03</div>
       <div class="step-title">Shoot Day</div>
       <div class="step-body">We come prepared. Professional setup, efficient execution, creative energy from start to finish.</div>
     </div>
     <div class="how-step reveal" style="transition-delay:.3s">
-      <div class="step-num">STEP 04</div>
+      <div class="step-num">04</div>
       <div class="step-title">Edit &amp; Delivery</div>
       <div class="step-body">Professional edit, color grade, and export. Delivered to all your platforms, ready to drop.</div>
     </div>
@@ -711,27 +974,27 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
   </div>
   <div class="why-grid">
     <div class="why-item reveal">
-      <div class="why-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="10" width="18" height="10" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M3 10l1-4 16 3-1 4M6 6l3 4M11 7l3 4M16 8l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="why-icon">🎬</div>
       <div class="why-title">Cinematic Visuals</div>
       <div class="why-body">Cinema-grade output at every price point. We don't cut corners.</div>
     </div>
     <div class="why-item reveal" style="transition-delay:.07s">
-      <div class="why-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+      <div class="why-icon">⚡</div>
       <div class="why-title">Fast Turnaround</div>
       <div class="why-body">Quick delivery without sacrificing quality. Rush options available.</div>
     </div>
     <div class="why-item reveal" style="transition-delay:.14s">
-      <div class="why-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="1.3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+      <div class="why-icon">🎯</div>
       <div class="why-title">Artist-Focused</div>
       <div class="why-body">We understand the culture. Street to mainstream — we speak your language.</div>
     </div>
     <div class="why-item reveal" style="transition-delay:.21s">
-      <div class="why-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="6" y="2" width="12" height="20" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 9l4 3-4 3V9z" fill="currentColor"/></svg></div>
+      <div class="why-icon">📱</div>
       <div class="why-title">Platform-Ready</div>
       <div class="why-body">Optimized for YouTube, TikTok, Reels and every platform your fans use.</div>
     </div>
     <div class="why-item reveal" style="transition-delay:.28s">
-      <div class="why-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.2-5.4 3.2 1.3-6-4.6-4.1 6.1-.6L12 3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+      <div class="why-icon">🏆</div>
       <div class="why-title">Proven Track Record</div>
       <div class="why-body">40+ videos. 32+ artists. 5 years of Nairobi's finest visual storytelling.</div>
     </div>
@@ -743,26 +1006,11 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
   <div class="reveal-l">
     <h2 class="ct-tag"><span class="it">Ready to shoot?</span>Let's Create<br>Something<br>Unforgettable</h2>
     <div class="ct-links">
-      <a href="mailto:vgcreative.ke@gmail.com" class="cl" data-cursor="OPEN">
-        <div class="cl-ic"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 3h14v10H1V3zm0 0l7 5.5L15 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="cl-txt"><span class="cl-main">vgcreative.ke@gmail.com</span><span class="cl-sub">General Inquiries</span></div>
-      </a>
-      <a href="tel:+254727519292" class="cl" data-cursor="OPEN">
-        <div class="cl-ic"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 1h3l1.5 3.5-2 1.5a8 8 0 004 4l1.5-2L15 9.5V13a1 1 0 01-1 1A13 13 0 012 2a1 1 0 011-1z" stroke="currentColor" stroke-width="1.2"/></svg></div>
-        <div class="cl-txt"><span class="cl-main">0727 519 292 · 0706 352 214</span><span class="cl-sub">Call or WhatsApp</span></div>
-      </a>
-      <a href="https://instagram.com/gshots.ke" target="_blank" class="cl" data-cursor="OPEN">
-        <div class="cl-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></div>
-        <div class="cl-txt"><span class="cl-main">@gshots.ke</span><span class="cl-sub">G_Shots — Videographer</span></div>
-      </a>
-      <a href="https://instagram.com/v.i.n.t.y_eddits" target="_blank" class="cl" data-cursor="OPEN">
-        <div class="cl-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></div>
-        <div class="cl-txt"><span class="cl-main">@v.i.n.t.y_eddits</span><span class="cl-sub">Vinty — Editor</span></div>
-      </a>
-      <a href="https://youtube.com/@VGCREATIVE_254" target="_blank" class="cl" data-cursor="OPEN">
-        <div class="cl-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.5 6.5s-.3-2-1.2-2.8C20.2 2.5 19 2.5 18.4 2.4 15.5 2.2 12 2.2 12 2.2s-3.5 0-6.4.2c-.6.1-1.8.1-2.9 1.3C1.8 4.5 1.5 6.5 1.5 6.5S1.2 8.8 1.2 11v2c0 2.2.3 4.5.3 4.5s.3 2 1.2 2.8c1.1 1.2 2.5 1.1 3.2 1.3C8 21.8 12 21.8 12 21.8s3.5 0 6.4-.2c.6-.1 1.8-.1 2.9-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.5v-2c0-2.2-.3-4.5-.3-4.5zM9.7 15.5v-7l6.6 3.5-6.6 3.5z"/></svg></div>
-        <div class="cl-txt"><span class="cl-main">@VGCREATIVE_254</span><span class="cl-sub">Full Portfolio</span></div>
-      </a>
+      <a href="mailto:vgcreative.ke@gmail.com" class="cl"><div class="cl-ic"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 3h14v10H1V3zm0 0l7 5.5L15 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="cl-txt">vgcreative.ke@gmail.com</span></a>
+      <a href="tel:+254727519292" class="cl"><div class="cl-ic"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 1h3l1.5 3.5-2 1.5a8 8 0 004 4l1.5-2L15 9.5V13a1 1 0 01-1 1A13 13 0 012 2a1 1 0 011-1z" stroke="currentColor" stroke-width="1.2"/></svg></div><span class="cl-txt">0727 519 292 · 0706 352 214</span></a>
+      <a href="https://instagram.com/gshots.ke" target="_blank" class="cl"><div class="cl-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></div><span class="cl-txt">@gshots.ke on Videographer</span></a>
+      <a href="https://instagram.com/v.i.n.t.y_eddits" target="_blank" class="cl"><div class="cl-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></div><span class="cl-txt">@v.i.n.t.y_eddits on Editor</span></a>
+      <a href="https://youtube.com/@VGCREATIVE_254" target="_blank" class="cl"><div class="cl-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.5 6.5s-.3-2-1.2-2.8C20.2 2.5 19 2.5 18.4 2.4 15.5 2.2 12 2.2 12 2.2s-3.5 0-6.4.2c-.6.1-1.8.1-2.9 1.3C1.8 4.5 1.5 6.5 1.5 6.5S1.2 8.8 1.2 11v2c0 2.2.3 4.5.3 4.5s.3 2 1.2 2.8c1.1 1.2 2.5 1.1 3.2 1.3C8 21.8 12 21.8 12 21.8s3.5 0 6.4-.2c.6-.1 1.8-.1 2.9-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.5v-2c0-2.2-.3-4.5-.3-4.5zM9.7 15.5v-7l6.6 3.5-6.6 3.5z"/></svg></div><span class="cl-txt">@VGCREATIVE_254 on YouTube</span></a>
     </div>
   </div>
   <div class="reveal">
@@ -794,11 +1042,11 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
       </div>
       <div><label class="f-lbl">Project Details</label><textarea class="f-ta" id="fD" placeholder="Tell us about your vision, preferred shoot date, location…"></textarea></div>
       <div class="f-btns">
-        <button class="btn-p" data-cursor="SEND" onclick="sendWA()" style="flex:1;justify-content:center;">
+        <button class="btn-p" onclick="sendWA()" style="flex:1;justify-content:center;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.122 1.524 5.855L.057 23.885l6.184-1.623A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0"/></svg>
           Book via WhatsApp
         </button>
-        <a href="mailto:vgcreative.ke@gmail.com" class="btn-g" data-cursor="SEND" style="flex:1;justify-content:center;">Email Us</a>
+        <a href="mailto:vgcreative.ke@gmail.com" class="btn-g" style="flex:1;justify-content:center;">Email Us</a>
       </div>
     </div>
   </div>
@@ -806,105 +1054,22 @@ footer{padding:3.5rem 5rem;border-top:1px solid var(--line);display:grid;grid-te
 
 <!-- FOOTER -->
 <footer>
-  <div class="ft-logo">VG <em>Creative</em><sup>®</sup></div>
+  <div class="ft-logo">VG Creative<sup>®</sup></div>
   <p class="ft-copy">© 2026 VG Creative · Nairobi, Kenya · All Rights Reserved</p>
   <div class="ft-soc">
-    <a href="https://instagram.com/gshots.ke" target="_blank" aria-label="Instagram" data-cursor="OPEN"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
-    <a href="https://youtube.com/@VGCREATIVE_254" target="_blank" aria-label="YouTube" data-cursor="OPEN"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.5 6.5s-.3-2-1.2-2.8C20.2 2.5 19 2.5 18.4 2.4 15.5 2.2 12 2.2 12 2.2s-3.5 0-6.4.2c-.6.1-1.8.1-2.9 1.3C1.8 4.5 1.5 6.5 1.5 6.5S1.2 8.8 1.2 11v2c0 2.2.3 4.5.3 4.5s.3 2 1.2 2.8c1.1 1.2 2.5 1.1 3.2 1.3C8 21.8 12 21.8 12 21.8s3.5 0 6.4-.2c.6-.1 1.8-.1 2.9-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.5v-2c0-2.2-.3-4.5-.3-4.5zM9.7 15.5v-7l6.6 3.5-6.6 3.5z"/></svg></a>
-    <a href="https://wa.me/254727519292" target="_blank" aria-label="WhatsApp" data-cursor="OPEN"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.122 1.524 5.855L.057 23.885l6.184-1.623A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0"/></svg></a>
+    <a href="https://instagram.com/gshots.ke" target="_blank" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+    <a href="https://youtube.com/@VGCREATIVE_254" target="_blank" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.5 6.5s-.3-2-1.2-2.8C20.2 2.5 19 2.5 18.4 2.4 15.5 2.2 12 2.2 12 2.2s-3.5 0-6.4.2c-.6.1-1.8.1-2.9 1.3C1.8 4.5 1.5 6.5 1.5 6.5S1.2 8.8 1.2 11v2c0 2.2.3 4.5.3 4.5s.3 2 1.2 2.8c1.1 1.2 2.5 1.1 3.2 1.3C8 21.8 12 21.8 12 21.8s3.5 0 6.4-.2c.6-.1 1.8-.1 2.9-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.5v-2c0-2.2-.3-4.5-.3-4.5zM9.7 15.5v-7l6.6 3.5-6.6 3.5z"/></svg></a>
+    <a href="https://wa.me/254727519292" target="_blank" aria-label="WhatsApp"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884M12 0C5.373 0 0 5.373 0 12c0 2.126.554 4.122 1.524 5.855L.057 23.885l6.184-1.623A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0"/></svg></a>
   </div>
 </footer>
 
 <script>
-/* ── Portfolio data: 26 unique videos (a duplicate entry in the original list was removed) ── */
-const VIDEOS=[
-["F35yQKWsU3o","sm","YANG TEECHA — No Location ft Eastlando Benz na Prado (Official Video) Dir. G_Shots"],
-["f2qbH7FtZp8","xl","Rayo KE — For You (Official Video)"],
-["zJ3Ru3ywkhI","sm","Taliwan ft Capo To Di Top — Dirty Money (Official Music Video)"],
-["W299vfE_cxc","xl","YANG TEECHA — Badness ft Kaiza.6 (Official Video) Dir. Gshots"],
-["Qf06Pbwy-3g","sm","UncoJingJong — Sidung (Royalty Badness)"],
-["afe55nNr4OM","xl","Metro Stunna × Mastar VK — Badman Crazy II"],
-["NKfbyPKZgVI","sm","Amateur Moves — Metro Stunna ft Virusi Mbaya"],
-["R4lqAjjTC40","xl","Rayo KE — Mistake (Official Music Video)"],
-["Va1t6fob00Q","sm","Dak-Drilla ft Khan (Official Video)"],
-["EOpASUt26iQ","sm","Metro Stunna — Shhh ft Kaiza6"],
-["u4IZ0foQ52A","xl","Rayo KE — Tamasha (Official Video)"],
-["36h91UqRZeA","sm","Rayo KE — Cheap"],
-["vL1WWAcw6SM","lg","Mastar VK — Shagla Proper ft Metro Stunna"],
-["gXWRo1kTnTA","sm","Kaiza 6 — No Sense (Official Visualizer)"],
-["pcWzT3ZW3s4","lg","Metro Stunna — Benelli"],
-["vHbjIJHruxs","sm","Ebola Mkuu — Babaa ft Raps254"],
-["HhrwBmER4Ek","xl","Kaiza6 — Doom ft Mad Bullet (Dir. Vinty)"],
-["XSxpeSG0XCA","lg","Metro Stunna — Money on My Head ft Kaiza6"],
-["Wcx6DTnctQc","sm","Metro Stunna — Gonga (Visualizer)"],
-["WPHpy1cd0JA","lg","Metro Stunna — Chopsticks"],
-["Y16KDSWQt9c","sm","Wayahudi — Atis Alert"],
-["zp9VH6kBjts","xl","Get Io Doh (Music Video)"],
-["sIKG-cT0tBY","lg","Wizzoh33 — Sijai Tense (Visualizer)"],
-["eo1xX_-asCk","sm","Wizzoh33 — Madem wa Nairobi"],
-["_YZ9xJqEW1s","lg","Edu Young × K Druu — Sirudi Home"],
-["YvK7ntdXgzo","sm","Hopestar — Amezaliwa Mwana"]
-];
-const pTrack=document.getElementById('pTrack');
-VIDEOS.forEach((v,i)=>{
-  const [id,size,title]=v;
-  const n=String(i+1).padStart(2,'0');
-  const card=document.createElement('div');
-  card.className='vc '+size;
-  card.dataset.vid=id;
-  card.dataset.cursor='PLAY';
-  card.innerHTML=`
-    <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/${id}/maxresdefault.jpg')"></div>
-    <div class="vc-overlay"></div>
-    <span class="cf cf-tl"></span><span class="cf cf-tr"></span><span class="cf cf-bl"></span><span class="cf cf-br"></span>
-    <div class="vc-play"><svg width="16" height="18" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--amber)"/></svg></div>
-    <div class="vc-rec"><span class="rec-dot"></span>REC</div>
-    <div class="vc-info">
-      <div class="vc-n">TAKE ${n}</div>
-      <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-      <div class="vc-t">${title}</div>
-    </div>
-    <iframe data-src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allowfullscreen allow="autoplay" loading="lazy"></iframe>`;
-  pTrack.appendChild(card);
-});
-document.getElementById('vCount').textContent=VIDEOS.length+' videos';
-
-/* ── Reduced motion check ── */
-const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 /* ── Custom cursor ── */
-const curDot=document.getElementById('cur-dot'),curFrame=document.getElementById('cur-frame'),curLbl=document.getElementById('cur-lbl'),spot=document.getElementById('spot');
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring'),lbl=document.getElementById('cur-label'),spot=document.getElementById('spotlight');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX;my=e.clientY;
-  curDot.style.left=mx+'px';curDot.style.top=my+'px';
-  spot.style.setProperty('--mx',mx+'px');spot.style.setProperty('--my',my+'px');
-});
-(function animCur(){
-  if(reduceMotion){rx=mx;ry=my;}else{rx+=(mx-rx)*.14;ry+=(my-ry)*.14;}
-  curFrame.style.left=rx+'px';curFrame.style.top=ry+'px';
-  curLbl.style.left=rx+'px';curLbl.style.top=ry+'px';
-  requestAnimationFrame(animCur);
-})();
-document.querySelectorAll('[data-cursor]').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{document.body.classList.add('cur-active');curLbl.textContent=el.dataset.cursor;});
-  el.addEventListener('mouseleave',()=>{document.body.classList.remove('cur-active');curLbl.textContent='';});
-});
-
-/* ── Live timecode (hero HUD) ── */
-const tcEl=document.getElementById('tc');
-const t0=Date.now();
-function pad(n){return String(n).padStart(2,'0');}
-function tickTC(){
-  const el=Date.now()-t0;
-  const h=Math.floor(el/3600000);
-  const m=Math.floor(el/60000)%60;
-  const s=Math.floor(el/1000)%60;
-  const f=Math.floor((el%1000)/1000*24);
-  tcEl.textContent=pad(h)+':'+pad(m)+':'+pad(s)+':'+pad(f);
-}
-setInterval(tickTC,80);
-tickTC();
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';spot.style.setProperty('--mx',mx+'px');spot.style.setProperty('--my',my+'px');});
+(function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';lbl.style.left=rx+'px';lbl.style.top=ry+'px';requestAnimationFrame(anim);})();
+document.querySelectorAll('.vc').forEach(c=>{c.addEventListener('mouseenter',()=>document.body.classList.add('cplay'));c.addEventListener('mouseleave',()=>document.body.classList.remove('cplay'));});
 
 /* ── Nav scroll ── */
 const nav=document.getElementById('nav');
@@ -918,16 +1083,7 @@ const obs=new IntersectionObserver((entries)=>{entries.forEach((e)=>{if(e.isInte
 document.querySelectorAll('.reveal,.reveal-l,.stat').forEach(el=>obs.observe(el));
 
 /* ── Stat counters ── */
-function animCount(el,target){
-  let st=null;
-  function step(ts){
-    if(!st)st=ts;
-    const p=Math.min((ts-st)/1600,1),ease=1-Math.pow(1-p,4);
-    el.textContent=String(Math.floor(ease*target)).padStart(2,'0');
-    if(p<1)requestAnimationFrame(step);else el.textContent=target+'+';
-  }
-  requestAnimationFrame(step);
-}
+function animCount(el,target){let st=null;function step(ts){if(!st)st=ts;const p=Math.min((ts-st)/1800,1),ease=1-Math.pow(1-p,4);el.textContent=Math.floor(ease*target);if(p<1)requestAnimationFrame(step);else el.textContent=target+'+';}requestAnimationFrame(step);}
 const sObs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){animCount(e.target.querySelector('.stat-num'),+e.target.querySelector('.stat-num').dataset.target);sObs.unobserve(e.target);}});},{threshold:.5});
 document.querySelectorAll('.stat').forEach(s=>sObs.observe(s));
 
@@ -937,24 +1093,26 @@ let drag=false,sx,sl,didDrag=false;
 pt.addEventListener('mousedown',e=>{drag=true;didDrag=false;sx=e.pageX-pt.offsetLeft;sl=pt.scrollLeft;});
 document.addEventListener('mouseup',()=>drag=false);
 pt.addEventListener('mousemove',e=>{if(!drag)return;e.preventDefault();const dx=e.pageX-pt.offsetLeft-sx;if(Math.abs(dx)>4)didDrag=true;pt.scrollLeft=sl-dx*1.2;});
-pt.addEventListener('scroll',()=>{const m=pt.scrollWidth-pt.clientWidth;sp.style.width=(m>0?pt.scrollLeft/m*100:0)+'%';});
+pt.addEventListener('scroll',()=>{const m=pt.scrollWidth-pt.clientWidth;sp.style.width=(pt.scrollLeft/m*100)+'%';});
 
-/* ── Click-to-play ── */
-pTrack.addEventListener('click',function(e){
-  const card=e.target.closest('.vc');
-  if(!card)return;
-  if(didDrag){didDrag=false;return;}
-  const wasPlaying=card.classList.contains('playing');
-  document.querySelectorAll('.vc.playing').forEach(c=>{
-    c.classList.remove('playing');
-    c.dataset.cursor='PLAY';
-    c.querySelector('iframe').src='';
+/* ── CLICK-TO-PLAY fix ──
+   On click: stop any other playing card, inject src into iframe, add .playing class */
+document.querySelectorAll('.vc').forEach(card=>{
+  card.addEventListener('click',function(e){
+    if(didDrag){didDrag=false;return;}
+    const wasPlaying=this.classList.contains('playing');
+    /* Stop all other cards */
+    document.querySelectorAll('.vc.playing').forEach(c=>{
+      c.classList.remove('playing');
+      const f=c.querySelector('iframe');
+      f.src='';
+    });
+    if(!wasPlaying){
+      this.classList.add('playing');
+      const f=this.querySelector('iframe');
+      f.src=f.dataset.src;
+    }
   });
-  if(!wasPlaying){
-    card.classList.add('playing');
-    card.dataset.cursor='PAUSE';
-    card.querySelector('iframe').src=card.querySelector('iframe').dataset.src;
-  }
 });
 
 /* ── Contact helpers ── */
