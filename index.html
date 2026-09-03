@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VG Creative — Nairobi's Premier Videographers</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,600;1,300&family=Barlow:wght@300;400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <style>
     :root {
       --black:#050505; --white:#f2ede8; --gold:#c8a84b; --gold2:#e5c96a;
@@ -286,6 +287,40 @@
       body{cursor:auto;}
       #cur,#cur-ring,#cur-label,#spotlight{display:none;}
     }
+
+    /* ===== ADMIN (Studio Login / content manager) ===== */
+    .ft-admin-link{background:none;border:none;color:var(--muted);font-family:var(--FB);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;padding:.5rem 0 0;margin:0;display:inline-block;transition:color .2s;}
+    .ft-admin-link:hover{color:var(--gold);}
+    .adm-scrim{position:fixed;inset:0;background:rgba(5,5,5,.88);backdrop-filter:blur(6px);z-index:9000;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .2s;cursor:auto;}
+    .adm-scrim.open{opacity:1;pointer-events:auto;}
+    .adm-box{background:var(--dim2);border:1px solid rgba(200,168,75,.25);width:100%;max-width:380px;padding:2.5rem 2rem;position:relative;}
+    .adm-panel{background:var(--dim2);border:1px solid rgba(200,168,75,.25);width:100%;max-width:960px;max-height:88vh;overflow-y:auto;position:relative;padding:2rem;}
+    .adm-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);font-size:1.6rem;cursor:pointer;line-height:1;}
+    .adm-close:hover{color:var(--gold);}
+    .adm-ttl{font-family:var(--F);font-size:1.5rem;letter-spacing:.05em;color:var(--gold);margin-bottom:1.5rem;}
+    .adm-lbl{display:block;font-family:var(--FB);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;}
+    .adm-inp,.adm-sel,.adm-txt{width:100%;background:var(--black);border:1px solid rgba(200,168,75,.2);color:var(--white);padding:.7rem .9rem;font-family:var(--FN);font-size:.88rem;margin-bottom:1rem;}
+    .adm-txt{resize:vertical;min-height:80px;line-height:1.5;}
+    .adm-btn{font-family:var(--FB);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;padding:.7rem 1.4rem;border:1px solid var(--gold);background:none;color:var(--gold);cursor:pointer;transition:all .25s;}
+    .adm-btn:hover{background:var(--gold);color:var(--black);}
+    .adm-btn.small{padding:.4rem .8rem;font-size:.68rem;}
+    .adm-btn.danger{border-color:#c85050;color:#e07d7d;}
+    .adm-btn.danger:hover{background:#c85050;color:var(--black);}
+    .adm-err{color:#e07d7d;font-size:.78rem;margin:-.5rem 0 1rem;min-height:1em;}
+    .adm-tabs{display:flex;gap:.3rem;margin-bottom:1.5rem;border-bottom:1px solid rgba(200,168,75,.15);flex-wrap:wrap;}
+    .adm-tab{background:none;border:none;color:var(--muted);font-family:var(--FB);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding:.7rem .9rem;cursor:pointer;border-bottom:2px solid transparent;}
+    .adm-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+    .adm-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.75rem;}
+    .adm-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:var(--black);border:1px solid rgba(200,168,75,.1);padding:.75rem 1rem;}
+    .adm-row-main{font-size:.85rem;color:var(--white);}
+    .adm-row-sub{font-size:.72rem;color:var(--muted);margin-top:.15rem;}
+    .adm-row-actions{display:flex;gap:.5rem;flex-shrink:0;}
+    .adm-form-ttl{font-family:var(--FB);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:1.5rem 0 1rem;}
+    .adm-grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 1rem;}
+    .adm-note{font-size:.72rem;color:var(--muted);}
+    .adm-toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--gold);color:var(--black);padding:.8rem 1.3rem;font-family:var(--FB);font-size:.78rem;letter-spacing:.08em;z-index:9500;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;max-width:280px;}
+    .adm-toast.show{opacity:1;transform:translateY(0);}
+    @media(max-width:640px){.adm-grid2{grid-template-columns:1fr;}.adm-panel{max-height:92vh;padding:1.25rem;}.adm-box{padding:2rem 1.5rem;}}
   </style>
 </head>
 <body>
@@ -368,280 +403,11 @@
     <a href="https://youtube.com/@VGCREATIVE_254" target="_blank" class="view-all">Full Channel <svg width="16" height="10" viewBox="0 0 16 10"><path d="M10 1l5 4-5 4M1 5h14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></a>
   </div>
   <div class="port-wrap">
-    <div class="port-track" id="pTrack">
-
-      <!-- Each .vc card: thumbnail + click = plays iframe -->
-      <!-- Format: data-vid="YOUTUBE_ID" -->
-
-      <div class="vc xl" data-vid="f2qbH7FtZp8">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/f2qbH7FtZp8/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">01</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">RAYO KE - FOR YOU (OFFICIAL VIDEO)</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/f2qbH7FtZp8?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc sm" data-vid="NKfbyPKZgVI">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/NKfbyPKZgVI/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">02</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Amateur Moves — Metro Stunna ft Virusi Mbaya</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/NKfbyPKZgVI?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc xl" data-vid="R4lqAjjTC40">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/R4lqAjjTC40/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">03</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">RAYO KE MISTAKE (OFFICIAL MUSIC VIDEO)</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/R4lqAjjTC40?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc sm" data-vid="Va1t6fob00Q">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/Va1t6fob00Q/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">04</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Dak-Drilla ft Khan (official Video)</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/Va1t6fob00Q?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc sm" data-vid="EOpASUt26iQ">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/EOpASUt26iQ/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">05</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Metro Stunna — Shhh ft Kaiza6 (Alt)</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/EOpASUt26iQ?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc xl" data-vid="u4IZ0foQ52A">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/u4IZ0foQ52A/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">06</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Rayo KE — Tamasha (Official Video)</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/u4IZ0foQ52A?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc sm" data-vid="36h91UqRZeA">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/36h91UqRZeA/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">07</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Rayo KE — Cheap</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/36h91UqRZeA?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc xl" data-vid="afe55nNr4OM">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/afe55nNr4OM/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">08</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Metro Stunna × Mastar VK — Badman Crazy II</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/afe55nNr4OM?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc lg" data-vid="vL1WWAcw6SM">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/vL1WWAcw6SM/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">09</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Mastar VK — Shagla Proper ft Metro Stunna</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/vL1WWAcw6SM?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc sm" data-vid="1HQg5AHC5tk">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/1HQg5AHC5tk/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">10</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Amaru — Back Biters</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/1HQg5AHC5tk?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc lg" data-vid="pcWzT3ZW3s4">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/pcWzT3ZW3s4/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">11</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Metro Stunna — Benelli</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/pcWzT3ZW3s4?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc sm" data-vid="vHbjIJHruxs">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/vHbjIJHruxs/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">12</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Ebola Mkuu — Babaa ft Raps254</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/vHbjIJHruxs?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc xl" data-vid="HhrwBmER4Ek">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/HhrwBmER4Ek/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">13</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Kaiza6 — Doom ft Mad Bullet (Dir. Vinty)</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/HhrwBmER4Ek?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc lg" data-vid="XSxpeSG0XCA">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/XSxpeSG0XCA/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">14</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Metro Stunna — Money on My Head ft Kaiza6</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/XSxpeSG0XCA?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc sm" data-vid="Wcx6DTnctQc">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/Wcx6DTnctQc/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">15</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Metro Stunna — Gonga (Visualizer)</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/Wcx6DTnctQc?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc lg" data-vid="WPHpy1cd0JA">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/WPHpy1cd0JA/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">16</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Metro Stunna — Chopsticks</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/WPHpy1cd0JA?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc sm" data-vid="Y16KDSWQt9c">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/Y16KDSWQt9c/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">17</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Wayahudi — Atis Alert</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/Y16KDSWQt9c?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc xl" data-vid="zp9VH6kBjts">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/zp9VH6kBjts/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">18</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Get Io Doh (Music Video)</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/zp9VH6kBjts?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc lg" data-vid="sIKG-cT0tBY">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/sIKG-cT0tBY/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">19</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Wizzoh33 — Sijai Tense (Visualizer)</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/sIKG-cT0tBY?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc sm" data-vid="eo1xX_-asCk">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/eo1xX_-asCk/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">20</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Wizzoh33 — Madem wa Nairobi</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/eo1xX_-asCk?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc lg" data-vid="_YZ9xJqEW1s">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/_YZ9xJqEW1s/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">21</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Edu Young × K Druu — Sirudi Home</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/_YZ9xJqEW1s?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-      <div class="vc sm" data-vid="YvK7ntdXgzo">
-        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/YvK7ntdXgzo/maxresdefault.jpg')"></div>
-        <div class="vc-overlay"></div>
-        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
-        <div class="vc-info">
-          <div class="vc-n">22</div>
-          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
-          <div class="vc-t">Hopestar — Amezaliwa Mwana</div>
-        </div>
-        <iframe data-src="https://www.youtube.com/embed/YvK7ntdXgzo?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-      </div>
-
-    </div>
+    <div class="port-track" id="pTrack"></div>
     <div class="scrl-ind">
       <div class="scrl-hint"><svg width="14" height="10" viewBox="0 0 14 10"><path d="M8 1l5 4-5 4M1 5h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg> Drag to explore</div>
       <div class="scrl-trk"><div class="scrl-prg" id="sPrg"></div></div>
-      <span class="scrl-ct">22 videos</span>
+      <span class="scrl-ct" id="scrlCt">22 videos</span>
     </div>
   </div>
 </section>
@@ -685,187 +451,23 @@
     </div>
   </div>
 
-  <div class="pkg-grid-top">
-    <div class="rc-card reveal">
-      <p class="rc-tag">Entry Level</p>
-      <h3 class="rc-name">Street Visual</h3>
-      <div class="rc-price"><span class="rc-cur">KES</span>10K</div>
-      <p class="rc-sub">Clean visuals to get you started</p>
-      <p class="rc-pitch">Best for quick drops &amp; first-time artists</p>
-      <ul class="rc-feats">
-        <li>Single location</li>
-        <li>Performance-based shoot</li>
-        <li>Natural / basic lighting</li>
-        <li>Clean edit + color</li>
-        <li>1 music video</li>
-      </ul>
-      <button class="rc-btn" onclick="selectPkg('Street Visual — KES 10,000')">Book This Package</button>
-    </div>
-    <div class="rc-card reveal" style="transition-delay:.05s">
-      <p class="rc-tag">Starter</p>
-      <h3 class="rc-name">One Take</h3>
-      <div class="rc-price"><span class="rc-cur">KES</span>15K</div>
-      <p class="rc-sub">Simple. Sharp. Effective.</p>
-      <p class="rc-pitch">Clean performance visuals with structure</p>
-      <ul class="rc-feats">
-        <li>1 Cinema Camera</li>
-        <li>1–2 Lights</li>
-        <li>Single location</li>
-        <li>Full song video</li>
-        <li>Smooth edit + color</li>
-      </ul>
-      <button class="rc-btn" onclick="selectPkg('One Take — KES 15,000')">Book This Package</button>
-    </div>
-    <div class="rc-card feat reveal" style="transition-delay:.1s">
-      <p class="rc-tag">Most Popular</p>
-      <h3 class="rc-name">Performance Pack</h3>
-      <div class="rc-price"><span class="rc-cur">KES</span>20K</div>
-      <p class="rc-sub">Best balance between quality &amp; cost</p>
-      <p class="rc-pitch">Most artists choose this package</p>
-      <ul class="rc-feats">
-        <li>1 Cinema Camera</li>
-        <li>2–3 Light Setup</li>
-        <li>1–2 Locations</li>
-        <li>Cinematic edit + color</li>
-        <li>Full music video</li>
-        <li>1 Short clip (TikTok/Reels)</li>
-      </ul>
-      <button class="rc-btn" onclick="selectPkg('Performance Pack — KES 20,000')">Book This Package</button>
-    </div>
-    <div class="rc-card reveal" style="transition-delay:.15s">
-      <p class="rc-tag">Story-Driven</p>
-      <h3 class="rc-name">Director's Cut</h3>
-      <div class="rc-price"><span class="rc-cur">KES</span>30K</div>
-      <p class="rc-sub">Turn your song into a story</p>
-      <p class="rc-pitch">For artists who want storytelling, not just performance</p>
-      <ul class="rc-feats">
-        <li>Cinema-style shooting</li>
-        <li>3-Light setup</li>
-        <li>2–3 Locations</li>
-        <li>Creative direction included</li>
-        <li>Advanced edit + color</li>
-        <li>2–3 Social clips</li>
-      </ul>
-      <button class="rc-btn" onclick="selectPkg('Director\'s Cut — KES 30,000')">Book This Package</button>
-    </div>
-  </div>
+  <div class="pkg-grid-top" id="pkgTop"></div>
 
-  <div class="pkg-grid-bot">
-    <div class="rc-card reveal">
-      <p class="rc-tag">Industry Level</p>
-      <h3 class="rc-name">Cinema Experience</h3>
-      <div class="rc-price"><span class="rc-cur">KES</span>45K</div>
-      <p class="rc-sub">Designed for serious releases</p>
-      <p class="rc-pitch">For artists who want to dominate their market</p>
-      <ul class="rc-feats">
-        <li>Full lighting setup</li>
-        <li>Multi-scene production</li>
-        <li>Story-driven visuals</li>
-        <li>Pro edit + color grade</li>
-        <li>BTS footage included</li>
-        <li>3–4 Short clips</li>
-      </ul>
-      <button class="rc-btn" onclick="selectPkg('Cinema Experience — KES 45,000')">Book This Package</button>
-    </div>
-    <div class="rc-card reveal" style="transition-delay:.1s">
-      <p class="rc-tag">Premium</p>
-      <h3 class="rc-name">Visual Masterpiece</h3>
-      <div class="rc-price"><span class="rc-cur">KES</span>60K</div>
-      <p class="rc-sub">The full cinematic experience</p>
-      <p class="rc-pitch">For serious artists only</p>
-      <ul class="rc-feats">
-        <li>Multi-location shoot</li>
-        <li>Multi-angle coverage</li>
-        <li>Full concept execution</li>
-        <li>4 Lights + LED Panels</li>
-        <li>Smoke Machine FX</li>
-        <li>Pro color grade · 4K export</li>
-        <li>5+ Social clips</li>
-      </ul>
-      <button class="rc-btn" onclick="selectPkg('Visual Masterpiece — KES 60,000')">Book This Package</button>
-    </div>
-    <div class="rc-card elite reveal" style="transition-delay:.2s">
-      <p class="rc-tag">Mainstream</p>
-      <h3 class="rc-name">Elite Artist</h3>
-      <div class="rc-price"><span class="rc-cur">KES</span>90K<span style="font-size:1.5rem;color:rgba(200,168,75,.5)">+</span></div>
-      <p class="rc-sub">Built for mainstream attention</p>
-      <p class="rc-pitch">Premium visuals for premium artists</p>
-      <ul class="rc-feats">
-        <li>Full production planning</li>
-        <li>Creative direction + concept</li>
-        <li>Styling guidance</li>
-        <li>Multi-day shoot</li>
-        <li>BTS + rollout content</li>
-        <li>Priority delivery</li>
-        <li>6–10 Promo clips</li>
-      </ul>
-      <button class="rc-btn" onclick="selectPkg('Elite Artist Package — KES 90,000+')">Book This Package</button>
-    </div>
-  </div>
+  <div class="pkg-grid-bot" id="pkgBot"></div>
 
   <div class="addons-section reveal">
     <div style="margin-bottom:2rem;">
       <p class="sec-lbl">Customize Your Shoot</p>
       <h3 class="sec-ttl" style="font-size:clamp(2rem,4vw,3.5rem);">Add-Ons</h3>
     </div>
-    <div class="addons-grid">
-      <div class="addon-item"><span class="addon-name">Extra Location</span><span class="addon-price">+3K</span></div>
-      <div class="addon-item"><span class="addon-name">Extra Shoot Day</span><span class="addon-price">+8K</span></div>
-      <div class="addon-item"><span class="addon-name">Drone Shots</span><span class="addon-price">+5K</span></div>
-      <div class="addon-item"><span class="addon-name">Models / Vixens</span><span class="addon-price">+3K–10K</span></div>
-      <div class="addon-item"><span class="addon-name">BTS Video</span><span class="addon-price">+2K</span></div>
-      <div class="addon-item"><span class="addon-name">Express Delivery (24–48h)</span><span class="addon-price">+3K</span></div>
-      <div class="addon-item"><span class="addon-name">Cover Art Design</span><span class="addon-price">+2K</span></div>
-      <div class="addon-item"><span class="addon-name">Lyric Video</span><span class="addon-price">+4K</span></div>
-      <div class="addon-item"><span class="addon-name">Smoke Machine FX</span><span class="addon-price">+2K</span></div>
-    </div>
+    <div class="addons-grid" id="addonsGrid"></div>
   </div>
 
   <div style="margin-bottom:2rem;" class="reveal">
     <p class="sec-lbl">Special Packages</p>
     <h3 class="sec-ttl" style="font-size:clamp(2rem,4vw,3.5rem);">Bundles &amp; Plans</h3>
   </div>
-  <div class="bundles-grid">
-    <div class="bundle-card reveal">
-      <div class="bundle-icon">📱</div>
-      <div class="bundle-name">Viral Content Pack</div>
-      <div class="bundle-price"><span style="font-size:1rem;vertical-align:super;">KES</span>12K</div>
-      <div class="bundle-sub">Push your music where it matters</div>
-      <ul class="bundle-feats">
-        <li>3 Short Videos</li>
-        <li>Fast, trend-based edits</li>
-        <li>TikTok + Reels optimized</li>
-        <li>Built for engagement &amp; reach</li>
-      </ul>
-      <button class="rc-btn" onclick="selectPkg('Viral Content Pack — KES 12,000')">Book This Package</button>
-    </div>
-    <div class="bundle-card reveal" style="transition-delay:.1s">
-      <div class="bundle-icon">🔁</div>
-      <div class="bundle-name">Artist Growth Plan</div>
-      <div class="bundle-price"><span style="font-size:1rem;vertical-align:super;">KES</span>40K<span style="font-size:1.2rem;color:rgba(200,168,75,.5)">/mo</span></div>
-      <div class="bundle-sub">Stay consistent &amp; visible</div>
-      <ul class="bundle-feats">
-        <li>2 Shoots monthly</li>
-        <li>6–10 Short videos</li>
-        <li>Priority booking</li>
-        <li>Monthly content calendar</li>
-      </ul>
-      <button class="rc-btn" onclick="selectPkg('Artist Growth Plan — KES 40,000/month')">Book This Package</button>
-    </div>
-    <div class="bundle-card reveal" style="transition-delay:.2s">
-      <div class="bundle-icon">🚀</div>
-      <div class="bundle-name">Full Release Kit</div>
-      <div class="bundle-price"><span style="font-size:1rem;vertical-align:super;">KES</span>50K</div>
-      <div class="bundle-sub">Everything for a proper drop</div>
-      <ul class="bundle-feats">
-        <li>Full music video</li>
-        <li>Cover art design</li>
-        <li>5 Promo clips</li>
-        <li>Social media ready</li>
-      </ul>
-      <button class="rc-btn" onclick="selectPkg('Full Release Kit — KES 50,000')">Book This Package</button>
-    </div>
-  </div>
+  <div class="bundles-grid" id="bundlesGrid"></div>
 
   <div class="notes-bar reveal">
     <div class="note-item">50% deposit to secure booking</div>
@@ -964,24 +566,7 @@
         <div><label class="f-lbl">Your Phone</label><input class="f-inp" id="fP" type="tel" placeholder="07XX XXX XXX"/></div>
       </div>
       <div><label class="f-lbl">Select Package</label>
-        <select class="f-sel" id="fS">
-          <option value="">Choose a package</option>
-          <optgroup label="Main Packages">
-            <option>Street Visual — KES 10,000</option>
-            <option>One Take — KES 15,000</option>
-            <option>Performance Pack — KES 20,000</option>
-            <option>Director's Cut — KES 30,000</option>
-            <option>Cinema Experience — KES 45,000</option>
-            <option>Visual Masterpiece — KES 60,000</option>
-            <option>Elite Artist Package — KES 90,000+</option>
-          </optgroup>
-          <optgroup label="Special Bundles">
-            <option>Viral Content Pack — KES 12,000</option>
-            <option>Artist Growth Plan — KES 40,000/month</option>
-            <option>Full Release Kit — KES 50,000</option>
-          </optgroup>
-          <option>Custom / Let's Talk</option>
-        </select>
+        <select class="f-sel" id="fS"></select>
       </div>
       <div><label class="f-lbl">Project Details</label><textarea class="f-ta" id="fD" placeholder="Tell us about your vision, preferred shoot date, location…"></textarea></div>
       <div class="f-btns">
@@ -999,6 +584,7 @@
 <footer>
   <div class="ft-logo">VG Creative<sup>®</sup></div>
   <p class="ft-copy">© 2026 VG Creative · Nairobi, Kenya · All Rights Reserved</p>
+  <button type="button" id="adminOpenBtn" class="ft-admin-link">Studio Login</button>
   <div class="ft-soc">
     <a href="https://instagram.com/gshots.ke" target="_blank" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
     <a href="https://youtube.com/@VGCREATIVE_254" target="_blank" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.5 6.5s-.3-2-1.2-2.8C20.2 2.5 19 2.5 18.4 2.4 15.5 2.2 12 2.2 12 2.2s-3.5 0-6.4.2c-.6.1-1.8.1-2.9 1.3C1.8 4.5 1.5 6.5 1.5 6.5S1.2 8.8 1.2 11v2c0 2.2.3 4.5.3 4.5s.3 2 1.2 2.8c1.1 1.2 2.5 1.1 3.2 1.3C8 21.8 12 21.8 12 21.8s3.5 0 6.4-.2c.6-.1 1.8-.1 2.9-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.3.3-4.5v-2c0-2.2-.3-4.5-.3-4.5zM9.7 15.5v-7l6.6 3.5-6.6 3.5z"/></svg></a>
@@ -1006,26 +592,41 @@
   </div>
 </footer>
 
-<script type="module">
-/* ── Lead capture (Supabase) ──
-   Public-facing insert only: this key can only INSERT into the `leads`
-   table (see the RLS policy set up in Supabase), it cannot read, edit,
-   or delete anything — so it's safe to ship in a static page like this. */
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-const supabase = createClient(
-  "https://zegwpgvifwqvlnsjavxt.supabase.co",
-  "sb_publishable_i6GmJ4Pv1wsJhwvUzZpgiQ_bNjqQ1Rg"
-);
-window.saveLead = async (lead) => {
-  const { error } = await supabase.from("leads").insert({
-    name: lead.name || null,
-    phone: lead.phone || null,
-    package: lead.package || null,
-    project_details: lead.project_details || null,
-  });
-  if (error) console.error("Lead save failed", error);
-};
-</script>
+<!-- ADMIN LOGIN -->
+<div class="adm-scrim" id="admLoginScrim">
+  <div class="adm-box">
+    <button class="adm-close" id="admLoginClose" type="button" aria-label="Close">&times;</button>
+    <div class="adm-ttl">Studio Login</div>
+    <label class="adm-lbl">Password</label>
+    <input class="adm-inp" id="admPassword" type="password" autocomplete="current-password" />
+    <div class="adm-err" id="admLoginErr"></div>
+    <button class="adm-btn" id="admLoginBtn" type="button" style="width:100%;">Log In</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="adm-scrim" id="admPanelScrim">
+  <div class="adm-panel">
+    <button class="adm-close" id="admPanelClose" type="button" aria-label="Close">&times;</button>
+    <div class="adm-ttl">Studio Content Manager</div>
+    <div class="adm-tabs">
+      <button class="adm-tab active" data-tab="Portfolio" type="button">Portfolio</button>
+      <button class="adm-tab" data-tab="Packages" type="button">Packages</button>
+      <button class="adm-tab" data-tab="Bundles" type="button">Bundles</button>
+      <button class="adm-tab" data-tab="Addons" type="button">Add-Ons</button>
+    </div>
+    <div id="admTabPortfolio" class="adm-tabpane"></div>
+    <div id="admTabPackages" class="adm-tabpane" style="display:none;"></div>
+    <div id="admTabBundles" class="adm-tabpane" style="display:none;"></div>
+    <div id="admTabAddons" class="adm-tabpane" style="display:none;"></div>
+    <div style="margin-top:1rem;border-top:1px solid rgba(200,168,75,.15);padding-top:1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem;">
+      <span class="adm-note">Changes save straight to the live site.</span>
+      <button class="adm-btn small" id="admLogoutBtn" type="button">Log Out</button>
+    </div>
+  </div>
+</div>
+<div class="adm-toast" id="admToast"></div>
+
 
 <script>
 /* ── Custom cursor ── */
@@ -1033,7 +634,6 @@ const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring'
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';spot.style.setProperty('--mx',mx+'px');spot.style.setProperty('--my',my+'px');});
 (function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';lbl.style.left=rx+'px';lbl.style.top=ry+'px';requestAnimationFrame(anim);})();
-document.querySelectorAll('.vc').forEach(c=>{c.addEventListener('mouseenter',()=>document.body.classList.add('cplay'));c.addEventListener('mouseleave',()=>document.body.classList.remove('cplay'));});
 
 /* ── Nav scroll ── */
 const nav=document.getElementById('nav');
@@ -1059,41 +659,11 @@ document.addEventListener('mouseup',()=>drag=false);
 pt.addEventListener('mousemove',e=>{if(!drag)return;e.preventDefault();const dx=e.pageX-pt.offsetLeft-sx;if(Math.abs(dx)>4)didDrag=true;pt.scrollLeft=sl-dx*1.2;});
 pt.addEventListener('scroll',()=>{const m=pt.scrollWidth-pt.clientWidth;sp.style.width=(pt.scrollLeft/m*100)+'%';});
 
-/* ── CLICK-TO-PLAY fix ──
-   On click: stop any other playing card, inject src into iframe, add .playing class */
-document.querySelectorAll('.vc').forEach(card=>{
-  card.addEventListener('click',function(e){
-    if(didDrag){didDrag=false;return;}
-    const wasPlaying=this.classList.contains('playing');
-    /* Stop all other cards */
-    document.querySelectorAll('.vc.playing').forEach(c=>{
-      c.classList.remove('playing');
-      const f=c.querySelector('iframe');
-      f.src='';
-    });
-    if(!wasPlaying){
-      this.classList.add('playing');
-      const f=this.querySelector('iframe');
-      f.src=f.dataset.src;
-    }
-  });
-});
-
 /* ── Contact helpers ── */
 function selectPkg(pkg){document.getElementById('fS').value=pkg;document.getElementById('contact').scrollIntoView({behavior:'smooth'});}
-
-/* Fire-and-forget lead capture: saves the same details that go into the
-   WhatsApp message into Supabase's `leads` table so they show up in the
-   management dashboard too. window.saveLead is defined in the module
-   script below — if it's not ready yet (or the request fails/is offline),
-   we swallow the error and let WhatsApp open regardless, since reaching
-   the studio is the priority, not the CRM copy. */
 function sendWA(){
   const n=document.getElementById('fN').value.trim(),p=document.getElementById('fP').value.trim(),s=document.getElementById('fS').value,d=document.getElementById('fD').value.trim();
   if(!s){alert('Please select a package first.');return;}
-  if(window.saveLead){
-    window.saveLead({ name: n, phone: p, package: s, project_details: d }).catch(()=>{});
-  }
   let m='Hey VG Creative! \u{1F3AC}\n\n';
   if(n)m+='*Name:* '+n+'\n';
   if(p)m+='*Phone:* '+p+'\n';
@@ -1103,5 +673,880 @@ function sendWA(){
   window.open('https://wa.me/254727519292?text='+encodeURIComponent(m),'_blank');
 }
 </script>
+
+<script>
+/* ===========================================================================
+   VG CREATIVE — CONTENT BACKEND
+   Portfolio videos and Packages/Bundles/Add-ons are stored in a Supabase
+   table ("site_content") and edited through the "Studio Login" panel in
+   the footer. See ADMIN-SETUP.md for the one-time Supabase setup.
+   =========================================================================== */
+const sbClient = window.supabase.createClient(
+  'https://zegwpgvifwqvlnsjavxt.supabase.co',
+  'sb_publishable_i6GmJ4Pv1wsJhwvUzZpgiQ_bNjqQ1Rg'
+);
+const ADMIN_EMAIL = 'admin@vgcreative.studio';
+
+function escapeHtml(s){
+  return String(s==null?'':s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+function jsStr(s){ return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+function uid(){ return Math.random().toString(36).slice(2,10); }
+
+const DEFAULT_PORTFOLIO = [
+  {
+    "id": "v1",
+    "vid": "f2qbH7FtZp8",
+    "title": "RAYO KE - FOR YOU (OFFICIAL VIDEO)",
+    "size": "xl"
+  },
+  {
+    "id": "v2",
+    "vid": "NKfbyPKZgVI",
+    "title": "Amateur Moves — Metro Stunna ft Virusi Mbaya",
+    "size": "sm"
+  },
+  {
+    "id": "v3",
+    "vid": "R4lqAjjTC40",
+    "title": "RAYO KE MISTAKE (OFFICIAL MUSIC VIDEO)",
+    "size": "xl"
+  },
+  {
+    "id": "v4",
+    "vid": "Va1t6fob00Q",
+    "title": "Dak-Drilla ft Khan (official Video)",
+    "size": "sm"
+  },
+  {
+    "id": "v5",
+    "vid": "EOpASUt26iQ",
+    "title": "Metro Stunna — Shhh ft Kaiza6 (Alt)",
+    "size": "sm"
+  },
+  {
+    "id": "v6",
+    "vid": "u4IZ0foQ52A",
+    "title": "Rayo KE — Tamasha (Official Video)",
+    "size": "xl"
+  },
+  {
+    "id": "v7",
+    "vid": "36h91UqRZeA",
+    "title": "Rayo KE — Cheap",
+    "size": "sm"
+  },
+  {
+    "id": "v8",
+    "vid": "afe55nNr4OM",
+    "title": "Metro Stunna × Mastar VK — Badman Crazy II",
+    "size": "xl"
+  },
+  {
+    "id": "v9",
+    "vid": "vL1WWAcw6SM",
+    "title": "Mastar VK — Shagla Proper ft Metro Stunna",
+    "size": "lg"
+  },
+  {
+    "id": "v10",
+    "vid": "1HQg5AHC5tk",
+    "title": "Amaru — Back Biters",
+    "size": "sm"
+  },
+  {
+    "id": "v11",
+    "vid": "pcWzT3ZW3s4",
+    "title": "Metro Stunna — Benelli",
+    "size": "lg"
+  },
+  {
+    "id": "v12",
+    "vid": "vHbjIJHruxs",
+    "title": "Ebola Mkuu — Babaa ft Raps254",
+    "size": "sm"
+  },
+  {
+    "id": "v13",
+    "vid": "HhrwBmER4Ek",
+    "title": "Kaiza6 — Doom ft Mad Bullet (Dir. Vinty)",
+    "size": "xl"
+  },
+  {
+    "id": "v14",
+    "vid": "XSxpeSG0XCA",
+    "title": "Metro Stunna — Money on My Head ft Kaiza6",
+    "size": "lg"
+  },
+  {
+    "id": "v15",
+    "vid": "Wcx6DTnctQc",
+    "title": "Metro Stunna — Gonga (Visualizer)",
+    "size": "sm"
+  },
+  {
+    "id": "v16",
+    "vid": "WPHpy1cd0JA",
+    "title": "Metro Stunna — Chopsticks",
+    "size": "lg"
+  },
+  {
+    "id": "v17",
+    "vid": "Y16KDSWQt9c",
+    "title": "Wayahudi — Atis Alert",
+    "size": "sm"
+  },
+  {
+    "id": "v18",
+    "vid": "zp9VH6kBjts",
+    "title": "Get Io Doh (Music Video)",
+    "size": "xl"
+  },
+  {
+    "id": "v19",
+    "vid": "sIKG-cT0tBY",
+    "title": "Wizzoh33 — Sijai Tense (Visualizer)",
+    "size": "lg"
+  },
+  {
+    "id": "v20",
+    "vid": "eo1xX_-asCk",
+    "title": "Wizzoh33 — Madem wa Nairobi",
+    "size": "sm"
+  },
+  {
+    "id": "v21",
+    "vid": "_YZ9xJqEW1s",
+    "title": "Edu Young × K Druu — Sirudi Home",
+    "size": "lg"
+  },
+  {
+    "id": "v22",
+    "vid": "YvK7ntdXgzo",
+    "title": "Hopestar — Amezaliwa Mwana",
+    "size": "sm"
+  }
+];
+const DEFAULT_PACKAGES = [
+  {
+    "id": "p1",
+    "group": "top",
+    "tag": "Entry Level",
+    "name": "Street Visual",
+    "price": "10K",
+    "priceSuffix": "",
+    "sub": "Clean visuals to get you started",
+    "pitch": "Best for quick drops & first-time artists",
+    "feats": [
+      "Single location",
+      "Performance-based shoot",
+      "Natural / basic lighting",
+      "Clean edit + color",
+      "1 music video"
+    ],
+    "style": "",
+    "bookLabel": "Street Visual — KES 10,000"
+  },
+  {
+    "id": "p2",
+    "group": "top",
+    "tag": "Starter",
+    "name": "One Take",
+    "price": "15K",
+    "priceSuffix": "",
+    "sub": "Simple. Sharp. Effective.",
+    "pitch": "Clean performance visuals with structure",
+    "feats": [
+      "1 Cinema Camera",
+      "1–2 Lights",
+      "Single location",
+      "Full song video",
+      "Smooth edit + color"
+    ],
+    "style": "",
+    "bookLabel": "One Take — KES 15,000"
+  },
+  {
+    "id": "p3",
+    "group": "top",
+    "tag": "Most Popular",
+    "name": "Performance Pack",
+    "price": "20K",
+    "priceSuffix": "",
+    "sub": "Best balance between quality & cost",
+    "pitch": "Most artists choose this package",
+    "feats": [
+      "1 Cinema Camera",
+      "2–3 Light Setup",
+      "1–2 Locations",
+      "Cinematic edit + color",
+      "Full music video",
+      "1 Short clip (TikTok/Reels)"
+    ],
+    "style": "feat",
+    "bookLabel": "Performance Pack — KES 20,000"
+  },
+  {
+    "id": "p4",
+    "group": "top",
+    "tag": "Story-Driven",
+    "name": "Director's Cut",
+    "price": "30K",
+    "priceSuffix": "",
+    "sub": "Turn your song into a story",
+    "pitch": "For artists who want storytelling, not just performance",
+    "feats": [
+      "Cinema-style shooting",
+      "3-Light setup",
+      "2–3 Locations",
+      "Creative direction included",
+      "Advanced edit + color",
+      "2–3 Social clips"
+    ],
+    "style": "",
+    "bookLabel": "Director's Cut — KES 30,000"
+  },
+  {
+    "id": "p5",
+    "group": "bot",
+    "tag": "Industry Level",
+    "name": "Cinema Experience",
+    "price": "45K",
+    "priceSuffix": "",
+    "sub": "Designed for serious releases",
+    "pitch": "For artists who want to dominate their market",
+    "feats": [
+      "Full lighting setup",
+      "Multi-scene production",
+      "Story-driven visuals",
+      "Pro edit + color grade",
+      "BTS footage included",
+      "3–4 Short clips"
+    ],
+    "style": "",
+    "bookLabel": "Cinema Experience — KES 45,000"
+  },
+  {
+    "id": "p6",
+    "group": "bot",
+    "tag": "Premium",
+    "name": "Visual Masterpiece",
+    "price": "60K",
+    "priceSuffix": "",
+    "sub": "The full cinematic experience",
+    "pitch": "For serious artists only",
+    "feats": [
+      "Multi-location shoot",
+      "Multi-angle coverage",
+      "Full concept execution",
+      "4 Lights + LED Panels",
+      "Smoke Machine FX",
+      "Pro color grade · 4K export",
+      "5+ Social clips"
+    ],
+    "style": "",
+    "bookLabel": "Visual Masterpiece — KES 60,000"
+  },
+  {
+    "id": "p7",
+    "group": "bot",
+    "tag": "Mainstream",
+    "name": "Elite Artist",
+    "price": "90K",
+    "priceSuffix": "+",
+    "sub": "Built for mainstream attention",
+    "pitch": "Premium visuals for premium artists",
+    "feats": [
+      "Full production planning",
+      "Creative direction + concept",
+      "Styling guidance",
+      "Multi-day shoot",
+      "BTS + rollout content",
+      "Priority delivery",
+      "6–10 Promo clips"
+    ],
+    "style": "elite",
+    "bookLabel": "Elite Artist Package — KES 90,000+"
+  }
+];
+const DEFAULT_BUNDLES = [
+  {
+    "id": "b1",
+    "icon": "📱",
+    "name": "Viral Content Pack",
+    "price": "12K",
+    "priceSuffix": "",
+    "sub": "Push your music where it matters",
+    "feats": [
+      "3 Short Videos",
+      "Fast, trend-based edits",
+      "TikTok + Reels optimized",
+      "Built for engagement & reach"
+    ],
+    "bookLabel": "Viral Content Pack — KES 12,000"
+  },
+  {
+    "id": "b2",
+    "icon": "🔁",
+    "name": "Artist Growth Plan",
+    "price": "40K",
+    "priceSuffix": "/mo",
+    "sub": "Stay consistent & visible",
+    "feats": [
+      "2 Shoots monthly",
+      "6–10 Short videos",
+      "Priority booking",
+      "Monthly content calendar"
+    ],
+    "bookLabel": "Artist Growth Plan — KES 40,000/month"
+  },
+  {
+    "id": "b3",
+    "icon": "🚀",
+    "name": "Full Release Kit",
+    "price": "50K",
+    "priceSuffix": "",
+    "sub": "Everything for a proper drop",
+    "feats": [
+      "Full music video",
+      "Cover art design",
+      "5 Promo clips",
+      "Social media ready"
+    ],
+    "bookLabel": "Full Release Kit — KES 50,000"
+  }
+];
+const DEFAULT_ADDONS = [
+  {
+    "id": "a1",
+    "name": "Extra Location",
+    "price": "+3K"
+  },
+  {
+    "id": "a2",
+    "name": "Extra Shoot Day",
+    "price": "+8K"
+  },
+  {
+    "id": "a3",
+    "name": "Drone Shots",
+    "price": "+5K"
+  },
+  {
+    "id": "a4",
+    "name": "Models / Vixens",
+    "price": "+3K–10K"
+  },
+  {
+    "id": "a5",
+    "name": "BTS Video",
+    "price": "+2K"
+  },
+  {
+    "id": "a6",
+    "name": "Express Delivery (24–48h)",
+    "price": "+3K"
+  },
+  {
+    "id": "a7",
+    "name": "Cover Art Design",
+    "price": "+2K"
+  },
+  {
+    "id": "a8",
+    "name": "Lyric Video",
+    "price": "+4K"
+  },
+  {
+    "id": "a9",
+    "name": "Smoke Machine FX",
+    "price": "+2K"
+  }
+];
+
+let state = {
+  portfolio: JSON.parse(JSON.stringify(DEFAULT_PORTFOLIO)),
+  packages: JSON.parse(JSON.stringify(DEFAULT_PACKAGES)),
+  bundles: JSON.parse(JSON.stringify(DEFAULT_BUNDLES)),
+  addons: JSON.parse(JSON.stringify(DEFAULT_ADDONS)),
+};
+
+/* ---------------------------------------------------------------------
+   RENDERING — builds the public-facing sections from `state`
+   --------------------------------------------------------------------- */
+function wireVideoCards(){
+  document.querySelectorAll('.vc').forEach(card=>{
+    card.addEventListener('mouseenter',()=>document.body.classList.add('cplay'));
+    card.addEventListener('mouseleave',()=>document.body.classList.remove('cplay'));
+    card.addEventListener('click',function(e){
+      if(typeof didDrag!=='undefined' && didDrag){ didDrag=false; return; }
+      const wasPlaying=this.classList.contains('playing');
+      document.querySelectorAll('.vc.playing').forEach(x=>{x.classList.remove('playing');const f=x.querySelector('iframe');f.src='';});
+      if(!wasPlaying){this.classList.add('playing');const f=this.querySelector('iframe');f.src=f.dataset.src;}
+    });
+  });
+}
+
+function renderPortfolio(){
+  const track=document.getElementById('pTrack');
+  track.innerHTML = state.portfolio.map((v,idx)=>`
+      <div class="vc ${v.size}" data-vid="${v.vid}">
+        <div class="vc-thumb" style="background-image:url('https://img.youtube.com/vi/${v.vid}/maxresdefault.jpg')"></div>
+        <div class="vc-overlay"></div>
+        <div class="vc-playbtn"><svg width="18" height="20" viewBox="0 0 18 20" fill="none"><path d="M2 2l14 8-14 8V2z" fill="var(--gold)"/></svg></div>
+        <div class="vc-info">
+          <div class="vc-n">${String(idx+1).padStart(2,'0')}</div>
+          <div class="vc-play-lbl"><svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 3-6 3V1z" fill="currentColor"/></svg> Play</div>
+          <div class="vc-t">${escapeHtml(v.title)}</div>
+        </div>
+        <iframe data-src="https://www.youtube.com/embed/${v.vid}?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe>
+      </div>`).join('');
+  const ct=document.getElementById('scrlCt');
+  if(ct) ct.textContent = state.portfolio.length + ' videos';
+  wireVideoCards();
+}
+
+function rcCardHTML(p,i){
+  const styleClass = p.style ? (' '+p.style) : '';
+  const delay = i>0 ? ` style="transition-delay:${Math.min(i*0.05,0.3).toFixed(2)}s"` : '';
+  const suffix = p.priceSuffix ? `<span style="font-size:1.5rem;color:rgba(200,168,75,.5)">${escapeHtml(p.priceSuffix)}</span>` : '';
+  return `<div class="rc-card${styleClass} reveal"${delay}>
+      <p class="rc-tag">${escapeHtml(p.tag)}</p>
+      <h3 class="rc-name">${escapeHtml(p.name)}</h3>
+      <div class="rc-price"><span class="rc-cur">KES</span>${escapeHtml(p.price)}${suffix}</div>
+      <p class="rc-sub">${escapeHtml(p.sub)}</p>
+      <p class="rc-pitch">${escapeHtml(p.pitch)}</p>
+      <ul class="rc-feats">${(p.feats||[]).map(f=>`<li>${escapeHtml(f)}</li>`).join('')}</ul>
+      <button class="rc-btn" onclick="selectPkg('${jsStr(p.bookLabel)}')">Book This Package</button>
+    </div>`;
+}
+
+function renderPackages(){
+  const top = state.packages.filter(p=>p.group==='top');
+  const bot = state.packages.filter(p=>p.group==='bot');
+  document.getElementById('pkgTop').innerHTML = top.map(rcCardHTML).join('');
+  document.getElementById('pkgBot').innerHTML = bot.map(rcCardHTML).join('');
+  document.querySelectorAll('#pkgTop .reveal, #pkgBot .reveal').forEach(el=>obs.observe(el));
+}
+
+function renderBundles(){
+  document.getElementById('bundlesGrid').innerHTML = state.bundles.map((b,i)=>{
+    const delay = i>0 ? ` style="transition-delay:${Math.min(i*0.1,0.3).toFixed(2)}s"` : '';
+    const suffix = b.priceSuffix ? `<span style="font-size:1.2rem;color:rgba(200,168,75,.5)">${escapeHtml(b.priceSuffix)}</span>` : '';
+    return `<div class="bundle-card reveal"${delay}>
+        <div class="bundle-icon">${b.icon||''}</div>
+        <div class="bundle-name">${escapeHtml(b.name)}</div>
+        <div class="bundle-price"><span style="font-size:1rem;vertical-align:super;">KES</span>${escapeHtml(b.price)}${suffix}</div>
+        <div class="bundle-sub">${escapeHtml(b.sub)}</div>
+        <ul class="bundle-feats">${(b.feats||[]).map(f=>`<li>${escapeHtml(f)}</li>`).join('')}</ul>
+        <button class="rc-btn" onclick="selectPkg('${jsStr(b.bookLabel)}')">Book This Package</button>
+      </div>`;
+  }).join('');
+  document.querySelectorAll('#bundlesGrid .reveal').forEach(el=>obs.observe(el));
+}
+
+function renderAddons(){
+  document.getElementById('addonsGrid').innerHTML = state.addons.map(a=>
+    `<div class="addon-item"><span class="addon-name">${escapeHtml(a.name)}</span><span class="addon-price">${escapeHtml(a.price)}</span></div>`
+  ).join('');
+}
+
+function renderPackageOptions(){
+  const sel=document.getElementById('fS');
+  let html = '<option value="">Choose a package</option><optgroup label="Main Packages">';
+  state.packages.forEach(p=>{ html += `<option>${escapeHtml(p.bookLabel)}</option>`; });
+  html += '</optgroup><optgroup label="Special Bundles">';
+  state.bundles.forEach(b=>{ html += `<option>${escapeHtml(b.bookLabel)}</option>`; });
+  html += '</optgroup><option>Custom / Let\'s Talk</option>';
+  sel.innerHTML = html;
+}
+
+function renderAll(){
+  renderPortfolio();
+  renderPackages();
+  renderBundles();
+  renderAddons();
+  renderPackageOptions();
+}
+renderAll(); /* paint immediately with current known content, no flash of empty page */
+
+/* ---------------------------------------------------------------------
+   SUPABASE — load & save
+   --------------------------------------------------------------------- */
+async function loadContent(){
+  try{
+    const {data,error} = await sbClient.from('site_content').select('*').eq('id','main').single();
+    if(!error && data){
+      let changed=false;
+      if(Array.isArray(data.portfolio)){ state.portfolio=data.portfolio; changed=true; }
+      if(Array.isArray(data.packages)){ state.packages=data.packages; changed=true; }
+      if(Array.isArray(data.bundles)){ state.bundles=data.bundles; changed=true; }
+      if(Array.isArray(data.addons)){ state.addons=data.addons; changed=true; }
+      if(changed) renderAll();
+    }
+  }catch(e){ /* offline, or Supabase table not set up yet — the defaults already rendered */ }
+}
+loadContent();
+
+async function saveContent(){
+  const {error} = await sbClient.from('site_content').update({
+    portfolio: state.portfolio,
+    packages: state.packages,
+    bundles: state.bundles,
+    addons: state.addons,
+    updated_at: new Date().toISOString()
+  }).eq('id','main');
+  if(error){ toast('Save failed — check the Supabase setup (see ADMIN-SETUP.md).'); return false; }
+  toast('Saved — live on the site.');
+  return true;
+}
+
+function toast(msg){
+  const t=document.getElementById('admToast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+/* ---------------------------------------------------------------------
+   ADMIN — login
+   --------------------------------------------------------------------- */
+const admLoginScrim=document.getElementById('admLoginScrim');
+const admPanelScrim=document.getElementById('admPanelScrim');
+
+document.getElementById('adminOpenBtn').addEventListener('click',()=>{
+  document.getElementById('admPassword').value='';
+  document.getElementById('admLoginErr').textContent='';
+  admLoginScrim.classList.add('open');
+  document.getElementById('admPassword').focus();
+});
+document.getElementById('admLoginClose').addEventListener('click',()=>admLoginScrim.classList.remove('open'));
+document.getElementById('admPanelClose').addEventListener('click',()=>admPanelScrim.classList.remove('open'));
+document.getElementById('admLoginBtn').addEventListener('click', doLogin);
+document.getElementById('admPassword').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+
+async function doLogin(){
+  const pw=document.getElementById('admPassword').value;
+  const errEl=document.getElementById('admLoginErr');
+  if(!pw){ errEl.textContent='Enter the password.'; return; }
+  errEl.textContent='Checking…';
+  const {error} = await sbClient.auth.signInWithPassword({email:ADMIN_EMAIL, password:pw});
+  if(error){ errEl.textContent='Incorrect password.'; return; }
+  errEl.textContent='';
+  admLoginScrim.classList.remove('open');
+  openAdminPanel();
+}
+
+document.getElementById('admLogoutBtn').addEventListener('click', async ()=>{
+  await sbClient.auth.signOut();
+  admPanelScrim.classList.remove('open');
+});
+
+document.querySelectorAll('.adm-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.adm-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.adm-tabpane').forEach(p=>p.style.display='none');
+    document.getElementById('admTab'+tab.dataset.tab).style.display='block';
+  });
+});
+
+function openAdminPanel(){
+  renderAdminPortfolio();
+  renderAdminPackages();
+  renderAdminBundles();
+  renderAdminAddons();
+  admPanelScrim.classList.add('open');
+}
+
+/* ---- Portfolio admin ---- */
+function extractYouTubeId(input){
+  const m = input.match(/(?:youtu\.be\/|v=|\/embed\/|shorts\/)([A-Za-z0-9_-]{6,})/);
+  if(m) return m[1];
+  if(/^[A-Za-z0-9_-]{6,}$/.test(input)) return input;
+  return null;
+}
+
+function renderAdminPortfolio(){
+  const wrap=document.getElementById('admTabPortfolio');
+  wrap.innerHTML = `
+    <div class="adm-list">${state.portfolio.map(v=>`
+      <div class="adm-row">
+        <div><div class="adm-row-main">${escapeHtml(v.title)}</div><div class="adm-row-sub">YouTube ID: ${escapeHtml(v.vid)} · Size: ${v.size}</div></div>
+        <div class="adm-row-actions">
+          <button class="adm-btn small" data-edit="${v.id}" type="button">Edit</button>
+          <button class="adm-btn small danger" data-del="${v.id}" type="button">Remove</button>
+        </div>
+      </div>`).join('') || '<p class="adm-note">No videos yet.</p>'}</div>
+    <div class="adm-form-ttl" id="pfFormTtl">Add a video</div>
+    <label class="adm-lbl">Title</label>
+    <input class="adm-inp" id="pfTitle" placeholder="e.g. Artist Name — Song (Official Video)" />
+    <label class="adm-lbl">YouTube video URL or ID</label>
+    <input class="adm-inp" id="pfVid" placeholder="https://youtube.com/watch?v=... or just the ID" />
+    <label class="adm-lbl">Card size</label>
+    <select class="adm-sel" id="pfSize">
+      <option value="sm">Small</option>
+      <option value="lg">Large</option>
+      <option value="xl" selected>Extra Large</option>
+    </select>
+    <input type="hidden" id="pfEditId" />
+    <div style="display:flex;gap:.6rem;">
+      <button class="adm-btn" id="pfSaveBtn" type="button">Add Video</button>
+      <button class="adm-btn small" id="pfCancelBtn" type="button" style="display:none;">Cancel Edit</button>
+    </div>`;
+
+  wrap.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>{
+    const v=state.portfolio.find(x=>x.id===b.dataset.edit); if(!v)return;
+    document.getElementById('pfTitle').value=v.title;
+    document.getElementById('pfVid').value=v.vid;
+    document.getElementById('pfSize').value=v.size;
+    document.getElementById('pfEditId').value=v.id;
+    document.getElementById('pfFormTtl').textContent='Edit video';
+    document.getElementById('pfSaveBtn').textContent='Save Changes';
+    document.getElementById('pfCancelBtn').style.display='inline-block';
+  }));
+  wrap.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(!confirm('Remove this video from the portfolio?')) return;
+    state.portfolio=state.portfolio.filter(x=>x.id!==b.dataset.del);
+    renderPortfolio(); renderAdminPortfolio();
+    await saveContent();
+  }));
+  document.getElementById('pfCancelBtn').addEventListener('click',()=>renderAdminPortfolio());
+  document.getElementById('pfSaveBtn').addEventListener('click', async ()=>{
+    const title=document.getElementById('pfTitle').value.trim();
+    const vidRaw=document.getElementById('pfVid').value.trim();
+    const size=document.getElementById('pfSize').value;
+    const editId=document.getElementById('pfEditId').value;
+    if(!title||!vidRaw){ toast('Add a title and a YouTube link or ID.'); return; }
+    const vid=extractYouTubeId(vidRaw);
+    if(!vid){ toast('Could not read that YouTube link — try pasting just the video ID.'); return; }
+    if(editId){
+      const item=state.portfolio.find(x=>x.id===editId);
+      if(item) Object.assign(item,{title,vid,size});
+    } else {
+      state.portfolio.push({id:uid(),title,vid,size});
+    }
+    renderPortfolio(); renderAdminPortfolio();
+    await saveContent();
+  });
+}
+
+/* ---- Packages admin ---- */
+function renderAdminPackages(){
+  const wrap=document.getElementById('admTabPackages');
+  wrap.innerHTML = `
+    <div class="adm-list">${state.packages.map(p=>`
+      <div class="adm-row">
+        <div><div class="adm-row-main">${escapeHtml(p.name)} — KES ${escapeHtml(p.price)}${p.priceSuffix?escapeHtml(p.priceSuffix):''}</div><div class="adm-row-sub">${p.group==='top'?'Top row':'Bottom row'}${p.style?' · '+escapeHtml(p.style):''}</div></div>
+        <div class="adm-row-actions">
+          <button class="adm-btn small" data-edit="${p.id}" type="button">Edit</button>
+          <button class="adm-btn small danger" data-del="${p.id}" type="button">Remove</button>
+        </div>
+      </div>`).join('') || '<p class="adm-note">No packages yet.</p>'}</div>
+    <div class="adm-form-ttl" id="pkFormTtl">Add a package</div>
+    <div class="adm-grid2">
+      <div><label class="adm-lbl">Tag (small label)</label><input class="adm-inp" id="pkTag" placeholder="e.g. Entry Level" /></div>
+      <div><label class="adm-lbl">Package name</label><input class="adm-inp" id="pkName" placeholder="e.g. Street Visual" /></div>
+      <div><label class="adm-lbl">Price (e.g. 10K)</label><input class="adm-inp" id="pkPrice" placeholder="10K" /></div>
+      <div><label class="adm-lbl">Price suffix (optional, e.g. +)</label><input class="adm-inp" id="pkSuffix" placeholder="" /></div>
+    </div>
+    <label class="adm-lbl">Subtitle</label>
+    <input class="adm-inp" id="pkSub" placeholder="Short subtitle" />
+    <label class="adm-lbl">Pitch line</label>
+    <input class="adm-inp" id="pkPitch" placeholder="Who this package is for" />
+    <label class="adm-lbl">Features (one per line)</label>
+    <textarea class="adm-txt" id="pkFeats" placeholder="1 Cinema Camera&#10;2 Locations"></textarea>
+    <div class="adm-grid2">
+      <div><label class="adm-lbl">Row placement</label>
+        <select class="adm-sel" id="pkGroup"><option value="top">Top row</option><option value="bot">Bottom row</option></select></div>
+      <div><label class="adm-lbl">Highlight style</label>
+        <select class="adm-sel" id="pkStyle"><option value="">None</option><option value="feat">Most Popular (gold)</option><option value="elite">Elite (outlined)</option></select></div>
+    </div>
+    <label class="adm-lbl">Booking label (sent via WhatsApp)</label>
+    <input class="adm-inp" id="pkBookLabel" placeholder="e.g. Street Visual — KES 10,000" />
+    <input type="hidden" id="pkEditId" />
+    <div style="display:flex;gap:.6rem;">
+      <button class="adm-btn" id="pkSaveBtn" type="button">Add Package</button>
+      <button class="adm-btn small" id="pkCancelBtn" type="button" style="display:none;">Cancel Edit</button>
+    </div>`;
+
+  wrap.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>{
+    const p=state.packages.find(x=>x.id===b.dataset.edit); if(!p)return;
+    document.getElementById('pkTag').value=p.tag;
+    document.getElementById('pkName').value=p.name;
+    document.getElementById('pkPrice').value=p.price;
+    document.getElementById('pkSuffix').value=p.priceSuffix||'';
+    document.getElementById('pkSub').value=p.sub;
+    document.getElementById('pkPitch').value=p.pitch;
+    document.getElementById('pkFeats').value=(p.feats||[]).join('\n');
+    document.getElementById('pkGroup').value=p.group;
+    document.getElementById('pkStyle').value=p.style||'';
+    document.getElementById('pkBookLabel').value=p.bookLabel;
+    document.getElementById('pkEditId').value=p.id;
+    document.getElementById('pkFormTtl').textContent='Edit package';
+    document.getElementById('pkSaveBtn').textContent='Save Changes';
+    document.getElementById('pkCancelBtn').style.display='inline-block';
+  }));
+  wrap.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(!confirm('Remove this package?')) return;
+    state.packages=state.packages.filter(x=>x.id!==b.dataset.del);
+    renderPackages(); renderPackageOptions(); renderAdminPackages();
+    await saveContent();
+  }));
+  document.getElementById('pkCancelBtn').addEventListener('click',()=>renderAdminPackages());
+  document.getElementById('pkSaveBtn').addEventListener('click', async ()=>{
+    const tag=document.getElementById('pkTag').value.trim();
+    const name=document.getElementById('pkName').value.trim();
+    const price=document.getElementById('pkPrice').value.trim();
+    const priceSuffix=document.getElementById('pkSuffix').value.trim();
+    const sub=document.getElementById('pkSub').value.trim();
+    const pitch=document.getElementById('pkPitch').value.trim();
+    const feats=document.getElementById('pkFeats').value.split('\n').map(s=>s.trim()).filter(Boolean);
+    const group=document.getElementById('pkGroup').value;
+    const style=document.getElementById('pkStyle').value;
+    const bookLabel=document.getElementById('pkBookLabel').value.trim();
+    const editId=document.getElementById('pkEditId').value;
+    if(!name||!price||!feats.length||!bookLabel){ toast('Fill in at least name, price, one feature and the booking label.'); return; }
+    if(editId){
+      const item=state.packages.find(x=>x.id===editId);
+      if(item) Object.assign(item,{tag,name,price,priceSuffix,sub,pitch,feats,group,style,bookLabel});
+    } else {
+      state.packages.push({id:uid(),tag,name,price,priceSuffix,sub,pitch,feats,group,style,bookLabel});
+    }
+    renderPackages(); renderPackageOptions(); renderAdminPackages();
+    await saveContent();
+  });
+}
+
+/* ---- Bundles admin ---- */
+function renderAdminBundles(){
+  const wrap=document.getElementById('admTabBundles');
+  wrap.innerHTML = `
+    <div class="adm-list">${state.bundles.map(b=>`
+      <div class="adm-row">
+        <div class="adm-row-main">${b.icon||''} ${escapeHtml(b.name)} — KES ${escapeHtml(b.price)}${b.priceSuffix?escapeHtml(b.priceSuffix):''}</div>
+        <div class="adm-row-actions">
+          <button class="adm-btn small" data-edit="${b.id}" type="button">Edit</button>
+          <button class="adm-btn small danger" data-del="${b.id}" type="button">Remove</button>
+        </div>
+      </div>`).join('') || '<p class="adm-note">No bundles yet.</p>'}</div>
+    <div class="adm-form-ttl" id="bnFormTtl">Add a bundle</div>
+    <div class="adm-grid2">
+      <div><label class="adm-lbl">Icon (emoji)</label><input class="adm-inp" id="bnIcon" placeholder="🚀" /></div>
+      <div><label class="adm-lbl">Name</label><input class="adm-inp" id="bnName" placeholder="e.g. Viral Content Pack" /></div>
+      <div><label class="adm-lbl">Price (e.g. 12K)</label><input class="adm-inp" id="bnPrice" placeholder="12K" /></div>
+      <div><label class="adm-lbl">Price suffix (optional, e.g. /mo)</label><input class="adm-inp" id="bnSuffix" placeholder="" /></div>
+    </div>
+    <label class="adm-lbl">Subtitle</label>
+    <input class="adm-inp" id="bnSub" placeholder="Short subtitle" />
+    <label class="adm-lbl">Features (one per line)</label>
+    <textarea class="adm-txt" id="bnFeats" placeholder="3 Short Videos&#10;Fast edits"></textarea>
+    <label class="adm-lbl">Booking label (sent via WhatsApp)</label>
+    <input class="adm-inp" id="bnBookLabel" placeholder="e.g. Viral Content Pack — KES 12,000" />
+    <input type="hidden" id="bnEditId" />
+    <div style="display:flex;gap:.6rem;">
+      <button class="adm-btn" id="bnSaveBtn" type="button">Add Bundle</button>
+      <button class="adm-btn small" id="bnCancelBtn" type="button" style="display:none;">Cancel Edit</button>
+    </div>`;
+
+  wrap.querySelectorAll('[data-edit]').forEach(b2=>b2.addEventListener('click',()=>{
+    const b=state.bundles.find(x=>x.id===b2.dataset.edit); if(!b)return;
+    document.getElementById('bnIcon').value=b.icon||'';
+    document.getElementById('bnName').value=b.name;
+    document.getElementById('bnPrice').value=b.price;
+    document.getElementById('bnSuffix').value=b.priceSuffix||'';
+    document.getElementById('bnSub').value=b.sub;
+    document.getElementById('bnFeats').value=(b.feats||[]).join('\n');
+    document.getElementById('bnBookLabel').value=b.bookLabel;
+    document.getElementById('bnEditId').value=b.id;
+    document.getElementById('bnFormTtl').textContent='Edit bundle';
+    document.getElementById('bnSaveBtn').textContent='Save Changes';
+    document.getElementById('bnCancelBtn').style.display='inline-block';
+  }));
+  wrap.querySelectorAll('[data-del]').forEach(b2=>b2.addEventListener('click', async ()=>{
+    if(!confirm('Remove this bundle?')) return;
+    state.bundles=state.bundles.filter(x=>x.id!==b2.dataset.del);
+    renderBundles(); renderPackageOptions(); renderAdminBundles();
+    await saveContent();
+  }));
+  document.getElementById('bnCancelBtn').addEventListener('click',()=>renderAdminBundles());
+  document.getElementById('bnSaveBtn').addEventListener('click', async ()=>{
+    const icon=document.getElementById('bnIcon').value.trim();
+    const name=document.getElementById('bnName').value.trim();
+    const price=document.getElementById('bnPrice').value.trim();
+    const priceSuffix=document.getElementById('bnSuffix').value.trim();
+    const sub=document.getElementById('bnSub').value.trim();
+    const feats=document.getElementById('bnFeats').value.split('\n').map(s=>s.trim()).filter(Boolean);
+    const bookLabel=document.getElementById('bnBookLabel').value.trim();
+    const editId=document.getElementById('bnEditId').value;
+    if(!name||!price||!feats.length||!bookLabel){ toast('Fill in name, price, one feature and the booking label.'); return; }
+    if(editId){
+      const item=state.bundles.find(x=>x.id===editId);
+      if(item) Object.assign(item,{icon,name,price,priceSuffix,sub,feats,bookLabel});
+    } else {
+      state.bundles.push({id:uid(),icon,name,price,priceSuffix,sub,feats,bookLabel});
+    }
+    renderBundles(); renderPackageOptions(); renderAdminBundles();
+    await saveContent();
+  });
+}
+
+/* ---- Add-ons admin ---- */
+function renderAdminAddons(){
+  const wrap=document.getElementById('admTabAddons');
+  wrap.innerHTML = `
+    <div class="adm-list">${state.addons.map(a=>`
+      <div class="adm-row">
+        <div class="adm-row-main">${escapeHtml(a.name)} — ${escapeHtml(a.price)}</div>
+        <div class="adm-row-actions">
+          <button class="adm-btn small" data-edit="${a.id}" type="button">Edit</button>
+          <button class="adm-btn small danger" data-del="${a.id}" type="button">Remove</button>
+        </div>
+      </div>`).join('') || '<p class="adm-note">No add-ons yet.</p>'}</div>
+    <div class="adm-form-ttl" id="adFormTtl">Add an add-on</div>
+    <div class="adm-grid2">
+      <div><label class="adm-lbl">Name</label><input class="adm-inp" id="adName" placeholder="e.g. Drone Shots" /></div>
+      <div><label class="adm-lbl">Price label</label><input class="adm-inp" id="adPrice" placeholder="e.g. +5K" /></div>
+    </div>
+    <input type="hidden" id="adEditId" />
+    <div style="display:flex;gap:.6rem;">
+      <button class="adm-btn" id="adSaveBtn" type="button">Add Add-On</button>
+      <button class="adm-btn small" id="adCancelBtn" type="button" style="display:none;">Cancel Edit</button>
+    </div>`;
+
+  wrap.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>{
+    const a=state.addons.find(x=>x.id===b.dataset.edit); if(!a)return;
+    document.getElementById('adName').value=a.name;
+    document.getElementById('adPrice').value=a.price;
+    document.getElementById('adEditId').value=a.id;
+    document.getElementById('adFormTtl').textContent='Edit add-on';
+    document.getElementById('adSaveBtn').textContent='Save Changes';
+    document.getElementById('adCancelBtn').style.display='inline-block';
+  }));
+  wrap.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(!confirm('Remove this add-on?')) return;
+    state.addons=state.addons.filter(x=>x.id!==b.dataset.del);
+    renderAddons(); renderAdminAddons();
+    await saveContent();
+  }));
+  document.getElementById('adCancelBtn').addEventListener('click',()=>renderAdminAddons());
+  document.getElementById('adSaveBtn').addEventListener('click', async ()=>{
+    const name=document.getElementById('adName').value.trim();
+    const price=document.getElementById('adPrice').value.trim();
+    const editId=document.getElementById('adEditId').value;
+    if(!name||!price){ toast('Add a name and a price label.'); return; }
+    if(editId){
+      const item=state.addons.find(x=>x.id===editId);
+      if(item) Object.assign(item,{name,price});
+    } else {
+      state.addons.push({id:uid(),name,price});
+    }
+    renderAddons(); renderAdminAddons();
+    await saveContent();
+  });
+}
+</script>
+
 </body>
 </html>
