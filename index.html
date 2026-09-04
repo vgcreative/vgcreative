@@ -1232,7 +1232,7 @@ async function doLogin(){
   if(!pw){ errEl.textContent='Enter the password.'; return; }
   errEl.textContent='Checking…';
   const {error} = await sbClient.auth.signInWithPassword({email:ADMIN_EMAIL, password:pw});
-  if(error){ errEl.textContent='Incorrect password.'; return; }
+  if(error){ errEl.textContent = error.message || 'Incorrect password.'; console.error('Login error:', error); return; }
   errEl.textContent='';
   admLoginScrim.classList.remove('open');
   openAdminPanel();
@@ -1252,7 +1252,10 @@ document.querySelectorAll('.adm-tab').forEach(tab=>{
   });
 });
 
+let editingPf=null, editingPk=null, editingBn=null, editingAd=null;
+
 function openAdminPanel(){
+  editingPf=null; editingPk=null; editingBn=null; editingAd=null;
   renderAdminPortfolio();
   renderAdminPackages();
   renderAdminBundles();
@@ -1267,281 +1270,342 @@ function extractYouTubeId(input){
   if(/^[A-Za-z0-9_-]{6,}$/.test(input)) return input;
   return null;
 }
+/* Automatic card-size rhythm: cycles xl -> sm -> lg -> sm -> xl ... based on
+   whatever size the last video in the grid currently has. First video is xl. */
+function nextVideoSize(){
+  const seq=['xl','sm','lg','sm'];
+  if(!state.portfolio.length) return 'xl';
+  const last=state.portfolio[state.portfolio.length-1].size;
+  const idx=seq.indexOf(last);
+  return seq[(idx>=0?idx+1:0)%seq.length];
+}
+function isDuplicateVideo(vid, excludeId){
+  return state.portfolio.some(v=>v.id!==excludeId && v.vid.toLowerCase()===vid.toLowerCase());
+}
 
 function renderAdminPortfolio(){
   const wrap=document.getElementById('admTabPortfolio');
   wrap.innerHTML = `
-    <div class="adm-list">${state.portfolio.map(v=>`
-      <div class="adm-row">
-        <div><div class="adm-row-main">${escapeHtml(v.title)}</div><div class="adm-row-sub">YouTube ID: ${escapeHtml(v.vid)} · Size: ${v.size}</div></div>
+    <div class="adm-form-ttl">Add a Video</div>
+    <label class="adm-lbl">Title</label>
+    <input class="adm-inp" id="pfNewTitle" placeholder="e.g. Artist Name — Song (Official Video)" />
+    <label class="adm-lbl">YouTube video URL or ID</label>
+    <input class="adm-inp" id="pfNewVid" placeholder="https://youtube.com/watch?v=... or just the ID" />
+    <div class="adm-err" id="pfNewErr"></div>
+    <button class="adm-btn" id="pfSaveBtn" type="button" style="margin-bottom:1.5rem;">Add Video</button>
+    <div class="adm-list">${state.portfolio.map(v=>{
+      if(v.id===editingPf){
+        return `<div class="adm-row" style="flex-direction:column;align-items:stretch;gap:.6rem;">
+          <label class="adm-lbl">Title</label>
+          <input class="adm-inp" id="pfEdit_${v.id}_Title" value="${escapeHtml(v.title)}" />
+          <label class="adm-lbl">YouTube video URL or ID</label>
+          <input class="adm-inp" id="pfEdit_${v.id}_Vid" value="${escapeHtml(v.vid)}" />
+          <div class="adm-err" id="pfEdit_${v.id}_Err"></div>
+          <div style="display:flex;gap:.6rem;">
+            <button class="adm-btn small" data-save-edit="${v.id}" type="button">Save</button>
+            <button class="adm-btn small" data-cancel-edit="${v.id}" type="button">Cancel</button>
+          </div>
+        </div>`;
+      }
+      return `<div class="adm-row">
+        <div><div class="adm-row-main">${escapeHtml(v.title)}</div><div class="adm-row-sub">YouTube ID: ${escapeHtml(v.vid)} · Size: ${v.size} (auto)</div></div>
         <div class="adm-row-actions">
           <button class="adm-btn small" data-edit="${v.id}" type="button">Edit</button>
           <button class="adm-btn small danger" data-del="${v.id}" type="button">Remove</button>
         </div>
-      </div>`).join('') || '<p class="adm-note">No videos yet.</p>'}</div>
-    <div class="adm-form-ttl" id="pfFormTtl">Add a video</div>
-    <label class="adm-lbl">Title</label>
-    <input class="adm-inp" id="pfTitle" placeholder="e.g. Artist Name — Song (Official Video)" />
-    <label class="adm-lbl">YouTube video URL or ID</label>
-    <input class="adm-inp" id="pfVid" placeholder="https://youtube.com/watch?v=... or just the ID" />
-    <label class="adm-lbl">Card size</label>
-    <select class="adm-sel" id="pfSize">
-      <option value="sm">Small</option>
-      <option value="lg">Large</option>
-      <option value="xl" selected>Extra Large</option>
-    </select>
-    <input type="hidden" id="pfEditId" />
-    <div style="display:flex;gap:.6rem;">
-      <button class="adm-btn" id="pfSaveBtn" type="button">Add Video</button>
-      <button class="adm-btn small" id="pfCancelBtn" type="button" style="display:none;">Cancel Edit</button>
-    </div>`;
+      </div>`;
+    }).join('') || '<p class="adm-note">No videos yet.</p>'}</div>`;
 
-  wrap.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>{
-    const v=state.portfolio.find(x=>x.id===b.dataset.edit); if(!v)return;
-    document.getElementById('pfTitle').value=v.title;
-    document.getElementById('pfVid').value=v.vid;
-    document.getElementById('pfSize').value=v.size;
-    document.getElementById('pfEditId').value=v.id;
-    document.getElementById('pfFormTtl').textContent='Edit video';
-    document.getElementById('pfSaveBtn').textContent='Save Changes';
-    document.getElementById('pfCancelBtn').style.display='inline-block';
+  wrap.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>{ editingPf=b.dataset.edit; renderAdminPortfolio(); }));
+  wrap.querySelectorAll('[data-cancel-edit]').forEach(b=>b.addEventListener('click',()=>{ editingPf=null; renderAdminPortfolio(); }));
+  wrap.querySelectorAll('[data-save-edit]').forEach(b=>b.addEventListener('click', async ()=>{
+    const id=b.dataset.saveEdit;
+    const item=state.portfolio.find(x=>x.id===id); if(!item)return;
+    const title=document.getElementById('pfEdit_'+id+'_Title').value.trim();
+    const vidRaw=document.getElementById('pfEdit_'+id+'_Vid').value.trim();
+    const errEl=document.getElementById('pfEdit_'+id+'_Err');
+    if(!title||!vidRaw){ errEl.textContent='Add a title and a YouTube link or ID.'; return; }
+    const vid=extractYouTubeId(vidRaw);
+    if(!vid){ errEl.textContent='Could not read that YouTube link.'; return; }
+    if(isDuplicateVideo(vid,id)){ errEl.textContent='That video is already in the portfolio.'; return; }
+    Object.assign(item,{title,vid});
+    editingPf=null;
+    renderPortfolio(); renderAdminPortfolio();
+    await saveContent();
   }));
   wrap.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click', async ()=>{
     if(!confirm('Remove this video from the portfolio?')) return;
     state.portfolio=state.portfolio.filter(x=>x.id!==b.dataset.del);
+    if(editingPf===b.dataset.del) editingPf=null;
     renderPortfolio(); renderAdminPortfolio();
     await saveContent();
   }));
-  document.getElementById('pfCancelBtn').addEventListener('click',()=>renderAdminPortfolio());
   document.getElementById('pfSaveBtn').addEventListener('click', async ()=>{
-    const title=document.getElementById('pfTitle').value.trim();
-    const vidRaw=document.getElementById('pfVid').value.trim();
-    const size=document.getElementById('pfSize').value;
-    const editId=document.getElementById('pfEditId').value;
-    if(!title||!vidRaw){ toast('Add a title and a YouTube link or ID.'); return; }
+    const title=document.getElementById('pfNewTitle').value.trim();
+    const vidRaw=document.getElementById('pfNewVid').value.trim();
+    const errEl=document.getElementById('pfNewErr');
+    if(!title||!vidRaw){ errEl.textContent='Add a title and a YouTube link or ID.'; return; }
     const vid=extractYouTubeId(vidRaw);
-    if(!vid){ toast('Could not read that YouTube link — try pasting just the video ID.'); return; }
-    if(editId){
-      const item=state.portfolio.find(x=>x.id===editId);
-      if(item) Object.assign(item,{title,vid,size});
-    } else {
-      state.portfolio.push({id:uid(),title,vid,size});
-    }
+    if(!vid){ errEl.textContent='Could not read that YouTube link — try pasting just the video ID.'; return; }
+    if(isDuplicateVideo(vid,null)){ errEl.textContent='That video is already in the portfolio.'; return; }
+    errEl.textContent='';
+    state.portfolio.push({id:uid(),title,vid,size:nextVideoSize()});
     renderPortfolio(); renderAdminPortfolio();
     await saveContent();
   });
 }
 
 /* ---- Packages admin ---- */
+function packageFormFields(prefix,p){
+  p=p||{};
+  return `
+    <div class="adm-grid2">
+      <div><label class="adm-lbl">Tag (small label)</label><input class="adm-inp" id="${prefix}Tag" placeholder="e.g. Entry Level" value="${escapeHtml(p.tag||'')}" /></div>
+      <div><label class="adm-lbl">Package name</label><input class="adm-inp" id="${prefix}Name" placeholder="e.g. Street Visual" value="${escapeHtml(p.name||'')}" /></div>
+      <div><label class="adm-lbl">Price (e.g. 10K)</label><input class="adm-inp" id="${prefix}Price" placeholder="10K" value="${escapeHtml(p.price||'')}" /></div>
+      <div><label class="adm-lbl">Price suffix (optional, e.g. +)</label><input class="adm-inp" id="${prefix}Suffix" placeholder="" value="${escapeHtml(p.priceSuffix||'')}" /></div>
+    </div>
+    <label class="adm-lbl">Subtitle</label>
+    <input class="adm-inp" id="${prefix}Sub" placeholder="Short subtitle" value="${escapeHtml(p.sub||'')}" />
+    <label class="adm-lbl">Pitch line</label>
+    <input class="adm-inp" id="${prefix}Pitch" placeholder="Who this package is for" value="${escapeHtml(p.pitch||'')}" />
+    <label class="adm-lbl">Features (one per line)</label>
+    <textarea class="adm-txt" id="${prefix}Feats" placeholder="1 Cinema Camera&#10;2 Locations">${escapeHtml((p.feats||[]).join('\n'))}</textarea>
+    <div class="adm-grid2">
+      <div><label class="adm-lbl">Row placement</label>
+        <select class="adm-sel" id="${prefix}Group">
+          <option value="top" ${p.group==='top'?'selected':''}>Top row</option>
+          <option value="bot" ${p.group==='bot'?'selected':''}>Bottom row</option>
+        </select></div>
+      <div><label class="adm-lbl">Highlight style</label>
+        <select class="adm-sel" id="${prefix}Style">
+          <option value="" ${!p.style?'selected':''}>None</option>
+          <option value="feat" ${p.style==='feat'?'selected':''}>Most Popular (gold)</option>
+          <option value="elite" ${p.style==='elite'?'selected':''}>Elite (outlined)</option>
+        </select></div>
+    </div>
+    <label class="adm-lbl">Booking label (sent via WhatsApp)</label>
+    <input class="adm-inp" id="${prefix}BookLabel" placeholder="e.g. Street Visual — KES 10,000" value="${escapeHtml(p.bookLabel||'')}" />
+    <div class="adm-err" id="${prefix}Err"></div>`;
+}
+function readPackageForm(prefix){
+  return {
+    tag: document.getElementById(prefix+'Tag').value.trim(),
+    name: document.getElementById(prefix+'Name').value.trim(),
+    price: document.getElementById(prefix+'Price').value.trim(),
+    priceSuffix: document.getElementById(prefix+'Suffix').value.trim(),
+    sub: document.getElementById(prefix+'Sub').value.trim(),
+    pitch: document.getElementById(prefix+'Pitch').value.trim(),
+    feats: document.getElementById(prefix+'Feats').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    group: document.getElementById(prefix+'Group').value,
+    style: document.getElementById(prefix+'Style').value,
+    bookLabel: document.getElementById(prefix+'BookLabel').value.trim(),
+  };
+}
 function renderAdminPackages(){
   const wrap=document.getElementById('admTabPackages');
   wrap.innerHTML = `
-    <div class="adm-list">${state.packages.map(p=>`
-      <div class="adm-row">
+    <div class="adm-form-ttl">Add a Package</div>
+    ${packageFormFields('pkNew')}
+    <button class="adm-btn" id="pkSaveBtn" type="button" style="margin-bottom:1.5rem;">Add Package</button>
+    <div class="adm-list">${state.packages.map(p=>{
+      if(p.id===editingPk){
+        return `<div class="adm-row" style="flex-direction:column;align-items:stretch;gap:.6rem;">
+          ${packageFormFields('pkEdit_'+p.id+'_', p)}
+          <div style="display:flex;gap:.6rem;">
+            <button class="adm-btn small" data-save-edit="${p.id}" type="button">Save</button>
+            <button class="adm-btn small" data-cancel-edit="${p.id}" type="button">Cancel</button>
+          </div>
+        </div>`;
+      }
+      return `<div class="adm-row">
         <div><div class="adm-row-main">${escapeHtml(p.name)} — KES ${escapeHtml(p.price)}${p.priceSuffix?escapeHtml(p.priceSuffix):''}</div><div class="adm-row-sub">${p.group==='top'?'Top row':'Bottom row'}${p.style?' · '+escapeHtml(p.style):''}</div></div>
         <div class="adm-row-actions">
           <button class="adm-btn small" data-edit="${p.id}" type="button">Edit</button>
           <button class="adm-btn small danger" data-del="${p.id}" type="button">Remove</button>
         </div>
-      </div>`).join('') || '<p class="adm-note">No packages yet.</p>'}</div>
-    <div class="adm-form-ttl" id="pkFormTtl">Add a package</div>
-    <div class="adm-grid2">
-      <div><label class="adm-lbl">Tag (small label)</label><input class="adm-inp" id="pkTag" placeholder="e.g. Entry Level" /></div>
-      <div><label class="adm-lbl">Package name</label><input class="adm-inp" id="pkName" placeholder="e.g. Street Visual" /></div>
-      <div><label class="adm-lbl">Price (e.g. 10K)</label><input class="adm-inp" id="pkPrice" placeholder="10K" /></div>
-      <div><label class="adm-lbl">Price suffix (optional, e.g. +)</label><input class="adm-inp" id="pkSuffix" placeholder="" /></div>
-    </div>
-    <label class="adm-lbl">Subtitle</label>
-    <input class="adm-inp" id="pkSub" placeholder="Short subtitle" />
-    <label class="adm-lbl">Pitch line</label>
-    <input class="adm-inp" id="pkPitch" placeholder="Who this package is for" />
-    <label class="adm-lbl">Features (one per line)</label>
-    <textarea class="adm-txt" id="pkFeats" placeholder="1 Cinema Camera&#10;2 Locations"></textarea>
-    <div class="adm-grid2">
-      <div><label class="adm-lbl">Row placement</label>
-        <select class="adm-sel" id="pkGroup"><option value="top">Top row</option><option value="bot">Bottom row</option></select></div>
-      <div><label class="adm-lbl">Highlight style</label>
-        <select class="adm-sel" id="pkStyle"><option value="">None</option><option value="feat">Most Popular (gold)</option><option value="elite">Elite (outlined)</option></select></div>
-    </div>
-    <label class="adm-lbl">Booking label (sent via WhatsApp)</label>
-    <input class="adm-inp" id="pkBookLabel" placeholder="e.g. Street Visual — KES 10,000" />
-    <input type="hidden" id="pkEditId" />
-    <div style="display:flex;gap:.6rem;">
-      <button class="adm-btn" id="pkSaveBtn" type="button">Add Package</button>
-      <button class="adm-btn small" id="pkCancelBtn" type="button" style="display:none;">Cancel Edit</button>
-    </div>`;
+      </div>`;
+    }).join('') || '<p class="adm-note">No packages yet.</p>'}</div>`;
 
-  wrap.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>{
-    const p=state.packages.find(x=>x.id===b.dataset.edit); if(!p)return;
-    document.getElementById('pkTag').value=p.tag;
-    document.getElementById('pkName').value=p.name;
-    document.getElementById('pkPrice').value=p.price;
-    document.getElementById('pkSuffix').value=p.priceSuffix||'';
-    document.getElementById('pkSub').value=p.sub;
-    document.getElementById('pkPitch').value=p.pitch;
-    document.getElementById('pkFeats').value=(p.feats||[]).join('\n');
-    document.getElementById('pkGroup').value=p.group;
-    document.getElementById('pkStyle').value=p.style||'';
-    document.getElementById('pkBookLabel').value=p.bookLabel;
-    document.getElementById('pkEditId').value=p.id;
-    document.getElementById('pkFormTtl').textContent='Edit package';
-    document.getElementById('pkSaveBtn').textContent='Save Changes';
-    document.getElementById('pkCancelBtn').style.display='inline-block';
+  wrap.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>{ editingPk=b.dataset.edit; renderAdminPackages(); }));
+  wrap.querySelectorAll('[data-cancel-edit]').forEach(b=>b.addEventListener('click',()=>{ editingPk=null; renderAdminPackages(); }));
+  wrap.querySelectorAll('[data-save-edit]').forEach(b=>b.addEventListener('click', async ()=>{
+    const id=b.dataset.saveEdit;
+    const item=state.packages.find(x=>x.id===id); if(!item)return;
+    const f=readPackageForm('pkEdit_'+id+'_');
+    const errEl=document.getElementById('pkEdit_'+id+'_Err');
+    if(!f.name||!f.price||!f.feats.length||!f.bookLabel){ errEl.textContent='Fill in at least name, price, one feature and the booking label.'; return; }
+    Object.assign(item,f);
+    editingPk=null;
+    renderPackages(); renderPackageOptions(); renderAdminPackages();
+    await saveContent();
   }));
   wrap.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click', async ()=>{
     if(!confirm('Remove this package?')) return;
     state.packages=state.packages.filter(x=>x.id!==b.dataset.del);
+    if(editingPk===b.dataset.del) editingPk=null;
     renderPackages(); renderPackageOptions(); renderAdminPackages();
     await saveContent();
   }));
-  document.getElementById('pkCancelBtn').addEventListener('click',()=>renderAdminPackages());
   document.getElementById('pkSaveBtn').addEventListener('click', async ()=>{
-    const tag=document.getElementById('pkTag').value.trim();
-    const name=document.getElementById('pkName').value.trim();
-    const price=document.getElementById('pkPrice').value.trim();
-    const priceSuffix=document.getElementById('pkSuffix').value.trim();
-    const sub=document.getElementById('pkSub').value.trim();
-    const pitch=document.getElementById('pkPitch').value.trim();
-    const feats=document.getElementById('pkFeats').value.split('\n').map(s=>s.trim()).filter(Boolean);
-    const group=document.getElementById('pkGroup').value;
-    const style=document.getElementById('pkStyle').value;
-    const bookLabel=document.getElementById('pkBookLabel').value.trim();
-    const editId=document.getElementById('pkEditId').value;
-    if(!name||!price||!feats.length||!bookLabel){ toast('Fill in at least name, price, one feature and the booking label.'); return; }
-    if(editId){
-      const item=state.packages.find(x=>x.id===editId);
-      if(item) Object.assign(item,{tag,name,price,priceSuffix,sub,pitch,feats,group,style,bookLabel});
-    } else {
-      state.packages.push({id:uid(),tag,name,price,priceSuffix,sub,pitch,feats,group,style,bookLabel});
-    }
+    const f=readPackageForm('pkNew');
+    const errEl=document.getElementById('pkNewErr');
+    if(!f.name||!f.price||!f.feats.length||!f.bookLabel){ errEl.textContent='Fill in at least name, price, one feature and the booking label.'; return; }
+    errEl.textContent='';
+    state.packages.push(Object.assign({id:uid()},f));
     renderPackages(); renderPackageOptions(); renderAdminPackages();
     await saveContent();
   });
 }
 
 /* ---- Bundles admin ---- */
+function bundleFormFields(prefix,b){
+  b=b||{};
+  return `
+    <div class="adm-grid2">
+      <div><label class="adm-lbl">Icon (emoji)</label><input class="adm-inp" id="${prefix}Icon" placeholder="🚀" value="${escapeHtml(b.icon||'')}" /></div>
+      <div><label class="adm-lbl">Name</label><input class="adm-inp" id="${prefix}Name" placeholder="e.g. Viral Content Pack" value="${escapeHtml(b.name||'')}" /></div>
+      <div><label class="adm-lbl">Price (e.g. 12K)</label><input class="adm-inp" id="${prefix}Price" placeholder="12K" value="${escapeHtml(b.price||'')}" /></div>
+      <div><label class="adm-lbl">Price suffix (optional, e.g. /mo)</label><input class="adm-inp" id="${prefix}Suffix" placeholder="" value="${escapeHtml(b.priceSuffix||'')}" /></div>
+    </div>
+    <label class="adm-lbl">Subtitle</label>
+    <input class="adm-inp" id="${prefix}Sub" placeholder="Short subtitle" value="${escapeHtml(b.sub||'')}" />
+    <label class="adm-lbl">Features (one per line)</label>
+    <textarea class="adm-txt" id="${prefix}Feats" placeholder="3 Short Videos&#10;Fast edits">${escapeHtml((b.feats||[]).join('\n'))}</textarea>
+    <label class="adm-lbl">Booking label (sent via WhatsApp)</label>
+    <input class="adm-inp" id="${prefix}BookLabel" placeholder="e.g. Viral Content Pack — KES 12,000" value="${escapeHtml(b.bookLabel||'')}" />
+    <div class="adm-err" id="${prefix}Err"></div>`;
+}
+function readBundleForm(prefix){
+  return {
+    icon: document.getElementById(prefix+'Icon').value.trim(),
+    name: document.getElementById(prefix+'Name').value.trim(),
+    price: document.getElementById(prefix+'Price').value.trim(),
+    priceSuffix: document.getElementById(prefix+'Suffix').value.trim(),
+    sub: document.getElementById(prefix+'Sub').value.trim(),
+    feats: document.getElementById(prefix+'Feats').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    bookLabel: document.getElementById(prefix+'BookLabel').value.trim(),
+  };
+}
 function renderAdminBundles(){
   const wrap=document.getElementById('admTabBundles');
   wrap.innerHTML = `
-    <div class="adm-list">${state.bundles.map(b=>`
-      <div class="adm-row">
+    <div class="adm-form-ttl">Add a Bundle</div>
+    ${bundleFormFields('bnNew')}
+    <button class="adm-btn" id="bnSaveBtn" type="button" style="margin-bottom:1.5rem;">Add Bundle</button>
+    <div class="adm-list">${state.bundles.map(b=>{
+      if(b.id===editingBn){
+        return `<div class="adm-row" style="flex-direction:column;align-items:stretch;gap:.6rem;">
+          ${bundleFormFields('bnEdit_'+b.id+'_',b)}
+          <div style="display:flex;gap:.6rem;">
+            <button class="adm-btn small" data-save-edit="${b.id}" type="button">Save</button>
+            <button class="adm-btn small" data-cancel-edit="${b.id}" type="button">Cancel</button>
+          </div>
+        </div>`;
+      }
+      return `<div class="adm-row">
         <div class="adm-row-main">${b.icon||''} ${escapeHtml(b.name)} — KES ${escapeHtml(b.price)}${b.priceSuffix?escapeHtml(b.priceSuffix):''}</div>
         <div class="adm-row-actions">
           <button class="adm-btn small" data-edit="${b.id}" type="button">Edit</button>
           <button class="adm-btn small danger" data-del="${b.id}" type="button">Remove</button>
         </div>
-      </div>`).join('') || '<p class="adm-note">No bundles yet.</p>'}</div>
-    <div class="adm-form-ttl" id="bnFormTtl">Add a bundle</div>
-    <div class="adm-grid2">
-      <div><label class="adm-lbl">Icon (emoji)</label><input class="adm-inp" id="bnIcon" placeholder="🚀" /></div>
-      <div><label class="adm-lbl">Name</label><input class="adm-inp" id="bnName" placeholder="e.g. Viral Content Pack" /></div>
-      <div><label class="adm-lbl">Price (e.g. 12K)</label><input class="adm-inp" id="bnPrice" placeholder="12K" /></div>
-      <div><label class="adm-lbl">Price suffix (optional, e.g. /mo)</label><input class="adm-inp" id="bnSuffix" placeholder="" /></div>
-    </div>
-    <label class="adm-lbl">Subtitle</label>
-    <input class="adm-inp" id="bnSub" placeholder="Short subtitle" />
-    <label class="adm-lbl">Features (one per line)</label>
-    <textarea class="adm-txt" id="bnFeats" placeholder="3 Short Videos&#10;Fast edits"></textarea>
-    <label class="adm-lbl">Booking label (sent via WhatsApp)</label>
-    <input class="adm-inp" id="bnBookLabel" placeholder="e.g. Viral Content Pack — KES 12,000" />
-    <input type="hidden" id="bnEditId" />
-    <div style="display:flex;gap:.6rem;">
-      <button class="adm-btn" id="bnSaveBtn" type="button">Add Bundle</button>
-      <button class="adm-btn small" id="bnCancelBtn" type="button" style="display:none;">Cancel Edit</button>
-    </div>`;
+      </div>`;
+    }).join('') || '<p class="adm-note">No bundles yet.</p>'}</div>`;
 
-  wrap.querySelectorAll('[data-edit]').forEach(b2=>b2.addEventListener('click',()=>{
-    const b=state.bundles.find(x=>x.id===b2.dataset.edit); if(!b)return;
-    document.getElementById('bnIcon').value=b.icon||'';
-    document.getElementById('bnName').value=b.name;
-    document.getElementById('bnPrice').value=b.price;
-    document.getElementById('bnSuffix').value=b.priceSuffix||'';
-    document.getElementById('bnSub').value=b.sub;
-    document.getElementById('bnFeats').value=(b.feats||[]).join('\n');
-    document.getElementById('bnBookLabel').value=b.bookLabel;
-    document.getElementById('bnEditId').value=b.id;
-    document.getElementById('bnFormTtl').textContent='Edit bundle';
-    document.getElementById('bnSaveBtn').textContent='Save Changes';
-    document.getElementById('bnCancelBtn').style.display='inline-block';
+  wrap.querySelectorAll('[data-edit]').forEach(b2=>b2.addEventListener('click',()=>{ editingBn=b2.dataset.edit; renderAdminBundles(); }));
+  wrap.querySelectorAll('[data-cancel-edit]').forEach(b2=>b2.addEventListener('click',()=>{ editingBn=null; renderAdminBundles(); }));
+  wrap.querySelectorAll('[data-save-edit]').forEach(b2=>b2.addEventListener('click', async ()=>{
+    const id=b2.dataset.saveEdit;
+    const item=state.bundles.find(x=>x.id===id); if(!item)return;
+    const f=readBundleForm('bnEdit_'+id+'_');
+    const errEl=document.getElementById('bnEdit_'+id+'_Err');
+    if(!f.name||!f.price||!f.feats.length||!f.bookLabel){ errEl.textContent='Fill in name, price, one feature and the booking label.'; return; }
+    Object.assign(item,f);
+    editingBn=null;
+    renderBundles(); renderPackageOptions(); renderAdminBundles();
+    await saveContent();
   }));
   wrap.querySelectorAll('[data-del]').forEach(b2=>b2.addEventListener('click', async ()=>{
     if(!confirm('Remove this bundle?')) return;
     state.bundles=state.bundles.filter(x=>x.id!==b2.dataset.del);
+    if(editingBn===b2.dataset.del) editingBn=null;
     renderBundles(); renderPackageOptions(); renderAdminBundles();
     await saveContent();
   }));
-  document.getElementById('bnCancelBtn').addEventListener('click',()=>renderAdminBundles());
   document.getElementById('bnSaveBtn').addEventListener('click', async ()=>{
-    const icon=document.getElementById('bnIcon').value.trim();
-    const name=document.getElementById('bnName').value.trim();
-    const price=document.getElementById('bnPrice').value.trim();
-    const priceSuffix=document.getElementById('bnSuffix').value.trim();
-    const sub=document.getElementById('bnSub').value.trim();
-    const feats=document.getElementById('bnFeats').value.split('\n').map(s=>s.trim()).filter(Boolean);
-    const bookLabel=document.getElementById('bnBookLabel').value.trim();
-    const editId=document.getElementById('bnEditId').value;
-    if(!name||!price||!feats.length||!bookLabel){ toast('Fill in name, price, one feature and the booking label.'); return; }
-    if(editId){
-      const item=state.bundles.find(x=>x.id===editId);
-      if(item) Object.assign(item,{icon,name,price,priceSuffix,sub,feats,bookLabel});
-    } else {
-      state.bundles.push({id:uid(),icon,name,price,priceSuffix,sub,feats,bookLabel});
-    }
+    const f=readBundleForm('bnNew');
+    const errEl=document.getElementById('bnNewErr');
+    if(!f.name||!f.price||!f.feats.length||!f.bookLabel){ errEl.textContent='Fill in name, price, one feature and the booking label.'; return; }
+    errEl.textContent='';
+    state.bundles.push(Object.assign({id:uid()},f));
     renderBundles(); renderPackageOptions(); renderAdminBundles();
     await saveContent();
   });
 }
 
 /* ---- Add-ons admin ---- */
+function addonFormFields(prefix,a){
+  a=a||{};
+  return `
+    <div class="adm-grid2">
+      <div><label class="adm-lbl">Name</label><input class="adm-inp" id="${prefix}Name" placeholder="e.g. Drone Shots" value="${escapeHtml(a.name||'')}" /></div>
+      <div><label class="adm-lbl">Price label</label><input class="adm-inp" id="${prefix}Price" placeholder="e.g. +5K" value="${escapeHtml(a.price||'')}" /></div>
+    </div>
+    <div class="adm-err" id="${prefix}Err"></div>`;
+}
 function renderAdminAddons(){
   const wrap=document.getElementById('admTabAddons');
   wrap.innerHTML = `
-    <div class="adm-list">${state.addons.map(a=>`
-      <div class="adm-row">
+    <div class="adm-form-ttl">Add an Add-On</div>
+    ${addonFormFields('adNew')}
+    <button class="adm-btn" id="adSaveBtn" type="button" style="margin-bottom:1.5rem;">Add Add-On</button>
+    <div class="adm-list">${state.addons.map(a=>{
+      if(a.id===editingAd){
+        return `<div class="adm-row" style="flex-direction:column;align-items:stretch;gap:.6rem;">
+          ${addonFormFields('adEdit_'+a.id+'_',a)}
+          <div style="display:flex;gap:.6rem;">
+            <button class="adm-btn small" data-save-edit="${a.id}" type="button">Save</button>
+            <button class="adm-btn small" data-cancel-edit="${a.id}" type="button">Cancel</button>
+          </div>
+        </div>`;
+      }
+      return `<div class="adm-row">
         <div class="adm-row-main">${escapeHtml(a.name)} — ${escapeHtml(a.price)}</div>
         <div class="adm-row-actions">
           <button class="adm-btn small" data-edit="${a.id}" type="button">Edit</button>
           <button class="adm-btn small danger" data-del="${a.id}" type="button">Remove</button>
         </div>
-      </div>`).join('') || '<p class="adm-note">No add-ons yet.</p>'}</div>
-    <div class="adm-form-ttl" id="adFormTtl">Add an add-on</div>
-    <div class="adm-grid2">
-      <div><label class="adm-lbl">Name</label><input class="adm-inp" id="adName" placeholder="e.g. Drone Shots" /></div>
-      <div><label class="adm-lbl">Price label</label><input class="adm-inp" id="adPrice" placeholder="e.g. +5K" /></div>
-    </div>
-    <input type="hidden" id="adEditId" />
-    <div style="display:flex;gap:.6rem;">
-      <button class="adm-btn" id="adSaveBtn" type="button">Add Add-On</button>
-      <button class="adm-btn small" id="adCancelBtn" type="button" style="display:none;">Cancel Edit</button>
-    </div>`;
+      </div>`;
+    }).join('') || '<p class="adm-note">No add-ons yet.</p>'}</div>`;
 
-  wrap.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>{
-    const a=state.addons.find(x=>x.id===b.dataset.edit); if(!a)return;
-    document.getElementById('adName').value=a.name;
-    document.getElementById('adPrice').value=a.price;
-    document.getElementById('adEditId').value=a.id;
-    document.getElementById('adFormTtl').textContent='Edit add-on';
-    document.getElementById('adSaveBtn').textContent='Save Changes';
-    document.getElementById('adCancelBtn').style.display='inline-block';
+  wrap.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>{ editingAd=b.dataset.edit; renderAdminAddons(); }));
+  wrap.querySelectorAll('[data-cancel-edit]').forEach(b=>b.addEventListener('click',()=>{ editingAd=null; renderAdminAddons(); }));
+  wrap.querySelectorAll('[data-save-edit]').forEach(b=>b.addEventListener('click', async ()=>{
+    const id=b.dataset.saveEdit;
+    const item=state.addons.find(x=>x.id===id); if(!item)return;
+    const name=document.getElementById('adEdit_'+id+'_Name').value.trim();
+    const price=document.getElementById('adEdit_'+id+'_Price').value.trim();
+    const errEl=document.getElementById('adEdit_'+id+'_Err');
+    if(!name||!price){ errEl.textContent='Add a name and a price label.'; return; }
+    Object.assign(item,{name,price});
+    editingAd=null;
+    renderAddons(); renderAdminAddons();
+    await saveContent();
   }));
   wrap.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click', async ()=>{
     if(!confirm('Remove this add-on?')) return;
     state.addons=state.addons.filter(x=>x.id!==b.dataset.del);
+    if(editingAd===b.dataset.del) editingAd=null;
     renderAddons(); renderAdminAddons();
     await saveContent();
   }));
-  document.getElementById('adCancelBtn').addEventListener('click',()=>renderAdminAddons());
   document.getElementById('adSaveBtn').addEventListener('click', async ()=>{
-    const name=document.getElementById('adName').value.trim();
-    const price=document.getElementById('adPrice').value.trim();
-    const editId=document.getElementById('adEditId').value;
-    if(!name||!price){ toast('Add a name and a price label.'); return; }
-    if(editId){
-      const item=state.addons.find(x=>x.id===editId);
-      if(item) Object.assign(item,{name,price});
-    } else {
-      state.addons.push({id:uid(),name,price});
-    }
+    const name=document.getElementById('adNewName').value.trim();
+    const price=document.getElementById('adNewPrice').value.trim();
+    const errEl=document.getElementById('adNewErr');
+    if(!name||!price){ errEl.textContent='Add a name and a price label.'; return; }
+    errEl.textContent='';
+    state.addons.push({id:uid(),name,price});
     renderAddons(); renderAdminAddons();
     await saveContent();
   });
