@@ -387,10 +387,10 @@
 
 <!-- STATS -->
 <div class="stats-bar">
-  <div class="stat reveal"><div class="stat-num" data-target="40">0</div><div class="stat-label">Videos Produced</div></div>
+  <div class="stat reveal"><div class="stat-num" id="statVideosProduced" data-target="40">0</div><div class="stat-label">Videos Produced</div></div>
   <div class="stat reveal" style="transition-delay:.1s"><div class="stat-num" data-target="5">0</div><div class="stat-label">Years Active</div></div>
-  <div class="stat reveal" style="transition-delay:.2s"><div class="stat-num" data-target="32">0</div><div class="stat-label">Artists Worked With</div></div>
-  <div class="stat reveal" style="transition-delay:.3s"><div class="stat-num" data-target="7">0</div><div class="stat-label">Packages Available</div></div>
+  <div class="stat reveal" style="transition-delay:.2s"><div class="stat-num" data-target="50">0</div><div class="stat-label">Artists Worked With</div></div>
+  <div class="stat reveal" style="transition-delay:.3s"><div class="stat-num" id="statPackagesAvailable" data-exact="true" data-target="7">0</div><div class="stat-label">Packages Available</div></div>
 </div>
 
 <!-- PORTFOLIO -->
@@ -647,8 +647,8 @@ const obs=new IntersectionObserver((entries)=>{entries.forEach((e)=>{if(e.isInte
 document.querySelectorAll('.reveal,.reveal-l,.stat').forEach(el=>obs.observe(el));
 
 /* ── Stat counters ── */
-function animCount(el,target){let st=null;function step(ts){if(!st)st=ts;const p=Math.min((ts-st)/1800,1),ease=1-Math.pow(1-p,4);el.textContent=Math.floor(ease*target);if(p<1)requestAnimationFrame(step);else el.textContent=target+'+';}requestAnimationFrame(step);}
-const sObs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){animCount(e.target.querySelector('.stat-num'),+e.target.querySelector('.stat-num').dataset.target);sObs.unobserve(e.target);}});},{threshold:.5});
+function animCount(el,target,exact){let st=null;function step(ts){if(!st)st=ts;const p=Math.min((ts-st)/1800,1),ease=1-Math.pow(1-p,4);el.textContent=Math.floor(ease*target);if(p<1)requestAnimationFrame(step);else el.textContent=exact?String(target):target+'+';}requestAnimationFrame(step);}
+const sObs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){const numEl=e.target.querySelector('.stat-num');animCount(numEl,+numEl.dataset.target,numEl.dataset.exact==='true');sObs.unobserve(e.target);}});},{threshold:.5});
 document.querySelectorAll('.stat').forEach(s=>sObs.observe(s));
 
 /* ── Portfolio drag scroll ── */
@@ -1167,6 +1167,13 @@ function renderAll(){
   renderBundles();
   renderAddons();
   renderPackageOptions();
+  updateStats();
+}
+function updateStats(){
+  const v=document.getElementById('statVideosProduced');
+  const p=document.getElementById('statPackagesAvailable');
+  if(v) v.dataset.target = state.portfolio.length;
+  if(p) p.dataset.target = state.packages.length;
 }
 renderAll(); /* paint immediately with current known content, no flash of empty page */
 
@@ -1270,14 +1277,16 @@ function extractYouTubeId(input){
   if(/^[A-Za-z0-9_-]{6,}$/.test(input)) return input;
   return null;
 }
-/* Automatic card-size rhythm: cycles xl -> sm -> lg -> sm -> xl ... based on
-   whatever size the last video in the grid currently has. First video is xl. */
+/* Automatic card-size rhythm: new videos are added to the front of the
+   grid, so the size just needs to look good next to whatever is currently
+   first — pick a size different from it, varying which alternate is used
+   so the wall doesn't fall into a repeating xl/sm/xl/sm pattern. */
 function nextVideoSize(){
-  const seq=['xl','sm','lg','sm'];
+  const opts=['xl','lg','sm'];
   if(!state.portfolio.length) return 'xl';
-  const last=state.portfolio[state.portfolio.length-1].size;
-  const idx=seq.indexOf(last);
-  return seq[(idx>=0?idx+1:0)%seq.length];
+  const front=state.portfolio[0].size;
+  const others=opts.filter(s=>s!==front);
+  return others[state.portfolio.length % others.length];
 }
 function isDuplicateVideo(vid, excludeId){
   return state.portfolio.some(v=>v.id!==excludeId && v.vid.toLowerCase()===vid.toLowerCase());
@@ -1349,7 +1358,7 @@ function renderAdminPortfolio(){
     if(!vid){ errEl.textContent='Could not read that YouTube link — try pasting just the video ID.'; return; }
     if(isDuplicateVideo(vid,null)){ errEl.textContent='That video is already in the portfolio.'; return; }
     errEl.textContent='';
-    state.portfolio.push({id:uid(),title,vid,size:nextVideoSize()});
+    state.portfolio.unshift({id:uid(),title,vid,size:nextVideoSize()});
     renderPortfolio(); renderAdminPortfolio();
     await saveContent();
   });
